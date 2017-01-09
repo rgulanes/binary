@@ -1,0 +1,136 @@
+  <div ng-controller="adminCtrl" ng-cloak >
+     <!-- Static navbar -->
+      <nav class="navbar navbar-default" style="border-radius: 0px!important;">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">LUYANG BAYA</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+           <!--    <li class="active"><a href="#">Home</a></li>
+               -->
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"  data-toggle="modal" data-target="#code-modal">Generate Code</a></li>
+              <li><a href="#" ng-click="onclickLogout()">Log Out</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+
+
+      <!-- Main component for a primary marketing message or call to action -->
+    
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>User Information <i class="fa fa-user pull-right" title="view list"></i> </b></div>
+              <div class="panel-body">
+                <h2 > Welcome! <?php echo $user_info->first_name; ?> <?php echo $user_info->last_name; ?></h2>
+                <p> Gender  : <?php echo $user_info->gender;?></p>
+                <p> Contact : <?php echo $user_info->contact;?></p>
+                <p> Email   : <?php echo $user_info->email;?></p>
+                <p> Address : <?php echo $user_info->address;?></p>
+                <p> Date Joined : <?php echo date("M d, Y", strtotime($user_info->entered_on))?></p> 
+              </div>
+            </div>
+
+          </div>
+          
+          <div class="col-lg-6 col-md-6 col-sm-6">
+             <div class="panel panel-default">
+              <div class="panel-heading"><b>Code <i class="fa fa-eye pull-right" title="view list"></i></b></div>
+              <div class="panel-body" style="max-height: 245px;overflow: auto;">
+                  <table class="table" style="margin-top:13px;">
+                    <thead>
+                      <tr>
+                        <th>Code</th>
+                        <th>Used by</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="list in list_code_generated">
+                        <td>{{list.description}}</td>
+                        <td>{{list.user_name}}</td>
+                        <td>
+                          <span class="label label-success" ng-if="list.status == 0">Available</span>
+                          <span class="label label-danger" ng-if="list.status == 1">Used</span>
+                        </td>
+                      </tr>
+                     
+
+                    </tbody>
+                  </table>
+               
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container-fluid">
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Members <i class="fa fa-users pull-right" title="view list"></i> </b></div>
+              <div class="panel-body" style="max-height: 500px;overflow: auto;">
+                  <table class="table" style="margin-top:13px;">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Sponsored By</th>
+                        <th>Date Joined</th>
+                        <th>Username</th>
+                        <th>Password</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="list in member_list">
+                        <td>{{list.first_name}} {{list.last_name}}</td>
+                        <td>{{list.gender}}</td>
+                        <td>{{list.contact}}</td>
+                        <td>{{list.email}}</td>
+                        <td>{{list.address}}</td>
+                        <td>{{list.sponsor_by}}</td>
+                        <td>{{list.entered_on | date:'medium'}}</td>
+                        <td>{{list.user_name}}</td>
+                        <td>{{list.password}}</td>
+                        <td><button type="button" class="btn btn-primary"><i class="fa fa-pencil"></i></button></td>
+                       
+                      </tr>
+                     
+
+                    </tbody>
+                  </table>
+              </div>
+            </div>
+      </div>
+
+      
+
+    <div class="modal fade" id="code-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="loginmodal-container">
+             <input type="text" name="pass" ng-model="code_number" placeholder="How many codes?">
+         
+          <input type="submit" name="login" class="login loginmodal-submit" ng-click="onclickGenerateCode()" value="Generate">
+          </form>
+        </div>
+      </div>
+    </div>
+      
+    
+
+    </div> <!-- /container -->
