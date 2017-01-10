@@ -87,7 +87,7 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	$scope.list_left_member = response.data.left_member;
+		        	//$scope.list_left_member = response.data.left_member;
 		        	$scope.left_member_count = response.data.left_member.length;
 		        	// angular.forEach($scope.list_left_member,function(file){
 		        	// 	file.entered_on = new Date(file.entered_on);
@@ -109,10 +109,9 @@ angular.module('binaryApp')
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		        })
 		        .then(function(response) 
-		        {
-		        	$scope.list_right_member = response.data.right_member;
+		        {	
+		        	//$scope.list_right_member = response.data.right_member;
 		        	$scope.right_member_count = response.data.right_member.length;
-		        	
 		      	});
 		}
 
@@ -209,3 +208,106 @@ angular.module('binaryApp')
 		
 	}); 
 
+
+$(document).ready(function(){
+	/* Formatting function for row details - modify as you need */
+	function format ( d ) {
+	    // `d` is the original data object for the row
+	    var leftMember = '';
+	    var rightMember = '';
+
+	    if(d.members.length != 0){
+	    	$.each(d.members, function(i, v){
+		    	if(v.isPosition == 'L'){
+		    		leftMember = v.full_name
+		    	}
+
+		    	if(v.isPosition == 'R'){
+		    		rightMember = v.full_name
+		    	}
+		    });
+
+
+		    return '<table class="table table-condensed table-bordered" width="100%">'+
+		    	'<thead>'+
+		    		'<tr>'+
+			            '<th>Left</th>'+
+			            '<th>Right</th>'+
+		            '</tr>'+
+		        '</thead>'+
+		        '<tr>'+
+		            '<td>'+leftMember+'</td>'+
+		            '<td>'+rightMember+'</td>'+
+		        '</tr>'+
+		    '</table>';
+	    }else{
+	    	return 'No members assigned yet.';
+	    }
+	    
+	}
+
+	var table = $('#rightDataTable').DataTable( {
+		"ajax": "getAllRightMembers",
+		"columns": [
+		    {
+		        "className":      'details-control',
+		        "orderable":      false,
+		        "data":           null,
+		        "defaultContent": ''
+		    },
+		    { "data": "full_name" },
+		    { "data": "date_joined" }
+		],
+		"order": [[1, 'asc']]
+	} );
+
+    // Add event listener for opening and closing details
+    $('#rightDataTable tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
+
+
+	var table2 = $('#leftDataTable').DataTable( {
+		"ajax": "getAllLeftMembers",
+		"columns": [
+		    {
+		        "className":      'details-control',
+		        "orderable":      false,
+		        "data":           null,
+		        "defaultContent": ''
+		    },
+		    { "data": "full_name" },
+		    { "data": "date_joined" }
+		],
+		"order": [[1, 'asc']]
+	} );
+
+    // Add event listener for opening and closing details
+    $('#leftDataTable tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table2.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );
+});

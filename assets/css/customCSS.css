@@ -129,3 +129,27 @@
 }
 
 
+td.details-control:before {
+    content: "\f055";
+    font-family: 'FontAwesome';
+    left: 50%;
+    position: relative;
+    top:0;
+    color: #28982a;
+}
+
+tr.shown td.details-control:before {
+    content: "\f056";
+    font-family: 'FontAwesome';
+    left: 50%;
+    position: relative;
+    top:0;
+    color: #f14b48;
+}
+
+td.details-control {
+    cursor: pointer;
+}
+tr.shown td.details-control {
+    cursor: pointer;
+}

@@ -127,20 +127,14 @@
             <div class="panel panel-primary">
               <div class="panel-heading"><b>Left <span class="badge pull-right"> {{left_member_count}}</span></b></div>
               <div class="panel-body">
-                      <table class="table" style="margin-top:13px;">
+                      <table id="leftDataTable" class="table table-condensed" style="margin-top:13px;">
                         <thead>
                           <tr>
+                            <th>&nbsp;</th>
                             <th>Name</th>
                             <th>Date Joined</th>
                           </tr>
                         </thead>
-                        <tbody >
-                          <tr  ng-repeat="list in list_left_member">
-                            <td>{{list.u_first_name}} {{list.u_last_name}}</td>
-                            <td>{{list.u_entered_on | date:'medium'}}</td>
-                          
-                          </tr>
-                        </tbody>
                       </table>
                 
               </div>
@@ -151,22 +145,15 @@
              <div class="panel panel-primary">
               <div class="panel-heading"><b> Right <span class="badge pull-right"> {{right_member_count}}</span></b></div>
               <div class="panel-body">
-                        <table class="table" style="margin-top:13px;">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Date Joined</th>
-                          </tr>
-                        </thead>
-                        <tbody >
-                          <tr  ng-repeat="list in list_right_member">
-                            <td>{{list.u_first_name}} {{list.u_last_name}}</td>
-                            <td>{{list.u_entered_on | date:'medium'}}</td>
-                          
-                          </tr>
-                        </tbody>
-                      </table>
-        
+                <table id="rightDataTable" class="table table-condensed" style="margin-top:13px;">
+                <thead>
+                  <tr>
+                    <th>&nbsp;</th>
+                    <th>Name</th>
+                    <th>Date Joined</th>
+                  </tr>
+                </thead>
+                </table>
               </div>
             </div>
           </div>

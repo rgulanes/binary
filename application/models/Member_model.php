@@ -234,6 +234,85 @@ class Member_model extends CI_Model{
 
     }
 
+    public function getAllRightMembers($id){
+        $result = $this->db->query("CALL get_MembersAssigned('$id', 'R');");
+        mysqli_next_result($this->db->conn_id);
+        $data = array();
+        $counter = 0;
+
+        if ($result->num_rows() > 0){
+            $data = $result->result_array();
+            $counter = sizeof($data);
+        }else{
+            $data = array();
+            $counter = 0;
+        }
+
+        $output = array(
+            "iTotalRecords" => $counter,
+            "aaData" => array()
+        );
+
+        foreach ($data as $key => $value) {
+            $userId = $value['user_id'];
+            $data[$key]['members'] = $this->getMembers($userId);
+        }
+
+        if($counter != 0){
+            $output['aaData'] = $data;
+        }else{
+            $output['aaData'] = [];
+        }
+
+        return $output;
+    }
+
+    public function getAllLeftMembers($id){
+        $result = $this->db->query("CALL get_MembersAssigned('$id', 'L');");
+        mysqli_next_result($this->db->conn_id);
+        $data = array();
+        $counter = 0;
+
+        if ($result->num_rows() > 0){
+            $data = $result->result_array();
+            $counter = sizeof($data);
+        }else{
+            $data = array();
+            $counter = 0;
+        }
+
+        $output = array(
+            "iTotalRecords" => $counter,
+            "aaData" => array()
+        );
+
+        foreach ($data as $key => $value) {
+            $userId = $value['user_id'];
+            $data[$key]['members'] = $this->getMembers($userId);
+        }
+
+        if($counter != 0){
+            $output['aaData'] = $data;
+        }else{
+            $output['aaData'] = [];
+        }
+
+        return $output;
+    }
+    private function getMembers($id){
+        $data = array();
+
+        $result = $this->db->query("CALL get_downLines('$id');");
+        mysqli_next_result($this->db->conn_id);
+        if ($result->num_rows() > 0){
+            $data = $result->result_array();
+        }else{
+            $data = array();
+        }
+
+        return $data;
+    }
+
     public function get_all_left($id){
          $query = $this->db->query(
                                     "SELECT 

@@ -46,6 +46,24 @@ class Member extends CI_Controller{
 
 	}
 
+	function getAllLeftMembers(){
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = $this->Member_model->getAllLeftMembers($this->session->userdata('user_id'));
+
+		return print json_encode($data);
+
+	}
+
+	function getAllRightMembers(){
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = $this->Member_model->getAllRightMembers($this->session->userdata('user_id'));
+
+		return print json_encode($data);
+
+	}
+
 	function get_all_members(){
  		$_POST = json_decode(file_get_contents('php://input'), true);
 		$data['user_info'] = $this->Member_model->get_all_members();
