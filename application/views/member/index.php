@@ -203,7 +203,7 @@
         <div class="loginmodal-container">
          <div class="alert alert-danger" role="alert" ng-show="position_error">Please Select Position!</div>
          <div class="alert alert-success" role="alert" ng-show="position_save">Save successfully</div>
-          <label>Downline : </label>
+          <label>Name : </label>
           <label>{{unposition_user}}</label>
           <form>
             <label>Position : </label><br>
@@ -215,10 +215,19 @@
             </label>
           </form>
           <br>
+          <div ng-show="available_downline">
+          <label>Available Downline : </label>
           <select  class="sponsor" ng-options="list.u_first_name +' '+ list.u_last_name for list in list_available_downline" 
-           ng-model="selected_upline"></select>
+           ng-model="selected_upline" ng-change="onCheckAvailablePosition(selected_upline)"></select>
+          </div>
+          <div ng-show="available_position">
+            <label>Available Position : </label>
+            <select  class="sponsor" ng-options="list_position.position_name  for list_position in available_list_position" 
+             ng-model="selected_available_position"></select>
+          </div>  
+
           <input type="submit" name="login" class="login loginmodal-submit" ng-click="onclickSavePosition()" value="Save">
-          </form>
+         
         </div>
       </div>
     </div>

@@ -87,48 +87,96 @@ class Member extends CI_Controller{
 
 	}
 
+	function check_available_position(){
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$id = $_POST['id'];
+		$data['positions'] = $this->Member_model->check_available_position($id);
+		return print json_encode($data);
+	}
+
 	function get_last_available_downline(){
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$id = $_POST['id'];
 		$position = $_POST['position'];
 
-		$position_left = '';
-		$position_right = '';
-		if($position == 'left'){
-			//left
-			$position_left = 1;
-			$position_right = 0; 
-		}else{
-			$position_left  = 0;
-			$position_right  = 1		;
- 		}
-
-		$data['available_downline'] = $this->Member_model->get_last_available_downline($id,$position_left,$position_right);
+		$data['available_downline'] = $this->Member_model->get_last_available_downline($id,$position);
 		return print json_encode($data);
 		
 	}
 
 	function update_donwline_position(){
-	
+		$temp_upline = '';
+		$temp_user = '';
+		
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$user_id  = $_POST['id'];
 		$position = $_POST['position'];
 		$downline  = $_POST['downline'];
 		$upline = $_POST['upline'];
+		$available_position = $_POST['available_position'];
 
-        $updated_data = array(
+		if($upline == '' && $available_position == ''){
+			//this is main top of the pyramid 
+			if($position == 'left'){
+				$updated_data = array(
+		            'position_left' => $position == 'left' ? $downline : 0 ,
+		            'upline' => $user_id,
+		        );
+			}else{
+				$updated_data = array(
+		            'position_right' => $position == 'right' ? $downline : 0,
+		            'upline' => $user_id,
+		        );
+			}	
 
-            'position_left' => $position == 'left' ? 1 : 0 ,
-            'position_right' => $position == 'right' ? 1 : 0,
-            'upline' => $upline == '' ? $this->session->userdata('user_id') : $upline,
-        );
-		$result = $this->Member_model->update_donwline_position($updated_data,$downline);
+			$result = $this->Member_model->update_donwline_position($updated_data,$user_id);			
+
+		}else{
+
+		}
+
+		// if($upline  == ''){
+		// 	//the  upline  will be  user_id 
+		// 	$temp_upline = $user_id;
+		// }else{
+		// 	$temp_upline = $upline;
+		// }
+
+
+
+        // $updated_data = array(
+
+        //     'position_left' => $position == 'left' ? $temp_upline : 0 ,
+        //     'position_right' => $position == 'right' ? $temp_upline : 0,
+        //     'upline' => $temp_upline,
+        // );
+		
+
+
+
 
 		if($result > 0 )
         {
-            $this->response_code = 0;
-            $this->response_message = "Success...";
 
+            $this->response_code = 0;
+            $this->response_message = "Success.. .";
+
+			// if($available_position != ''){
+			// 	//update the upper person  pisitioning
+		 //            if($available_position == 'Left'){
+			// 	        $updated_data = array(
+			// 	            'position_left' => $available_position == 'Left' ? 1 : 0 ,
+			// 	        );
+			// 	    }else{
+			// 	        $updated_data = array(
+			// 	            'position_right' => $available_position == 'Right' ? 1 : 0 ,
+			// 	        );
+				    
+			// 	    }
+
+			// 	$this->Member_model->update_donwline_position($updated_data,$upline);
+			// }
+    
         }
         else
         {

@@ -153,6 +153,11 @@ class Member_model extends CI_Model{
     
     }
 
+    public function check_available_position($id){
+        $query = $this->db->query("SELECT * FROM position WHERE user_id =".$id);
+        return $query->result();
+    }
+
     public function get_member_not_assigned($id){
           $query = $this->db->query(
                                     "SELECT 
@@ -173,15 +178,20 @@ class Member_model extends CI_Model{
 
                                     FROM users as u 
                                     JOIN position  as p ON u.user_id = p.user_id 
-                                    WHERE  p.sponsor_by = ". $id ." AND p.position_left = '' AND p.position_right = '' ");
+                                    WHERE  p.sponsor_by = ". $id ." 
+                                    AND p.position_left = ''
+                                    AND p.position_right = ''
+                                    AND p.user_id != '".$id."' ");
      
         return $query->result();
 
     }
 
-    public function get_last_available_downline($id,$left,$right){
+    public function get_last_available_downline($id,$position){
+    
+        if($position == 'left'){
 
-        $query = $this->db->query(
+             $query = $this->db->query(
                                     "SELECT 
                                     u.user_id as u_user_id,
                                     u.first_name as u_first_name,
@@ -201,8 +211,34 @@ class Member_model extends CI_Model{
                                     FROM users as u 
                                     JOIN position as p ON u.user_id = p.user_id 
                                     WHERE p.sponsor_by = '".$id."' 
-                                    AND p.position_left = '".$left."' 
-                                    AND p.position_right = '".$right."'");
+                                    AND p.position_left > '0'");
+        }else{
+
+             $query = $this->db->query(
+                                    "SELECT 
+                                    u.user_id as u_user_id,
+                                    u.first_name as u_first_name,
+                                    u.last_name as u_last_name,
+                                    u.contact as u_contact,
+                                    u.address as u_address,
+                                    u.email as u_email,
+                                    u.gender as u_gender,
+                                    u.sponsor_by as u_sponsor,
+                                 
+                                    p.position_id as p_position_id,
+                                    P.user_id as p_user_id,
+                                    p.sponsor_by as p_sponsor_by,
+                                    p.position_left as p_left,
+                                    p.position_right as p_right
+
+                                    FROM users as u 
+                                    JOIN position as p ON u.user_id = p.user_id 
+                                    WHERE p.sponsor_by = '".$id."' 
+                                    AND p.position_right > '0'");
+
+        }
+
+       
         return $query->result();
     }
 

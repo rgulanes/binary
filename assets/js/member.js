@@ -12,9 +12,13 @@ angular.module('binaryApp')
 		$scope.saveMessage = false;
 		$scope.position_error = false;
 		$scope.position_save = false;
+		$scope.available_position = false;
+		$scope.available_downline = false; 
 
 		$scope._username = '';
 		$scope._password = '';
+
+		
 
 		$scope.notAssigned = false;
 
@@ -141,6 +145,8 @@ angular.module('binaryApp')
 		}
 
 		$scope.onChangePosition = function($selected_position){
+			$scope.list_available_downline = [];
+
 			$scope.selected_position = $selected_position;
 			var data = angular.toJson({
 				id : $scope.current_user,
@@ -156,17 +162,66 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		   			 console.log(response.data);
+		        	console.log(response.data.available_downline);
 		   			if(response.data.available_downline.length > 0){
-		   				$scope.list_available_downline = response.data.available_downline;
+		   				//check if the both position is not  full
+		   				$scope.available_downline = true;
+		   				angular.forEach(response.data.available_downline,function(file){
+		   					if(file.p_left == '1' && file.p_right == '1'){
+		  					}else{
+		   			  			$scope.list_available_downline.push(file); 
+		   					}
+		   				});
 		   			}else{
 		   				//doesnt yet donwlines.
 		   				$scope.list_available_downline = [];
+		   				$scope.available_downline = false;
+		   				$scope.available_position = false;
 		   			}
 		      	});
 
 		}
 
+		$scope.onCheckAvailablePosition = function(selected_upline){
+			console.log(selected_upline);
+			var data = angular.toJson({
+				id: selected_upline.p_user_id
+			});
+			console.log(data);
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : 'check_available_position',
+		        data    :  data, //forms user object
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		        	console.log(response.data.positions[0]);
+		   			if(response.data.positions.length > 0 ){
+		   				$scope.available_position = true;
+
+		   				if(response.data.positions[0].position_right == '0' && response.data.positions[0].position_left == '0'){
+		   					$scope.available_list_position = [
+		   						{ position_name : 'Left' },
+		   						{ position_name : 'Right' }
+		   					]
+		   				}else if(response.data.positions[0].position_right == '0' && response.data.positions[0].position_left > '0'){
+		   					$scope.available_list_position = [
+		   						{ position_name : 'Right' }
+		   					]
+		   				}else if(response.data.positions[0].position_right >'1' && response.data.positions[0].position_left == '0'){
+		   					$scope.available_list_position = [
+		   						{ position_name : 'Left' }
+		   					]
+		   			
+		   				}
+
+		   			}
+		      	
+		      	});
+
+
+		}
 		$scope.onclickSavePosition = function(){
 
 			if($scope.selected_position == undefined){
@@ -176,7 +231,8 @@ angular.module('binaryApp')
 						id : $scope.current_user,
 						downline : $scope.select_id,
 						position : $scope.selected_position,
-						upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id
+						upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id,
+						available_position : $scope.selected_available_position == null ? '' : $scope.selected_available_position.position_name
 					});
 					console.log(data);
 					$scope.file =  $http({
