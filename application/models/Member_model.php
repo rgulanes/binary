@@ -172,20 +172,20 @@ class Member_model extends CI_Model{
     }
 
     public function get_member_not_assigned($id){
-        $result = $this->db->query("CALL get_userMembers('$id')");
-        mysqli_next_result($this->db->conn_id);
-        if ($result->num_rows() > 0){
-            $cdata = $result->result_array();
+        //$result = $this->db->query("CALL get_userMembers('$id')");
+        //mysqli_next_result($this->db->conn_id);
+        //if ($result->num_rows() > 0){
+            //$cdata = $result->result_array();
 
-            if($cdata[0]['countMembers'] != 2){
+            //if($cdata[0]['countMembers'] != 2){
                 $query = $this->db->query("CALL get_unAssignedUsers($id)");
                 mysqli_next_result($this->db->conn_id);
                 return $query->result();
-            }else{
-                $data = array();
-                return $data;
-            }
-        }
+            //}else{
+                //$data = array();
+                //return $data;
+            //}
+        //}
     }
 
     public function get_last_available_downline($id,$position){
