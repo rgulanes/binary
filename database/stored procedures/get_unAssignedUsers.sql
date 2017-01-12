@@ -27,7 +27,7 @@ BEGIN
 						 ));
 
 	SELECT * FROM unassignedUsers
-		WHERE (p_user_id != userId OR p_sponsor_by = userId)
+		WHERE (p_user_id != userId OR p_sponsor_by = userId OR u_sponsor = userId)
 		AND p_left = '' AND p_right = '' AND p_user_id != userId;
 END$$
 DELIMITER ;
