@@ -84,18 +84,31 @@ class Member_model extends CI_Model{
 
         if(!empty($data))
         {
-            $this->db->trans_start();
-            $this->db->where('user_id', $id);
-            $this->db->update('position',$data);
-            $this->db->trans_complete();
+            $response = 0;
+            $result = $this->db->query("CALL get_userMembers('$id')");
+            mysqli_next_result($this->db->conn_id);
+            if ($result->num_rows() > 0){
+                $cdata = $result->result_array();
 
-            if ($this->db->trans_status() === FALSE)
-            {
+                if($cdata[0]['countMembers'] <= 2){
+                    $this->db->trans_start();
+                    $this->db->where('user_id', $id);
+                    $this->db->update('position',$data);
+                    $this->db->trans_complete();
+
+                    if ($this->db->trans_status() === FALSE)
+                    {
+                        $response = 0;
+                    }
+                    else
+                    {
+                        $response = 1;
+                    }
+                }else{
+                    $response = 0;
+                }
+            }else{
                 $response = 0;
-            }
-            else
-            {
-                $response = 1;
             }
         }
 
@@ -159,32 +172,20 @@ class Member_model extends CI_Model{
     }
 
     public function get_member_not_assigned($id){
-          $query = $this->db->query(
-                                    "SELECT 
-                                    u.user_id as u_user_id,
-                                    u.first_name as u_first_name,
-                                    u.last_name as u_last_name,
-                                    u.contact as u_contact,
-                                    u.address as u_address,
-                                    u.email as u_email,
-                                    u.gender as u_gender,
-                                    u.sponsor_by as u_sponsor,
-                                 
-                                    p.position_id as p_position_id,
-                                    P.user_id as p_user_id,
-                                    p.sponsor_by as p_sponsor_by,
-                                    p.position_left as p_left,
-                                    p.position_right as p_right
+        $result = $this->db->query("CALL get_userMembers('$id')");
+        mysqli_next_result($this->db->conn_id);
+        if ($result->num_rows() > 0){
+            $cdata = $result->result_array();
 
-                                    FROM users as u 
-                                    JOIN position  as p ON u.user_id = p.user_id 
-                                    WHERE  p.sponsor_by = ". $id ." 
-                                    AND p.position_left = ''
-                                    AND p.position_right = ''
-                                    AND p.user_id != '".$id."' ");
-     
-        return $query->result();
-
+            if($cdata[0]['countMembers'] != 2){
+                $query = $this->db->query("CALL get_unAssignedUsers($id)");
+                mysqli_next_result($this->db->conn_id);
+                return $query->result();
+            }else{
+                $data = array();
+                return $data;
+            }
+        }
     }
 
     public function get_last_available_downline($id,$position){
@@ -243,31 +244,8 @@ class Member_model extends CI_Model{
     }
 
     public function get_all_right($id){
-        $query = $this->db->query(
-                                    "SELECT 
-                                    u.user_id as u_user_id,
-                                    u.first_name as u_first_name,
-                                    u.last_name as u_last_name,
-                                    u.contact as u_contact,
-                                    u.address as u_address,
-                                    u.email as u_email,
-                                    u.gender as u_gender,
-                                    u.sponsor_by as u_sponsor,
-                                    u.entered_on as u_entered_on,
-                                 
-                                    p.position_id as p_position_id,
-                                    P.user_id as p_user_id,
-                                    p.sponsor_by as p_sponsor_by,
-                                    p.position_left as p_left,
-                                    p.position_right as p_right
-
-                                    FROM users as u 
-                                    JOIN position as p ON u.user_id = p.user_id 
-                                    WHERE p.upline = '".$id."' 
-                                    AND p.position_left = '0' 
-                                    AND p.position_right = '1'");
+        $query = $this->db->query("SELECT COALESCE((CASE WHEN position_right = '' THEN 0 ELSE COUNT(position_right) END), 0) AS countRight FROM position WHERE upline = '$id'");
         return $query->result();
-
     }
 
     public function getAllRightMembers($id){
@@ -350,32 +328,8 @@ class Member_model extends CI_Model{
     }
 
     public function get_all_left($id){
-         $query = $this->db->query(
-                                    "SELECT 
-                                    u.user_id as u_user_id,
-                                    u.first_name as u_first_name,
-                                    u.last_name as u_last_name,
-                                    u.contact as u_contact,
-                                    u.address as u_address,
-                                    u.email as u_email,
-                                    u.gender as u_gender,
-                                    u.sponsor_by as u_sponsor,
-                                    u.entered_on as u_entered_on,
-                                 
-                                    p.position_id as p_position_id,
-                                    P.user_id as p_user_id,
-                                    p.sponsor_by as p_sponsor_by,
-                                    p.position_left as p_left,
-                                    p.position_right as p_right
-
-                                    FROM users as u 
-                                    JOIN position as p ON u.user_id = p.user_id 
-                                    WHERE p.upline = '".$id."' 
-                                    AND p.position_left = '1' 
-                                    AND p.position_right = '0'");
+         $query = $this->db->query("SELECT COALESCE((CASE WHEN position_left = '' THEN 0 ELSE COUNT(position_left) END), 0) AS countLeft FROM position WHERE upline = '$id'");
         return $query->result();
-
-
     }
 
     public function check_code($code){

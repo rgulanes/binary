@@ -92,7 +92,7 @@ angular.module('binaryApp')
 		        .then(function(response) 
 		        {
 		        	//$scope.list_left_member = response.data.left_member;
-		        	$scope.left_member_count = response.data.left_member.length;
+		        	$scope.left_member_count = response.data.left_member[0].countLeft;
 		        	// angular.forEach($scope.list_left_member,function(file){
 		        	// 	file.entered_on = new Date(file.entered_on);
 		        	// })
@@ -115,7 +115,7 @@ angular.module('binaryApp')
 		        .then(function(response) 
 		        {	
 		        	//$scope.list_right_member = response.data.right_member;
-		        	$scope.right_member_count = response.data.right_member.length;
+		        	$scope.right_member_count = response.data.right_member[0].countRight;
 		      	});
 		}
 
@@ -251,8 +251,9 @@ angular.module('binaryApp')
 							      	$scope.position_save = false;
 								}, 1500);
 								$scope.memberNotAssigned($scope.current_user);
+								$('#rightDataTable').DataTable().ajax.reload();
+					   			$('#leftDataTable').DataTable().ajax.reload();
 					   		}else{
-
 				   			}
 				   			
 				      	});
