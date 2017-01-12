@@ -12,7 +12,7 @@ BEGIN
 		u.contact as u_contact, u.address as u_address, u.email as u_email, u.gender as u_gender,
 		u.sponsor_by as u_sponsor,
 		p.position_id as p_position_id,
-		P.user_id as p_user_id, p.sponsor_by as p_sponsor_by, p.position_left as p_left, p.position_right as p_right
+		p.user_id as p_user_id, p.sponsor_by as p_sponsor_by, p.position_left as p_left, p.position_right as p_right
 		FROM users u 
 		JOIN position p ON p.user_id = u.user_id
 		WHERE
