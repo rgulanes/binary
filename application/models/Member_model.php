@@ -227,7 +227,7 @@ class Member_model extends CI_Model{
                                     u.sponsor_by as u_sponsor,
                                  
                                     p.position_id as p_position_id,
-                                    P.user_id as p_user_id,
+                                    p.user_id as p_user_id,
                                     p.sponsor_by as p_sponsor_by,
                                     p.position_left as p_left,
                                     p.position_right as p_right
