@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS get_AvailableDownline;
 DELIMITER $$
 
 # CALL get_AvailableDownline(15, 'R');
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_AvailableDownline`(IN userId INT, IN isPosition VARCHAR(2))
+CREATE DEFINER=`admindev_db`@`localhost` PROCEDURE `get_AvailableDownline`(IN userId INT, IN isPosition VARCHAR(2))
 BEGIN
       
       DROP TABLE IF EXISTS availableDownline;
@@ -44,6 +44,8 @@ BEGIN
 									 ));
       END IF;
 
-      SELECT * FROM availableDownline;
+      SELECT * FROM availableDownline 
+		WHERE 
+		(p_user_id != userId OR p_sponsor_by = userId OR u_sponsor = userId) AND p_user_id != userId;
 END$$
 DELIMITER ;
