@@ -206,7 +206,7 @@
           <label>Name : </label>
           <label>{{unposition_user}}</label>
           <form>
-            <label>Position : </label><br>
+            <label>Position : </label>
             <label class="radio-inline">
               <input type="radio" name="optradio" ng-click="onChangePosition('left')">Left
             </label>

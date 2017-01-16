@@ -154,6 +154,11 @@ angular.module('binaryApp',['ui.select'])
 				}
 			});
 		}
+
+		//Modal Events
+	    $('#add-modal').on('hidden.bs.modal', function () {
+			location.reload();
+	    });
 		
 	}); 
 

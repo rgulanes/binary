@@ -191,52 +191,11 @@ class Member_model extends CI_Model{
     public function get_last_available_downline($id,$position){
     
         if($position == 'left'){
-
-             $query = $this->db->query(
-                                    "SELECT 
-                                    u.user_id as u_user_id,
-                                    u.first_name as u_first_name,
-                                    u.last_name as u_last_name,
-                                    u.contact as u_contact,
-                                    u.address as u_address,
-                                    u.email as u_email,
-                                    u.gender as u_gender,
-                                    u.sponsor_by as u_sponsor,
-                                 
-                                    p.position_id as p_position_id,
-                                    P.user_id as p_user_id,
-                                    p.sponsor_by as p_sponsor_by,
-                                    p.position_left as p_left,
-                                    p.position_right as p_right
-
-                                    FROM users as u 
-                                    JOIN position as p ON u.user_id = p.user_id 
-                                    WHERE p.sponsor_by = '".$id."' 
-                                    AND p.position_left > '0'");
+            $query = $this->db->query("CALL get_AvailableDownline('$id', 'L')");
+            mysqli_next_result($this->db->conn_id);
         }else{
-
-             $query = $this->db->query(
-                                    "SELECT 
-                                    u.user_id as u_user_id,
-                                    u.first_name as u_first_name,
-                                    u.last_name as u_last_name,
-                                    u.contact as u_contact,
-                                    u.address as u_address,
-                                    u.email as u_email,
-                                    u.gender as u_gender,
-                                    u.sponsor_by as u_sponsor,
-                                 
-                                    p.position_id as p_position_id,
-                                    p.user_id as p_user_id,
-                                    p.sponsor_by as p_sponsor_by,
-                                    p.position_left as p_left,
-                                    p.position_right as p_right
-
-                                    FROM users as u 
-                                    JOIN position as p ON u.user_id = p.user_id 
-                                    WHERE p.sponsor_by = '".$id."' 
-                                    AND p.position_right > '0'");
-
+            $query = $this->db->query("CALL get_AvailableDownline('$id', 'R')");
+            mysqli_next_result($this->db->conn_id);
         }
 
        
@@ -336,6 +295,7 @@ class Member_model extends CI_Model{
 
         $this->db->select('*');
         $this->db->where('description', $code);
+        $this->db->where('status', 0);
       
         return $this->db->get('codes')->row_object();
 

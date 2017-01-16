@@ -182,6 +182,13 @@ angular.module('binaryApp')
 
 		}
 
+		//Modal Events
+	    $('#position-modal').on('hidden.bs.modal', function () {
+			$scope.available_downline = false;
+		   	$scope.available_position = false;
+		   	$(this).find('form input[name="optradio"]').prop('checked', false);
+	    });
+
 		$scope.onCheckAvailablePosition = function(selected_upline){
 			console.log(selected_upline);
 			var data = angular.toJson({
@@ -200,16 +207,16 @@ angular.module('binaryApp')
 		   			if(response.data.positions.length > 0 ){
 		   				$scope.available_position = true;
 
-		   				if(response.data.positions[0].position_right == '0' && response.data.positions[0].position_left == '0'){
+		   				if(response.data.positions[0].position_right == '' && response.data.positions[0].position_left == ''){
 		   					$scope.available_list_position = [
 		   						{ position_name : 'Left' },
 		   						{ position_name : 'Right' }
 		   					]
-		   				}else if(response.data.positions[0].position_right == '0' && response.data.positions[0].position_left > '0'){
+		   				}else if(response.data.positions[0].position_right == '' && response.data.positions[0].position_left > ''){
 		   					$scope.available_list_position = [
 		   						{ position_name : 'Right' }
 		   					]
-		   				}else if(response.data.positions[0].position_right >'1' && response.data.positions[0].position_left == '0'){
+		   				}else if(response.data.positions[0].position_right > '1' && response.data.positions[0].position_left == ''){
 		   					$scope.available_list_position = [
 		   						{ position_name : 'Left' }
 		   					]

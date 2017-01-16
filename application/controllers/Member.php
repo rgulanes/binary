@@ -132,7 +132,19 @@ class Member extends CI_Controller{
 			$result = $this->Member_model->update_donwline_position($updated_data,$user_id);			
 
 		}else{
+			if($position == 'left'){
+				$updated_data = array(
+		            'position_left' => $position == 'left' ? $downline : 0 ,
+		            'upline' => $upline,
+		        );
+			}else{
+				$updated_data = array(
+		            'position_right' => $position == 'right' ? $downline : 0,
+		            'upline' => $upline,
+		        );
+			}	
 
+			$result = $this->Member_model->update_donwline_position($updated_data,$upline);	
 		}
 
 		// if($upline  == ''){
