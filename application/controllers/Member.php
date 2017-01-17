@@ -129,8 +129,8 @@ class Member extends CI_Controller{
 		        );
 			}	
 
-			$result = $this->Member_model->update_donwline_position($updated_data,$user_id);			
-
+			$result = $this->Member_model->update_donwline_position($updated_data,$user_id);
+			$addCommission = $this->Member_model->check_membersCommission($user_id);
 		}else{
 			if(strtolower($available_position) == 'left'){
 				$updated_data = array(
@@ -144,7 +144,8 @@ class Member extends CI_Controller{
 		        );
 			}	
 
-			$result = $this->Member_model->update_donwline_position($updated_data,$upline);	
+			$result = $this->Member_model->update_donwline_position($updated_data,$upline);
+			$addCommission = $this->Member_model->check_membersCommission($upline);
 		}
 
 		// if($upline  == ''){
@@ -188,7 +189,6 @@ class Member extends CI_Controller{
 
 			// 	$this->Member_model->update_donwline_position($updated_data,$upline);
 			// }
-    
         }
         else
         {
@@ -203,6 +203,29 @@ class Member extends CI_Controller{
             
         ));
 
+
+	}
+
+	function get_total_coh(){
+		$data['cash_on_hand'] = $this->Member_model->get_totalCashOnHand($this->session->userdata('user_id'));
+		return print json_encode($data);
+	}
+
+	function getUserCommissions(){
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = $this->Member_model->getUserCommissions($this->session->userdata('user_id'));
+
+		return print json_encode($data);
+
+	}
+
+	function getUserWithdrawals(){
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = $this->Member_model->getUserWithdrawals($this->session->userdata('user_id'));
+
+		return print json_encode($data);
 
 	}
 }

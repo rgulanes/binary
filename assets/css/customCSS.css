@@ -172,3 +172,9 @@ tr.shown td.details-control {
   color: #ebaa12;
   text-decoration: none;
 }
+
+/*Navigation Pill*/
+
+.nav-pills a{
+  cursor: pointer;
+}

@@ -31,6 +31,7 @@ angular.module('binaryApp')
 			$scope.memberNotAssigned($userInfo);
 			$scope.get_left_member();
 			$scope.get_right_member();
+			$scope.get_coh();
 		}
 
 		$scope.onShowModal = function($id,$firstname,$lastname){
@@ -99,6 +100,19 @@ angular.module('binaryApp')
 
 		      	});
 		}
+
+		$scope.get_coh = function(){
+			$scope.file =  $http({
+		        url     : 'get_total_coh',
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		        	$.each(response.data.cash_on_hand, function(k,v){
+		        		$scope.user_coh = v.totalCashOnHand;
+		        	});
+		      	});
+		};
 
 		$scope.get_right_member = function(){
 			
@@ -374,4 +388,24 @@ $(document).ready(function(){
             tr.addClass('shown');
         }
     } );
+
+
+    $('#userWithdrawalsDataTable').DataTable( {
+		"ajax": "getUserWithdrawals",
+		"columns": [
+		    { "data": "w_amount" },
+		    { "data": "date_create" }
+		],
+		"order": [[1, 'asc']]
+	} );
+
+    $('#userCohDataTable').DataTable( {
+		"ajax": "getUserCommissions",
+		"columns": [
+		    { "data": "c_amount" },
+		    { "data": "date_create" },
+		    { "data": "remarks" }
+		],
+		"order": [[1, 'asc']]
+	} );
 });

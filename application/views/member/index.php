@@ -83,38 +83,48 @@
 
                   </div>
                   <div class="col-lg-6 col-md-6">
-                    <h2 class="text-danger"> Php 10000.00</h2>
+                    <h2 class="text-danger" ng-cloak>{{user_coh}}</h2>
 
                   </div>
                   </div>
                 </div>
                 <div class="container-fluid">
-                  <table class="table" style="margin-top:13px;">
-                    <thead>
-                      <tr>
-                        <th>Amount Widthraw</th>
-                        <th>Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>400.00</td>
-                        <td>March 18,2016</td>
-                      
-                      </tr>
-                      <tr>
-                        <td>200.00</td>
-                        <td>Feb 29, 2016</td>
-                        
-                      </tr>
-                      <tr>
-                        <td>500.00</td>
-                        <td>April 4, 2016</td>
-                        
-                      </tr>
-
-                    </tbody>
-                  </table>
+                  <ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="pill" data-target="#userWithdrawals"><i class="fa fa-bank fa-fw"></i> Withdrawals</a></li>
+                    <li><a data-toggle="pill" data-target="#userCoh"><i class="fa fa-cc fa-fw"></i> Cash On Hand</a></li>
+                  </ul>
+                  
+                  <div class="tab-content ">
+                    <div id="userWithdrawals" class="tab-pane fade in active">
+                      <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12 col-xs-12">
+                          <table id="userWithdrawalsDataTable" class="table table-condensed" width="100%">
+                            <thead>
+                              <tr>
+                                <th>Amount</th>
+                                <th>Date Withdrawn</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="userCoh" class="tab-pane fade">
+                      <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12 col-xs-12">
+                          <table id="userCohDataTable" class="table table-condensed" width="100%">
+                            <thead>
+                              <tr>
+                                <th>Amount</th>
+                                <th>Date Commissioned</th>
+                                <th>Note</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

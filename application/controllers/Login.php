@@ -74,6 +74,7 @@ class Login extends CI_Controller {
             $this->response_code = 0;
             $this->response_message = "Save Successfully";
 
+            $this->Member_model->add_commission($sponsor, 50, 'referral');
         }
         else
         {

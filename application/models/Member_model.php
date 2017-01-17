@@ -53,7 +53,6 @@ class Member_model extends CI_Model{
         {
             $response = $this->db->insert('users', $data);
             $latest_id = $this->db->insert_id();
-
         }
         return $latest_id;
 
@@ -137,7 +136,6 @@ class Member_model extends CI_Model{
     }
 
     public function get_user_info($id){
-
         $this->db->select('*');
         $this->db->where('user_id', $id);
 
@@ -172,20 +170,9 @@ class Member_model extends CI_Model{
     }
 
     public function get_member_not_assigned($id){
-        //$result = $this->db->query("CALL get_userMembers('$id')");
-        //mysqli_next_result($this->db->conn_id);
-        //if ($result->num_rows() > 0){
-            //$cdata = $result->result_array();
-
-            //if($cdata[0]['countMembers'] != 2){
-                $query = $this->db->query("CALL get_unAssignedUsers($id)");
-                mysqli_next_result($this->db->conn_id);
-                return $query->result();
-            //}else{
-                //$data = array();
-                //return $data;
-            //}
-        //}
+        $query = $this->db->query("CALL get_unAssignedUsers($id)");
+        mysqli_next_result($this->db->conn_id);
+        return $query->result();
     }
 
     public function get_last_available_downline($id,$position){
@@ -299,6 +286,122 @@ class Member_model extends CI_Model{
       
         return $this->db->get('codes')->row_object();
 
+    }
+
+    public function add_commission($userId, $amount, $desc){
+            $response = 0;
+            $this->db->trans_start();
+            $this->db->query("CALL add_userCommission('$userId', '$amount', '$desc')");
+            mysqli_next_result($this->db->conn_id);
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE)
+            {
+                $response = 0;
+            }
+            else
+            {
+                $response = 1;
+            }
+    }
+
+    public function check_membersCommission($userId){
+        $response = 0;
+        $result = $this->db->query("CALL get_userMembers('$userId')");
+        mysqli_next_result($this->db->conn_id);
+        if ($result->num_rows() > 0){
+            $cdata = $result->result_array();
+
+            if($cdata[0]['countMembers'] == 2){
+                $this->db->trans_start();
+                $this->db->query("CALL add_userCommission('$userId', '60', 'upline')");
+                $this->db->trans_complete();
+                mysqli_next_result($this->db->conn_id);
+
+                if ($this->db->trans_status() === FALSE)
+                {
+                    $response = 0;
+                }
+                else
+                {
+                    $response = 1;
+                }
+            }else{
+                $response = 0;
+            }
+        }else{
+            $response = 0;
+        }
+    }
+
+
+    public function get_totalCashOnHand($userId){
+        $data = array();
+        $query = $this->db->query("CALL get_userCashOnHand('$userId')");
+        mysqli_next_result($this->db->conn_id);
+        if ($query->num_rows() > 0){
+            $data = $query->result();
+        }else{
+            $data = array();
+        }
+
+        return $data;
+    }
+
+    public function getUserWithdrawals($id){
+        $result = $this->db->query("CALL get_userWithdrawals('$id');");
+        mysqli_next_result($this->db->conn_id);
+        $data = array();
+        $counter = 0;
+
+        if ($result->num_rows() > 0){
+            $data = $result->result_array();
+            $counter = sizeof($data);
+        }else{
+            $data = array();
+            $counter = 0;
+        }
+
+        $output = array(
+            "iTotalRecords" => $counter,
+            "aaData" => array()
+        );
+
+        if($counter != 0){
+            $output['aaData'] = $data;
+        }else{
+            $output['aaData'] = [];
+        }
+
+        return $output;
+    }
+
+    public function getUserCommissions($id){
+        $result = $this->db->query("CALL get_userCommissions('$id');");
+        mysqli_next_result($this->db->conn_id);
+        $data = array();
+        $counter = 0;
+
+        if ($result->num_rows() > 0){
+            $data = $result->result_array();
+            $counter = sizeof($data);
+        }else{
+            $data = array();
+            $counter = 0;
+        }
+
+        $output = array(
+            "iTotalRecords" => $counter,
+            "aaData" => array()
+        );
+
+        if($counter != 0){
+            $output['aaData'] = $data;
+        }else{
+            $output['aaData'] = [];
+        }
+
+        return $output;
     }
 
 

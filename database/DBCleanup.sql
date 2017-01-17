@@ -1,6 +1,8 @@
 TRUNCATE TABLE users;
 TRUNCATE TABLE position;
 TRUNCATE TABLE codes;
+TRUNCATE TABLE commission;
+TRUNCATE TABLE withdrawal;
 
 INSERT INTO `users`
 (`user_id`, `user_name`, `password`, `first_name`, `last_name`, `gender`, `contact`, `address`, `entered_on`, `status`, `position`, `email`, `sponsor_by`)
