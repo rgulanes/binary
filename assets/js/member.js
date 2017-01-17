@@ -192,7 +192,7 @@ angular.module('binaryApp')
 		$scope.onCheckAvailablePosition = function(selected_upline){
 			console.log(selected_upline);
 			var data = angular.toJson({
-				id: selected_upline.p_user_id
+				id: selected_upline.u_user_id
 			});
 			console.log(data);
 			$scope.file =  $http({
@@ -207,16 +207,16 @@ angular.module('binaryApp')
 		   			if(response.data.positions.length > 0 ){
 		   				$scope.available_position = true;
 
-		   				if(response.data.positions[0].position_right == '' && response.data.positions[0].position_left == ''){
+		   				if((response.data.positions[0].position_right == '' && response.data.positions[0].position_left == '') || (response.data.positions[0].position_right == '0' && response.data.positions[0].position_left == '0')){
 		   					$scope.available_list_position = [
 		   						{ position_name : 'Left' },
 		   						{ position_name : 'Right' }
 		   					]
-		   				}else if(response.data.positions[0].position_right == '' && response.data.positions[0].position_left > ''){
+		   				}else if((response.data.positions[0].position_right == '' && response.data.positions[0].position_left > '1') || (response.data.positions[0].position_right == '0' && response.data.positions[0].position_left > '1')){
 		   					$scope.available_list_position = [
 		   						{ position_name : 'Right' }
 		   					]
-		   				}else if(response.data.positions[0].position_right > '1' && response.data.positions[0].position_left == ''){
+		   				}else if((response.data.positions[0].position_right > '1' && response.data.positions[0].position_left == '') || response.data.positions[0].position_right > '1' && response.data.positions[0].position_left == '0'){
 		   					$scope.available_list_position = [
 		   						{ position_name : 'Left' }
 		   					]

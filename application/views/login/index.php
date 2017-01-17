@@ -5,8 +5,12 @@
 <div class="login" ng-controller="loginCtrl" ng-init="onLoadUrl('<?php echo base_url();?>')" ng-cloak>
 	<br>
 	<div class="container-fluid pull-right">
-	  <a href="#" class="btn btn-default" data-toggle="modal" data-target="#login-modal"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
-	  <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add-modal"><i class="fa fa-user" aria-hidden="true"></i> New Member</a>
+	  	<a href="#" class="btn btn-default" data-toggle="modal" data-target="#login-modal"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
+	  	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add-modal"><i class="fa fa-user" aria-hidden="true"></i> New Member</a>
+	</div>
+
+	<div class="container-fluid pull-left branding">
+	  	<a href="http://www.luyabaya.com"><i class="fa fa-leaf fa-fw" aria-hidden="true"></i> LUYABAYA | Organic Liniment</a>
 	</div>
 
 	<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

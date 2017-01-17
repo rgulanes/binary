@@ -153,3 +153,22 @@ td.details-control {
 tr.shown td.details-control {
     cursor: pointer;
 }
+
+/* Login Branding */
+
+.branding{
+  font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #f0eb40;
+  font-size: 1.5em;
+}
+
+.branding a{
+  color: #f0eb40;
+}
+
+.branding a:hover, .branding a:focus{
+  color: #ebaa12;
+  text-decoration: none;
+}
