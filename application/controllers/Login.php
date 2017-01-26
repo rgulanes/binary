@@ -60,6 +60,7 @@ class Login extends CI_Controller {
             );
 
             $this->Member_model->save_position($insert_position);
+            $this->Member_model->add_userDownline($inserted, $inserted, 'parent', '');
         
         
         if($inserted > 0 )

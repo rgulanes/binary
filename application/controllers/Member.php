@@ -28,6 +28,14 @@ class Member extends CI_Controller{
 
 	}
 
+	function tree_view(){
+		if($this->session->userdata('user_id') != NULL){
+			$this->load->view('member/tree_layout');
+		}else{
+			redirect('login/index');
+		}
+	}
+
 	function get_all_left(){
 
 		$_POST = json_decode(file_get_contents('php://input'), true);
@@ -227,6 +235,32 @@ class Member extends CI_Controller{
 
 		return print json_encode($data);
 
+	}
+
+	function createTree(){
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = $this->Member_model->get_Hierarchy($this->session->userdata('user_id'));
+
+		return print json_encode($data);
+	}
+
+	function getHierarchy(){
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		
+		$size = $this->Member_model->get_TreeDepth();
+		$data = $this->Member_model->get_childHierarchy($this->session->userdata('user_id'), 'child');
+		
+		$rdata['tree'] = $data;
+		$rdata['size'] = $size[0]->tree_size;
+
+		return print json_encode($rdata);
+	}
+
+	function get_selectedHierarchy(){
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = $this->Member_model->get_childHierarchy($_REQUEST['id'], $_REQUEST['str']);
+
+		return print json_encode($data);
 	}
 }
 

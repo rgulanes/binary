@@ -17,6 +17,7 @@
                -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a style="cursor: pointer;" id="view-tree">View Tree</a></li>
               <li><a href="">Cash out</a></li>
               <li><a href="#" ng-click="onclickLogout()">Log Out</a></li>
             </ul>
@@ -238,6 +239,15 @@
 
           <input type="submit" name="login" class="login loginmodal-submit" ng-click="onclickSavePosition()" value="Save">
          
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="tree-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog" style="width: auto;">
+        <div class="loginmodal-container" style="width: 800px !important;max-width: 100%;">
+          <h4><i class="fa fa-list-ul fa-fw"></i> Tree Details</h4>
+          <div id="generate-tree"></div>
         </div>
       </div>
     </div>

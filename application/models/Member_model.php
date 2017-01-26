@@ -102,6 +102,19 @@ class Member_model extends CI_Model{
                     else
                     {
                         $response = 1;
+
+                        $child = 0;
+                        $position = '';
+                        if(array_key_exists('position_right', $data)){
+                            $child = $data['position_right'];
+                            $position = 'right';
+                        }else{
+                            $child = $data['position_left'];
+                            $position = 'left';
+                        }
+
+                        $this->add_userDownline($id, $child, $position, $this->session->userdata('user_id'));
+
                     }
                 }else{
                     $response = 0;
@@ -316,7 +329,7 @@ class Member_model extends CI_Model{
                 $this->db->trans_start();
                 $this->db->query("CALL add_userCommission('$userId', '60', 'upline')");
                 $this->db->trans_complete();
-                mysqli_next_result($this->db->conn_id);
+                //mysqli_next_result($this->db->conn_id);
 
                 if ($this->db->trans_status() === FALSE)
                 {
@@ -404,5 +417,64 @@ class Member_model extends CI_Model{
         return $output;
     }
 
+    public function add_userDownline($pId, $cId, $position, $createdBy){
+        $this->db->trans_start();
+        $this->db->query("CALL add_userDownlines('$pId', '$cId', '$position', '$createdBy')");
+        $this->db->trans_complete();
+
+        $response= 0;
+        if ($this->db->trans_status() === FALSE)
+        {
+            $response = 0;
+        }
+        else
+        {
+            $response = 1;
+        }
+
+        return $response;
+    }
+
+    public function get_Hierarchy($userId){
+        $this->db->trans_start();
+        $query = $this->db->query("CALL get_Hierarchy('$userId')");
+        $this->db->trans_complete();
+
+        $response = 0;
+        if ($this->db->trans_status() === FALSE)
+        {
+            $response = 0;
+        }
+        else
+        {
+            $response = 1;
+        }
+
+        return $response;
+    }
+
+    public function get_TreeDepth(){
+        $query = $this->db->query("SELECT MAX(depth) AS tree_size FROM _selectedHierarchy;");
+        if ($query->num_rows() > 0){
+            $data = $query->result();
+        }else{
+            $data = array();
+        }
+
+        return $data;
+    }
+
+    public function get_childHierarchy($val, $str){
+        $data = array();
+        $query = $this->db->query("CALL get_selectedHierarchy('$val', '$str')");
+        mysqli_next_result($this->db->conn_id);
+        if ($query->num_rows() > 0){
+            $data = $query->result();
+        }else{
+            $data = array();
+        }
+
+        return $data;
+    }
 
 }?>

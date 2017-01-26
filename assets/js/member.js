@@ -288,6 +288,15 @@ angular.module('binaryApp')
 
 
 $(document).ready(function(){
+	$.ajax({
+        url      : './createTree'
+    });
+
+    $('#view-tree').on('click', function(){
+    	$('#tree-modal').modal('show');
+    	$('#generate-tree').html('');
+    	$('#generate-tree').load('./tree_view');
+    });
 	/* Formatting function for row details - modify as you need */
 	function format ( d ) {
 	    // `d` is the original data object for the row
