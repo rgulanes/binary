@@ -147,12 +147,14 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		   			// console.log(response.data.not_assigned);
+		   			console.log(response.data.not_assigned);
 		      		
 		   			if(response.data.not_assigned.length > 0 ){
 		   				$scope.notAssigned = true;
 		   				$scope.not_assigned = response.data.not_assigned;
 		      
+		   			}else{
+		   				$scope.notAssigned = false;
 		   			}
 		      	});
 
@@ -176,7 +178,7 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	console.log(response.data.available_downline);
+		        	console.log(response.data);
 		   			if(response.data.available_downline.length > 0){
 		   				//check if the both position is not  full
 		   				$scope.available_downline = true;
@@ -272,6 +274,7 @@ angular.module('binaryApp')
 							      	$scope.position_save = false;
 								}, 1500);
 								$scope.memberNotAssigned($scope.current_user);
+								$scope.get_coh();
 								$('#rightDataTable').DataTable().ajax.reload();
 					   			$('#leftDataTable').DataTable().ajax.reload();
 					   		}else{

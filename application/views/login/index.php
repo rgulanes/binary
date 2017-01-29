@@ -33,29 +33,40 @@
 				<div ng-hide="enterCode">
 					<h1>New Member</h1><br>
 					<div class="alert alert-success" role="alert" ng-show="saveMessage">Save successfully</div>
+					<div class="alert alert-danger" role="alert" ng-show="newMemberError">Fill Required Fields</div>
 					
 					
 					<div class="row">
 						<div class="col-md-6 col-lg-6">
 							<form>
-								<input type="text" style="text-transform: capitalize;" name="user" ng-model="firstname" placeholder="First Name" autofocus>
-								<input type="text" style="text-transform: capitalize;" name="pass" ng-model="lastname" placeholder="Last Name">
-								<input type="text" style="text-transform: capitalize;" name="pass" ng-model="gender" placeholder="Gender">
-								<input type="text" name="pass" maxlength="11" ng-model="contact" placeholder="Contact">
+								<span class="danger">(Required)</span>
+								<input type="text" style="text-transform: capitalize;" name="user" ng-model="firstname" placeholder="First Name" autofocus >
+								<span class="danger">(Required)</span>
+								<input type="text" style="text-transform: capitalize;" name="pass" ng-model="lastname" placeholder="Last Name" >
+								<span class="danger">(Required)</span>
+								<input type="text" style="text-transform: capitalize;" name="pass" ng-model="gender" placeholder="Gender" >
+								<span class="danger">(Required)</span>
+								<input type="text" name="pass" maxlength="11" ng-model="contact" placeholder="Contact" >
+								
 								<input type="text" name="pass" ng-model="email" placeholder="Email">
-								<input type="text"  style="text-transform: capitalize;" name="pass" ng-model="address" placeholder="Address">
+								
+								
 								
 							</form>
 						</div>
 						<div class="col-md-6 col-lg-6">
 							<form>
+								<span class="danger">(Required)</span>
+								<input type="text"  style="text-transform: capitalize;" name="pass" ng-model="address" placeholder="Address" >
+								<span class="danger">(Required)</span>
 								<select  class="sponsor" name="repeatSelect" id="repeatSelect" ng-model="sponsor">
 							   		<option value="" disabled selected>Select Sponsor</option>
 							      <option ng-repeat="list in member_list" value="{{list.user_id}}">{{list.first_name}} {{list.last_name}}</option>
 							    </select>
-								  
-								<input type="text" name="user" ng-model="username" placeholder="Username">
-								<input type="password" name="pass" ng-model="password" placeholder="Password">
+								 <span class="danger">(Required)</span> 
+								<input type="text" name="user" ng-model="username" placeholder="Username" >
+								<span class="danger">(Required)</span>
+								<input type="password" name="pass" ng-model="password" placeholder="Password" >
 								<input type="submit" name="login" class="login loginmodal-submit" value="Save" ng-click="onSaveMember('<?php echo base_url();?>')">
 
 						  	</form>

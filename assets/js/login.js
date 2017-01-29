@@ -14,6 +14,7 @@ angular.module('binaryApp',['ui.select'])
 
 		$scope.saveMessage = false;
 		$scope.errorMessage = false;
+		$scope.newMemberError = false;
 
 		$scope._username = '';
 		$scope._password = '';
@@ -68,8 +69,36 @@ angular.module('binaryApp',['ui.select'])
 		}
 
 		$scope.onSaveMember = function($base_url){
-			
-			var data = angular.toJson({
+			var error = 0;
+			if($scope.firstname == '' ){
+				error+=1;
+			}else if($scope.lastname == ''){
+				error+=1;
+				
+			}else if($scope.gender == ''){
+				error+=1;
+		
+			}else if($scope.contact == ''){
+				error+=1;
+		 
+			}else if($scope.address == ''){
+				error+=1;
+		
+			}else if($scope.sponsor == null){
+				error+=1;
+		
+			}else if($scope.username == ''){
+				error+=1;
+		
+			}else if($scope.password == ''){
+				error+=1;
+		
+			}
+			if(error > 0){
+				$scope.newMemberError = true;
+			}else{
+
+				var data = angular.toJson({
 					firstname 	: $scope.firstname ,
 		 			lastname 	: $scope.lastname ,
 		 			gender 		: $scope.gender ,
@@ -81,34 +110,34 @@ angular.module('binaryApp',['ui.select'])
 					password 	: $scope.password,
 					generated_code 		: $scope.code,
 				});	
-			console.log(data);
-			
-			$scope.file =  $http({
-	          method  : 'POST',
-	          url     : $base_url+'login/save_member',
-	          data    :  data, //forms user object
-	          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
-	         }).then(function(response){
-	         	console.log(response.data);
+				console.log(data);
+				
+				$scope.file =  $http({
+		          method  : 'POST',
+		          url     : $base_url+'login/save_member',
+		          data    :  data, //forms user object
+		          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		         }).then(function(response){
+		         	console.log(response.data);
 
-	         	if(response.status == 200){
-	         	 	$scope.saveMessage = true;
-	         		$scope.firstname = '';
-					$scope.lastname = '';
-					$scope.gender = '';
-					$scope.contact = '';
-					$scope.address = '';
-					$scope.username = '';
-					$scope.password = '';
-					$scope.email = '';
-					$scope.sponsor = '';
-	         	}
-	         	setTimeout(function(){ 	
-			      	$('#add-modal').modal('hide'); 
-			      	$scope.saveMessage = true;
-			   	}, 1500);
-	        });
-
+		         	if(response.status == 200){
+		         	 	$scope.saveMessage = true;
+		         		$scope.firstname = '';
+						$scope.lastname = '';
+						$scope.gender = '';
+						$scope.contact = '';
+						$scope.address = '';
+						$scope.username = '';
+						$scope.password = '';
+						$scope.email = '';
+						$scope.sponsor = '';
+		         	}
+		         	setTimeout(function(){ 	
+				      	$('#add-modal').modal('hide'); 
+				      	$scope.saveMessage = true;
+				   	}, 1500);
+		        });
+		    }     
 		}
 
 
