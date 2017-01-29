@@ -1,8 +1,8 @@
-DROP PROCEDURE IF EXISTS get_Hierarchy;
+DROP PROCEDURE IF EXISTS check_Downlines;
 DELIMITER $$
 
-# CALL get_Hierarchy(2);
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_Hierarchy`(IN userId INT)
+# CALL get_userMembers(15);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `check_Downlines`(IN userId INT, IN _depth INT)
 BEGIN
 	DECLARE str_list VARCHAR(100);
     
@@ -32,15 +32,14 @@ BEGIN
 					WHEN (SELECT GROUP_CONCAT(DISTINCT(depth) SEPARATOR ',') FROM _temp) =  '0,1,2,3' THEN d.depth 
 					ELSE 2 END 
 		ELSE d.depth END AS depth, 
-        get_FullName(d.child) AS full_name, COALESCE(get_Parent(d.child), d.parent) AS parent, d.position
+        get_FullName(d.child) AS full_name, COALESCE(get_Parent(d.child), d.parent) AS parent, d.position,
+        get_DescendantCount(d.child) AS child_count
 	from hierarchy d
 	join hierarchy a on (a.child = d.child)
 	join users n on (n.user_id = a.parent)
 	where d.parent = userId
 	group by d.child);
     
-    TRUNCATE TABLE _selectedhierarchy;
-    INSERT INTO _selectedhierarchy (child, depth, full_name, parent, position) 
-		SELECT child, depth, full_name, parent, position FROM _hierarchy;
+    SELECT * FROM _hierarchy WHERE depth = _depth;
 END$$
 DELIMITER ;
