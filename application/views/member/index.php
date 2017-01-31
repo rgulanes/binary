@@ -196,8 +196,7 @@
                         <td>{{list.email}}</td>
                         <td>{{list.address}}</td>
                         <td>{{list.entered_on | date:'medium'}}</td>
-                        <td><button type="button" class="btn btn-primary"><i class="fa fa-pencil"></i></button></td>
-                       
+                        
                       </tr>
                      
 
