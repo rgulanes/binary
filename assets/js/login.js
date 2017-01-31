@@ -99,6 +99,7 @@ angular.module('binaryApp',['ui.select'])
 			}else{
 
 				var data = angular.toJson({
+					user_id 	: '',
 					firstname 	: $scope.firstname ,
 		 			lastname 	: $scope.lastname ,
 		 			gender 		: $scope.gender ,

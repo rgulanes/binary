@@ -47,6 +47,29 @@ class Member_model extends CI_Model{
 
     }    
 
+      public function update_member($id,$data){
+
+        if(!empty($data))
+        {
+            $this->db->trans_start();
+            $this->db->where('user_id', $id);
+            $this->db->update('users', $data);
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE)
+            {
+                $response = 0;
+            }
+            else
+            {
+                $response = 1;
+            }
+        }
+
+        return $response;
+
+    }    
+
     public function save_member($data){
 
         if(!empty($data))
@@ -290,6 +313,13 @@ class Member_model extends CI_Model{
          $query = $this->db->query("SELECT COALESCE((CASE WHEN position_left = '' THEN 0 ELSE COUNT(position_left) END), 0) AS countLeft FROM position WHERE upline = '$id'");
         return $query->result();
     }
+
+    public function get_members_data($id){
+        $query = $this->db->query("SELECT * FROM users WHERE user_id = ".$id);
+        return $query->result();
+    }
+
+
 
     public function check_code($code){
 

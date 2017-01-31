@@ -20,7 +20,7 @@ class Login extends CI_Controller {
 	function save_member(){
     
         $_POST = json_decode(file_get_contents('php://input'), true);
-
+        $user_id  = $_POST['user_id'];
         $first_name =  $_POST['firstname'];
         $last_name = $_POST['lastname'];
         $gender = $_POST['gender'];
@@ -30,9 +30,10 @@ class Login extends CI_Controller {
         $sponsor = $_POST['sponsor'];
         $username = $_POST['username'];
         $password = $_POST['password'];
-        $generated_code = $_POST['generated_code'];
-
       
+        if($user_id == ''){
+            $generated_code = $_POST['generated_code'];
+
             $insert_data = array(
                 'first_name' => ucwords($first_name),
                 'last_name' => ucwords($last_name),
@@ -63,6 +64,35 @@ class Login extends CI_Controller {
             $this->Member_model->add_userDownline($inserted, $inserted, 'parent', '');
         
         
+        }else{
+
+            $update_data = array(
+                'first_name' => ucwords($first_name),
+                'last_name' => ucwords($last_name),
+                'gender' => ucwords($gender),
+                'contact' => $contact,
+                'email' => $email,
+                'address' => ucwords($address),
+                'sponsor_by' => $sponsor,
+                'user_name' => $username,
+                'password' => $password,
+                'position' => 0,
+                'entered_on' => date("Y-m-d H:i:s"),
+            );
+
+            $inserted = $this->Member_model->update_member($user_id,$update_data);
+
+
+            $insert_position = array(
+
+                'user_id' => $inserted,
+                'position_left' => '',
+                'position_right' => '',
+                'sponsor_by' => $sponsor,
+                'upline' => ''
+            );
+        }
+
         if($inserted > 0 )
         {
             $update_codes = array(
@@ -70,12 +100,15 @@ class Login extends CI_Controller {
                 'used_by' => $inserted
             );
 
-            $this->Member_model->update_code($update_codes,$generated_code);
+          
 
             $this->response_code = 0;
             $this->response_message = "Save Successfully";
 
-            $this->Member_model->add_commission($sponsor, 50, 'referral');
+            if($user_id == ' '){
+                $this->Member_model->update_code($update_codes,$generated_code);
+                $this->Member_model->add_commission($sponsor, 50, 'referral');
+            }
         }
         else
         {
@@ -90,6 +123,8 @@ class Login extends CI_Controller {
         ));
     
     }
+
+
 
 
 	function user_authentication(){

@@ -73,6 +73,13 @@ class Admin extends CI_Controller{
 
 	}
 
+	function get_members_data(){
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$id = $_POST['id'];
+		$data['member_details'] = $this->Member_model->get_members_data($id);
+		return print json_encode($data);
+	}
+
 
 }
 
