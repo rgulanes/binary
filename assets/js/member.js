@@ -9,6 +9,8 @@ angular.module('binaryApp')
 		$scope.username = '';
 		$scope.password = '';
 
+		$scope.select_donwline_position = false;
+		$scope.select_donwline = false;
 		$scope.saveMessage = false;
 		$scope.position_error = false;
 		$scope.position_save = false;
@@ -17,8 +19,6 @@ angular.module('binaryApp')
 
 		$scope._username = '';
 		$scope._password = '';
-
-		
 
 		$scope.notAssigned = false;
 
@@ -188,6 +188,9 @@ angular.module('binaryApp')
 		   			  			$scope.list_available_downline.push(file); 
 		   					}
 		   				});
+		   				//required the selected downline 
+
+
 		   			}else{
 		   				//doesnt yet donwlines.
 		   				$scope.list_available_downline = [];
@@ -246,48 +249,60 @@ angular.module('binaryApp')
 
 		}
 		$scope.onclickSavePosition = function(){
-
+			$scope.position_error = false;
+			$scope.select_donwline = false;
+			$scope.select_donwline_position = false;
 			if($scope.selected_position == undefined){
 				$scope.position_error = true;
 			}else{
-					var data = angular.toJson({
-						id : $scope.current_user,
-						downline : $scope.select_id,
-						position : $scope.selected_position,
-						upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id,
-						available_position : $scope.selected_available_position == null ? '' : $scope.selected_available_position.position_name
-					});
-					console.log(data);
-					$scope.file =  $http({
-				        method  : 'POST',
-				        url     : 'update_donwline_position',
-				        data    :  data, //forms user object
-				        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
-				        })
-				        .then(function(response) 
-				        {
-				   		
-				   			if(response.data.error == 0 ){
-				   				$scope.position_save = true;
-				   				setTimeout(function(){ 	
-							      	$('#position-modal').modal('hide'); 
-							      	$scope.position_save = false;
-								}, 1500);
-								$scope.memberNotAssigned($scope.current_user);
-								$scope.get_coh();
-								$('#rightDataTable').DataTable().ajax.reload();
-					   			$('#leftDataTable').DataTable().ajax.reload();
-					   			
-					   			$http({
-							        method  : 'POST',
-							        url     : 'generate_Commission',
-							        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
-						        });
-					   		}else{
-				   			}
-				   			
-				      	});
 
+				if ($scope.list_available_downline.length >  0 ){
+					console.log('---->',$scope.selected_upline);
+					console.log('---->',$scope.selected_available_position);
+					if($scope.selected_upline  ==  undefined){
+						$scope.select_donwline = true;
+					}else if($scope.selected_available_position == undefined){
+						$scope.select_donwline_position = true;
+					}else if ($scope.selected_upline != undefined && $scope.selected_available_position != undefined){
+						var data = angular.toJson({
+							id : $scope.current_user,
+							downline : $scope.select_id,
+							position : $scope.selected_position,
+							upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id,
+							available_position : $scope.selected_available_position == null ? '' : $scope.selected_available_position.position_name
+						});
+						console.log(data);
+						$scope.file =  $http({
+					        method  : 'POST',
+					        url     : 'update_donwline_position',
+					        data    :  data, //forms user object
+					        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+					        })
+					        .then(function(response) 
+					        {
+					   		
+					   			if(response.data.error == 0 ){
+					   				$scope.position_save = true;
+					   				setTimeout(function(){ 	
+								      	$('#position-modal').modal('hide'); 
+								      	$scope.position_save = false;
+									}, 1500);
+									$scope.memberNotAssigned($scope.current_user);
+									$scope.get_coh();
+									$('#rightDataTable').DataTable().ajax.reload();
+						   			$('#leftDataTable').DataTable().ajax.reload();
+						   			
+						   			$http({
+								        method  : 'POST',
+								        url     : 'generate_Commission',
+								        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+							        });
+						   		}else{
+					   			}
+					   			
+					      	});
+				    }
+				}
 			}
 		}
 

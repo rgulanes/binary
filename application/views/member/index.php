@@ -211,6 +211,9 @@
     <div class="modal fade" id="position-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
         <div class="loginmodal-container">
+         <div class="alert alert-danger" role="alert" ng-show="select_donwline">Please Select Available Downline</div>
+         <div class="alert alert-danger" role="alert" ng-show="select_donwline_position">Please Select Available Position</div>
+         
          <div class="alert alert-danger" role="alert" ng-show="position_error">Please Select Position!</div>
          <div class="alert alert-success" role="alert" ng-show="position_save">Save successfully</div>
           <label>Name : </label>
