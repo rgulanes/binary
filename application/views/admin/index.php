@@ -89,7 +89,7 @@
                         <th>Contact</th>
                         <th>Email</th>
                         <th>Address</th>
-                        <th>Sponsored By</th>
+                   
                         <th>Date Joined</th>
                         <th>Username</th>
                         <th>Password</th>
@@ -103,7 +103,6 @@
                         <td>{{list.contact}}</td>
                         <td>{{list.email}}</td>
                         <td>{{list.address}}</td>
-                        <td>{{list.sponsor_by}}</td>
                         <td>{{list.entered_on | date:'medium'}}</td>
                         <td>{{list.user_name}}</td>
                         <td>{{list.password}}</td>
