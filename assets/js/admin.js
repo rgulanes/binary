@@ -207,5 +207,5 @@ angular.module('binaryApp')
 		    }     
 		}
 		
-	}); 
+}); 
 

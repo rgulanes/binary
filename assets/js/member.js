@@ -245,8 +245,6 @@ angular.module('binaryApp')
 		   			}
 		      	
 		      	});
-
-
 		}
 		$scope.onclickSavePosition = function(){
 			$scope.position_error = false;
@@ -302,7 +300,47 @@ angular.module('binaryApp')
 					   			
 					      	});
 				    }
+				}else{
+					var data = angular.toJson({
+							id : $scope.current_user,
+							downline : $scope.select_id,
+							position : $scope.selected_position,
+							upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id,
+							available_position : $scope.selected_available_position == null ? '' : $scope.selected_available_position.position_name
+						});
+						console.log(data);
+						$scope.file =  $http({
+					        method  : 'POST',
+					        url     : 'update_donwline_position',
+					        data    :  data, //forms user object
+					        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+					        })
+					        .then(function(response) 
+					        {
+					   		
+					   			if(response.data.error == 0 ){
+					   				$scope.position_save = true;
+					   				setTimeout(function(){ 	
+								      	$('#position-modal').modal('hide'); 
+								      	$scope.position_save = false;
+									}, 1500);
+									$scope.memberNotAssigned($scope.current_user);
+									$scope.get_coh();
+									$('#rightDataTable').DataTable().ajax.reload();
+						   			$('#leftDataTable').DataTable().ajax.reload();
+						   			
+						   			$http({
+								        method  : 'POST',
+								        url     : 'generate_Commission',
+								        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+							        });
+						   		}else{
+					   			}
+					   			
+					      	});
+
 				}
+
 			}
 		}
 
