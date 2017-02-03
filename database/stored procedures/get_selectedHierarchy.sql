@@ -6,9 +6,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_selectedHierarchy`(IN _val INT,
 BEGIN
 	IF _get = 'depth'
 		THEN
-			SELECT * FROM _selectedhierarchy WHERE depth = _val;
+			SELECT *, get_DescendantCount(child) AS child_count FROM _selectedhierarchy WHERE depth = _val;
 	ELSE
-			SELECT * FROM _selectedhierarchy WHERE parent = _val OR child = _val;
+			SELECT *, get_DescendantCount(child) AS child_count FROM _selectedhierarchy WHERE parent = _val OR child = _val;
 		END IF;
 END$$
 DELIMITER ;

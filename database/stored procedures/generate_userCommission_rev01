@@ -1,0 +1,59 @@
+DROP PROCEDURE IF EXISTS generate_userCommission;
+DELIMITER $$
+
+# CALL generate_userCommission(2);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `generate_userCommission`(IN userId INT)
+BEGIN
+	DECLARE maxDepth INT(11);
+    DECLARE _check INT(11);
+    DECLARE _depth INT(11);
+    DECLARE _val VARCHAR(11);
+    DECLARE _position VARCHAR(11);
+
+	DROP TEMPORARY TABLE IF EXISTS _userCommissions;
+	CREATE TEMPORARY TABLE IF NOT EXISTS _userCommissions AS (
+	SELECT *, get_DescendantCount(child) AS child_count FROM _selectedhierarchy);
+    
+    SET maxDepth = (SELECT MAX(depth) FROM _userCommissions);
+    SET _depth = 0;
+    
+    WHILE _depth <= maxDepth DO
+		SET _check = (SELECT SUM(child_count) FROM _userCommissions WHERE depth = _depth);
+		
+        IF _check = 2 AND _depth = 0
+			THEN
+				SET _val = 'parent';
+				SELECT  *, get_Parent(parent) AS parent_of_Parent, _val, _depth, add_userCommission(child, 60, 'upline', child, CONCAT('depth_', child, '-',_depth)) AS commission FROM _userCommissions WHERE child_count = 2 AND depth = _depth;
+        ELSEIF _check = 2
+			THEN
+				SET _val = 'even';
+                SET _position = (SELECT  GROUP_CONCAT( position ORDER BY position SEPARATOR ', ') FROM _userCommissions WHERE child_count = 1 AND depth = _depth);
+				-- SELECT  *, get_Parent(parent) AS parent_of_Parent, _val FROM _userCommissions WHERE child_count = 1 AND depth = _depth;
+
+                IF _position = 'left, right'
+					THEN
+						SELECT  *, get_Parent(parent) AS parent_of_Parent, _val, _depth, add_userCommission(parent, 60, 'upline', null, CONCAT('depth_', parent, '-',_depth)) AS commission_s, 
+							CASE WHEN _depth != 1 THEN add_userCommission(get_Parent(parent), 60, 'upline', null, CONCAT('depth_', get_Parent(parent), '-',_depth)) ELSE  '' END AS commission_p FROM _userCommissions WHERE child_count = 1 AND depth = _depth LIMIT 1;
+				ELSE
+						SELECT  *, get_Parent(parent) AS parent_of_Parent, _val, _depth, add_userCommission(child, 60, 'upline', child, CONCAT('depth_', child, '-',_depth)) AS commission FROM _userCommissions WHERE child_count = 2 AND depth = _depth;
+				END IF;
+        
+        ELSEIF _check = 4
+			THEN
+				SET _val = 'even_even';
+                SELECT  *, get_Parent(parent) AS parent_of_Parent, _val, _depth, add_userCommission(get_Parent(parent), 60, 'upline', null, CONCAT('depth_', get_Parent(parent), '-',_depth)) AS commission_p, add_userCommission(child, 60, 'upline', child, CONCAT('depth_', child, '-',_depth)) AS commission_s  FROM _userCommissions WHERE child_count = 2 AND depth = _depth;
+        ELSEIF _check = 3
+			THEN
+				SET _val = 'odd';
+                SELECT _check;
+				SELECT  *, get_Parent(parent) AS parent_of_Parent, _val, _depth, add_userCommission(child, 60, 'upline', child, CONCAT('depth_', child, '-',_depth)) AS commission FROM _userCommissions WHERE child_count = 2 AND depth = _depth;
+		ELSE			
+            SELECT  *, get_Parent(parent) AS parent_of_Parent, _val, _depth, _check FROM _userCommissions WHERE depth = _depth;
+        END IF;
+        
+        SET _depth = _depth + 1;
+	END WHILE;
+    
+    
+END$$
+DELIMITER ;

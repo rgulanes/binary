@@ -331,10 +331,10 @@ class Member_model extends CI_Model{
 
     }
 
-    public function add_commission($userId, $amount, $desc){
+    public function add_commission($userId, $amount, $desc, $rUserid){
             $response = 0;
             $this->db->trans_start();
-            $this->db->query("CALL add_userCommission('$userId', '$amount', '$desc')");
+            $this->db->query("CALL add_userCommission('$userId', '$amount', '$desc', '$rUserid', null)");
             mysqli_next_result($this->db->conn_id);
             $this->db->trans_complete();
 
@@ -347,36 +347,6 @@ class Member_model extends CI_Model{
                 $response = 1;
             }
     }
-
-    public function check_membersCommission($userId){
-        $response = 0;
-        $result = $this->db->query("CALL get_userMembers('$userId')");
-        mysqli_next_result($this->db->conn_id);
-        if ($result->num_rows() > 0){
-            $cdata = $result->result_array();
-
-            if($cdata[0]['countMembers'] == 2){
-                $this->db->trans_start();
-                $this->db->query("CALL add_userCommission('$userId', '60', 'upline')");
-                $this->db->trans_complete();
-                //mysqli_next_result($this->db->conn_id);
-
-                if ($this->db->trans_status() === FALSE)
-                {
-                    $response = 0;
-                }
-                else
-                {
-                    $response = 1;
-                }
-            }else{
-                $response = 0;
-            }
-        }else{
-            $response = 0;
-        }
-    }
-
 
     public function get_totalCashOnHand($userId){
         $data = array();
@@ -470,6 +440,23 @@ class Member_model extends CI_Model{
         $query = $this->db->query("CALL get_Hierarchy('$userId')");
         $this->db->trans_complete();
 
+        $response = 0;
+        if ($this->db->trans_status() === FALSE)
+        {
+            $response = 0;
+        }
+        else
+        {
+            $response = 1;
+        }
+
+        return $response;
+    }
+
+    public function generate_Commission($id){
+        $result = $this->db->query("CALL generate_userCommission('$id');");
+        mysqli_next_result($this->db->conn_id);
+        
         $response = 0;
         if ($this->db->trans_status() === FALSE)
         {

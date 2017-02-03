@@ -8,8 +8,8 @@ BEGIN
 		CONCAT('Php. ', CONVERT(COALESCE(c_amount, 0), DECIMAL(10, 2))) AS c_amount, 
 		DATE_FORMAT(date_create,'%m-%d-%Y') AS date_create, 
         (CASE 
-			WHEN remarks = 'referral' THEN 'Lead Referral'
-            WHEN remarks = 'upline' THEN 'Complete Downlines'
+			WHEN remarks = 'referral' THEN 'Direct Referral'
+            WHEN remarks = 'upline' THEN 'Pairing'
 			ELSE ''
 		END) AS remarks
 	FROM commission WHERE c_user_id = userId;

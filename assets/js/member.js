@@ -277,6 +277,12 @@ angular.module('binaryApp')
 								$scope.get_coh();
 								$('#rightDataTable').DataTable().ajax.reload();
 					   			$('#leftDataTable').DataTable().ajax.reload();
+					   			
+					   			$http({
+							        method  : 'POST',
+							        url     : 'generate_Commission',
+							        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+						        });
 					   		}else{
 				   			}
 				   			

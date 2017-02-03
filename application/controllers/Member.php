@@ -138,7 +138,6 @@ class Member extends CI_Controller{
 			}	
 
 			$result = $this->Member_model->update_donwline_position($updated_data,$user_id);
-			$addCommission = $this->Member_model->check_membersCommission($user_id);
 		}else{
 			if(strtolower($available_position) == 'left'){
 				$updated_data = array(
@@ -153,7 +152,6 @@ class Member extends CI_Controller{
 			}	
 
 			$result = $this->Member_model->update_donwline_position($updated_data,$upline);
-			$addCommission = $this->Member_model->check_membersCommission($upline);
 		}
 
 		// if($upline  == ''){
@@ -261,6 +259,20 @@ class Member extends CI_Controller{
 		$data = $this->Member_model->get_childHierarchy($_REQUEST['id'], $_REQUEST['str']);
 
 		return print json_encode($data);
+	}
+
+	function generate_Commission(){
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$userId = $this->session->userdata('user_id');
+		$generateTree = $this->Member_model->get_Hierarchy($userId);
+		$commission = $this->Member_model->generate_Commission($userId);
+
+		return print json_encode(
+			array(
+				'generat_tree' => $generateTree,
+				'commission' => $commission
+			)
+		);
 	}
 }
 

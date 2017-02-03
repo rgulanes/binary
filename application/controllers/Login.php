@@ -105,9 +105,9 @@ class Login extends CI_Controller {
             $this->response_code = 0;
             $this->response_message = "Save Successfully";
 
-            if($user_id == ' '){
+            if($user_id == ''){
                 $this->Member_model->update_code($update_codes,$generated_code);
-                $this->Member_model->add_commission($sponsor, 50, 'referral');
+                $this->Member_model->add_commission($sponsor, 50, 'referral', $inserted);
             }
         }
         else
