@@ -123,6 +123,9 @@ class Member extends CI_Controller{
 		$upline = $_POST['upline'];
 		$available_position = $_POST['available_position'];
 
+
+		$m_position = '';
+
 		if($upline == '' && $available_position == ''){
 			//this is main top of the pyramid 
 			if($position == 'left'){
@@ -137,7 +140,8 @@ class Member extends CI_Controller{
 		        );
 			}	
 
-			$result = $this->Member_model->update_donwline_position($updated_data,$user_id);
+			$m_position = $position;
+			$result = $this->Member_model->update_donwline_position($updated_data,$user_id, strtolower($m_position));
 		}else{
 			if(strtolower($available_position) == 'left'){
 				$updated_data = array(
@@ -151,7 +155,8 @@ class Member extends CI_Controller{
 		        );
 			}	
 
-			$result = $this->Member_model->update_donwline_position($updated_data,$upline);
+			$m_position = $position;
+			$result = $this->Member_model->update_donwline_position($updated_data,$upline, strtolower($m_position));
 		}
 
 		// if($upline  == ''){
@@ -206,7 +211,6 @@ class Member extends CI_Controller{
         echo json_encode(array(
             "error"			=> $this->response_code,
             "message"		=> $this->response_message
-            
         ));
 
 

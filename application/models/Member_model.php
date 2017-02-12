@@ -102,7 +102,7 @@ class Member_model extends CI_Model{
 
     }
 
-    public function update_donwline_position($data,$id){
+    public function update_donwline_position($data,$id, $pos){
 
         if(!empty($data))
         {
@@ -136,7 +136,7 @@ class Member_model extends CI_Model{
                             $position = 'left';
                         }
 
-                        $this->add_userDownline($id, $child, $position, $this->session->userdata('user_id'));
+                        $this->add_userDownline($id, $child, $position, $pos, $this->session->userdata('user_id'));
 
                     }
                 }else{
@@ -417,9 +417,9 @@ class Member_model extends CI_Model{
         return $output;
     }
 
-    public function add_userDownline($pId, $cId, $position, $createdBy){
+    public function add_userDownline($pId, $cId, $position, $pos, $createdBy){
         $this->db->trans_start();
-        $this->db->query("CALL add_userDownlines('$pId', '$cId', '$position', '$createdBy')");
+        $this->db->query("CALL add_userDownlines('$pId', '$cId', '$position', '$pos', '$createdBy')");
         $this->db->trans_complete();
 
         $response= 0;

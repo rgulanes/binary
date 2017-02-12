@@ -269,7 +269,7 @@ angular.module('binaryApp')
 							upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id,
 							available_position : $scope.selected_available_position == null ? '' : $scope.selected_available_position.position_name
 						});
-						console.log(data);
+						//console.log(data);
 						$scope.file =  $http({
 					        method  : 'POST',
 					        url     : 'update_donwline_position',
@@ -350,9 +350,7 @@ angular.module('binaryApp')
 
 
 $(document).ready(function(){
-	$.ajax({
-        url      : './createTree'
-    });
+
 
     $('#view-tree').on('click', function(){
     	$('#tree-modal').modal('show');

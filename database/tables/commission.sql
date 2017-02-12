@@ -5,6 +5,6 @@ CREATE TABLE IF NOT EXISTS `commission` (
   `c_amount` float DEFAULT NULL,
   `r_user_id` int(11) DEFAULT NULL,
   `remarks` varchar(45) DEFAULT NULL,
-  `date_create` datetime DEFAULT CURRENT_TIMESTAMP,
+  `date_create` datetime DEFAULT NULL,
   PRIMARY KEY (`commission_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
