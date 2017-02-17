@@ -289,6 +289,7 @@ angular.module('binaryApp')
 									$scope.get_coh();
 									$('#rightDataTable').DataTable().ajax.reload();
 						   			$('#leftDataTable').DataTable().ajax.reload();
+						   			$('#userCohDataTable').DataTable().ajax.reload();
 						   			
 						   			$http({
 								        method  : 'POST',
@@ -328,7 +329,8 @@ angular.module('binaryApp')
 									$scope.get_coh();
 									$('#rightDataTable').DataTable().ajax.reload();
 						   			$('#leftDataTable').DataTable().ajax.reload();
-						   			
+						   			$('#userCohDataTable').DataTable().ajax.reload();
+
 						   			$http({
 								        method  : 'POST',
 								        url     : 'generate_Commission',
@@ -350,13 +352,16 @@ angular.module('binaryApp')
 
 
 $(document).ready(function(){
-
+	$.ajax({
+        url     : './generate_Commission'
+    });
 
     $('#view-tree').on('click', function(){
-    	$('#tree-modal').modal('show');
-    	$('#generate-tree').html('');
-    	$('#generate-tree').load('./tree_view');
+    	//$('#tree-modal').modal('show');
+    	//$('#generate-tree').html('');
+    	window.open("./tree_view", "_blank");
     });
+
 	/* Formatting function for row details - modify as you need */
 	function format ( d ) {
 	    // `d` is the original data object for the row

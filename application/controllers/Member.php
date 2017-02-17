@@ -269,11 +269,13 @@ class Member extends CI_Controller{
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$userId = $this->session->userdata('user_id');
 		$generateTree = $this->Member_model->get_Hierarchy($userId);
+		$childCount = $this->Member_model->get_childsDepth();
 		$commission = $this->Member_model->generate_Commission($userId);
 
 		return print json_encode(
 			array(
 				'generat_tree' => $generateTree,
+				'childCount' => $childCount,
 				'commission' => $commission
 			)
 		);

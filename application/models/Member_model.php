@@ -494,4 +494,21 @@ class Member_model extends CI_Model{
         return $data;
     }
 
+    public function get_childsDepth(){
+        $result = $this->db->query("CALL get_childsDepth();");
+        mysqli_next_result($this->db->conn_id);
+        
+        $response = 0;
+        if ($this->db->trans_status() === FALSE)
+        {
+            $response = 0;
+        }
+        else
+        {
+            $response = 1;
+        }
+
+        return $response;
+    }
+
 }?>
