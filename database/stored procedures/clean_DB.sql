@@ -34,7 +34,8 @@ BEGIN
 				(CONCAT('luyabaya', cnt), '12345', 'Luyabaya', cnt, 'M', '(082) 282 8849', 'Jacinto Extension (Infront of Blueberry Hotel), Davao City, Philippines', NOW(), '1', 0, CONCAT('luyabaya', cnt, '@gmail.com'), '2');
 			
             SET insert_id = LAST_INSERT_ID();
-			INSERT INTO `position` (`user_id`, `position_left`, `position_right`, `sponsor_by`) VALUES (insert_id, '', '', '2');
+            INSERT INTO `position` (`user_id`, `position_left`, `position_right`, `sponsor_by`) VALUES (insert_id, '', '', '2');
+            INSERT INTO `commission` (`c_user_id`, `c_amount`, `r_user_id`, `depth`, `remarks`, `date_create`) VALUES ('2', '50', insert_id, NULL, 'referral', NOW());
 			INSERT INTO `hierarchy` (`parent`,`child`,`depth`,`position`, `created_by`,`datetime`) VALUES (cnt,cnt, 0,'parent','SystemCreate', NOW());
         SET cnt = cnt + 1;
     END WHILE;

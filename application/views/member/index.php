@@ -84,7 +84,7 @@
 
                   </div>
                   <div class="col-lg-6 col-md-6">
-                    <h2 class="text-danger" ng-cloak>{{user_coh}}</h2>
+                    <h2 class="text-danger" ng-cloak>Php. {{user_coh}}</h2>
 
                   </div>
                   </div>

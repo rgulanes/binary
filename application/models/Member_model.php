@@ -85,6 +85,25 @@ class Member_model extends CI_Model{
             else
             {
                 $response = 1;
+
+                $this->db->select('amount');
+                $query = $this->db->get_where('request_withdrawal', array('request_withdrawal_id' => $id));
+                $amount = $query->row_array();
+
+                $this->db->select('user_id');
+                $query = $this->db->get_where('request_withdrawal', array('request_withdrawal_id' => $id));
+                $user = $query->row_array();
+
+                $_data = array(
+                    'w_user_id' => $user['user_id'],
+                    'w_amount' => $amount['amount'],
+                    'remarks' => 'Approved',
+                    'date_create' => date('o-m-d H:i:s')
+                );
+
+                $this->db->trans_start();
+                $this->db->insert('withdrawal', $_data);
+                $this->db->trans_complete();
             }
         }
 
@@ -528,7 +547,7 @@ class Member_model extends CI_Model{
 
     public function get_childsDepth(){
         $result = $this->db->query("CALL get_childsDepth();");
-        mysqli_next_result($this->db->conn_id);
+        //mysqli_next_result($this->db->conn_id);
         
         $response = 0;
         if ($this->db->trans_status() === FALSE)

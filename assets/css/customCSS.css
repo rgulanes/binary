@@ -180,5 +180,6 @@ tr.shown td.details-control {
 }
 
 .badge{
-  background-color: red!important;
+  background-color: #ff2424!important;
+  color: #fff !important;
 }
