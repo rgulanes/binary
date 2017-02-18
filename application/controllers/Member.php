@@ -280,6 +280,53 @@ class Member extends CI_Controller{
 			)
 		);
 	}
+
+	function send_request(){
+		
+		$_POST = json_decode(file_get_contents('php://input'), true);
+
+		$userId = $this->session->userdata('user_id');
+		$amount =  $_POST['amount'];
+		
+		$cash_on_hand = $this->Member_model->get_totalCashOnHand($this->session->userdata('user_id'));
+		
+		if($cash_on_hand[0]->totalCashOnHand  > $amount){
+			$insert_data = array(
+	            'user_id' => $userId,
+	            'amount' => $amount,
+	            'date_requested' => date("Y-m-d H:i:s"),
+	            'status' => 0,
+	        );
+
+	        $result = $this->Member_model->send_cash_request($insert_data);
+
+        if($result > 0 )
+        {
+
+            $this->response_code = 0;
+            $this->response_message = "Cash Request Sent .";
+
+        }
+        else
+        {
+            $this->response_code = 1;
+            $this->response_message = "Error...";
+        }
+
+
+		}else{
+
+            $this->response_code = 1;
+            $this->response_message = "Insufficient Funds";
+
+		}
+
+        echo json_encode(array(
+            "error"			=> $this->response_code,
+            "message"		=> $this->response_message
+        ));
+
+	}
 }
 
 ?>

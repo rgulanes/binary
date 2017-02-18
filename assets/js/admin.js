@@ -97,7 +97,50 @@ angular.module('binaryApp')
 		}
 		$scope.get_all_generated_codes();
 		
+		$scope.cashRequest = function(){
+			
+			$scope.file = $http({
+				method 	: 'POST',
+				url 	: '../admin/get_cash_request',
+				headers : {'Content-Type' : 'application/x-www-form-urlencoded'} 
+			}).then(function(response){
+				console.log(response.data);
+				angular.forEach(response.data.cash_request,function(file){
+					file.date_requested = new Date(file.date_requested);
+				})
+				$scope.cash_request_list = response.data.cash_request;
+				$scope.cash_request_count = $scope.cash_request_list.length;
+				console.log('-->',$scope.cash_request_count);
+			});	
+			
+		}
+		$scope.cashRequest();
+
+		$scope.onClickCashRequest = function(){
+			 $('#cash-request-modal').modal('show');
+		}
+	
+		$scope.onClickUpdateRequest = function($id){
+			var data  = angular.toJson({
+				id : $id
+			});	
+			$scope.file = $http({
+				method  : 'POST',
+				url 	: '../admin/update_request_status',
+				data    : data,
+				headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+			}).then(function(response){
+				console.log(response.data);
+				$scope.cashRequest();
+			})
+		}
+
+
 		
+		$scope.onClickCloseCashRequest = function(){
+			$('#cash-request-modal').modal('hide');
+		}
+
 		$scope.onClickMember = function($id){
 			$('#members-modal').modal('show');
 			var data = angular.toJson({

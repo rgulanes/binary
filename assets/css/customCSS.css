@@ -178,3 +178,7 @@ tr.shown td.details-control {
 .nav-pills a{
   cursor: pointer;
 }
+
+.badge{
+  background-color: red!important;
+}

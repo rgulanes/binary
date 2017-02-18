@@ -16,9 +16,15 @@ angular.module('binaryApp')
 		$scope.position_save = false;
 		$scope.available_position = false;
 		$scope.available_downline = false; 
+		$scope.cash_request_message = false;
+
+		$scope.show_cash_request_success = false;;
+		$scope.show_cash_request_error = false;
 
 		$scope._username = '';
 		$scope._password = '';
+
+		$scope.requested_amount = '';
 
 		$scope.notAssigned = false;
 
@@ -37,6 +43,7 @@ angular.module('binaryApp')
 		$scope.onShowModal = function($id,$firstname,$lastname){
 			$scope.unposition_user = $firstname +' '+ $lastname;
 			$scope.select_id = $id;
+
 			$('#position-modal').modal('show'); 
 		}
 
@@ -56,8 +63,70 @@ angular.module('binaryApp')
 		        {
 		        	$window.location = '../login/index';
 		      	});
-		
 		}
+
+		$scope.onclickCashout = function(){
+			$scope.show_cash_request_success = false;
+			$scope.show_cash_request_error = false;
+			$scope.requested_amount = '';
+			$('#cash-out-modal').modal('show');
+			
+
+		}
+		$scope.onClickCloseRequestedAmount = function(){
+			$('#cash-out-modal').modal('hide');
+			$scope.requested_amount = '';
+		}
+
+		$scope.onClickRequestedAmount =function(){
+		
+			if($scope.requested_amount < '200'){
+				
+				$scope.show_cash_request_success = false;
+				$scope.show_cash_request_error = true;
+				$scope.cash_request_message = 'Cannot withraw less than 200.';
+		
+			}else if($scope.requested_amount != '' && $scope.requested_amount >= 200){
+				
+				var data = angular.toJson({
+					amount : $scope.requested_amount
+				});
+				$scope.file = $http({
+					method 	: 'POST',
+					url 	: 'send_request',
+					data 	:  data,
+					headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
+				}).then(function(response){
+					if(response.data.error == 0){
+					
+						$scope.show_cash_request_success = true;
+						$scope.show_cash_request_error = false;
+						$scope.cash_request_message = response.data.message;
+
+						setTimeout(function(){ 	
+							$('#cash-out-modal').modal('hide');
+							$scope.requested_amount = '';
+						}, 1500);
+
+					}else{
+
+						$scope.show_cash_request_success = false;
+						$scope.show_cash_request_error = true;
+						$scope.cash_request_message = response.data.message;
+					}
+
+					});
+			}else if($scope.requested_amount == '' ){
+				
+				$scope.show_cash_request_success = false;
+				$scope.show_cash_request_error = true;
+				$scope.cash_request_message = 'Please enter amount';
+
+			} 
+			
+
+		}
+
 		$scope.sponsoredMember = function($id){
 			
 			var data = angular.toJson({
@@ -255,8 +324,6 @@ angular.module('binaryApp')
 			}else{
 
 				if ($scope.list_available_downline.length >  0 ){
-					console.log('---->',$scope.selected_upline);
-					console.log('---->',$scope.selected_available_position);
 					if($scope.selected_upline  ==  undefined){
 						$scope.select_donwline = true;
 					}else if($scope.selected_available_position == undefined){

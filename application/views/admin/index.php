@@ -17,6 +17,7 @@
                -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"  ng-click="onClickCashRequest()">Cash Request <span class="badge">{{cash_request_count}}</span></a></li>
               <li><a href="#"  data-toggle="modal" data-target="#code-modal">Generate Code</a></li>
               <li><a href="#" ng-click="onclickLogout()">Log Out</a></li>
             </ul>
@@ -117,7 +118,44 @@
             </div>
       </div>
 
-      
+    <div class="modal fade" id="cash-request-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog" style="width: auto;">
+        <div class="loginmodal-container" style="width: 800px !important;max-width: 100%;">
+          <h4>Request List</h4>
+          <br>
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">New Request</a></li>
+          </ul>
+
+          <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+              <br>
+
+              <table class="table" style="margin-top:13px;">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="list in cash_request_list">
+                        <td>{{list.first_name}} {{list.last_name}}</td>
+                        <td>{{list.amount}}</td>
+                        <td>{{list.date_requested | date:'medium'}}</td>
+                        <td><button type="button" class="btn btn-primary" ng-click="onClickUpdateRequest(list.request_withdrawal_id)"><i class="fa fa-pencil"></i></button></td>
+                      </tr>
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+
+          <button type="button" class="btn btn-danger" ng-click="onClickCloseCashRequest()">Close</button>
+        </div>
+      </div>
+    </div>
 
     <div class="modal fade" id="code-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">

@@ -12,6 +12,6 @@ BEGIN
 			LEFT JOIN withdrawal w ON w.w_user_id = c.c_user_id
 	WHERE w.w_user_id = userId OR c.c_user_id = userId);
 
-	SELECT CONCAT('Php. ', CONVERT(COALESCE((total_commissions - total_withdrawals), 0), DECIMAL(10, 2))) AS totalCashOnHand FROM totalCashOnHand;
+	SELECT CONVERT(COALESCE((total_commissions - total_withdrawals), 0), DECIMAL(10, 2)) AS totalCashOnHand FROM totalCashOnHand;
 END$$
 DELIMITER ;

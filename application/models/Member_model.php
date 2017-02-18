@@ -68,7 +68,39 @@ class Member_model extends CI_Model{
 
         return $response;
 
+    }
+
+    public function update_request_status($id,$data){
+        if(!empty($data))
+        {
+            $this->db->trans_start();
+            $this->db->where('request_withdrawal_id', $id);
+            $this->db->update('request_withdrawal', $data);
+            $this->db->trans_complete();
+
+            if ($this->db->trans_status() === FALSE)
+            {
+                $response = 0;
+            }
+            else
+            {
+                $response = 1;
+            }
+        }
+
+        return $response;
     }    
+
+    public function send_cash_request($data){
+
+        if(!empty($data))
+        {
+            $response = $this->db->insert('request_withdrawal', $data);
+            $latest_id = $this->db->insert_id();
+        }
+        return $latest_id;
+
+    }
 
     public function save_member($data){
 
@@ -509,6 +541,24 @@ class Member_model extends CI_Model{
         }
 
         return $response;
+    }
+
+    public function get_cashRequest(){
+
+        $result = $this->db->query(" SELECT 
+                                        u.user_id,
+                                        u.first_name,
+                                        u.last_name,
+                                        rw.request_withdrawal_id,
+                                        rw.amount,
+                                        rw.date_requested,
+                                        rw.user_id,
+                                        rw.status
+                                     FROM request_withdrawal as rw
+                                     JOIN  users as u on u.user_id = rw.user_id
+                                     WHERE  rw.status = 0");
+
+        return $result->result(); 
     }
 
 }?>

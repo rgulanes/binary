@@ -80,6 +80,23 @@ class Admin extends CI_Controller{
 		return print json_encode($data);
 	}
 
+	function get_cash_request(){
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data['cash_request'] = $this->Member_model->get_cashRequest();
+		return print json_encode($data);
+	}
+
+	function update_request_status(){
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$id = $_POST['id'];
+		 $update_data = array(
+               	'status'	=> 1
+            );
+		$data['result'] = $this->Member_model->update_request_status($id,$update_data);
+		return print json_encode($data);
+
+	}
 
 }
 
