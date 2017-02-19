@@ -16,6 +16,7 @@ BEGIN
 	TRUNCATE TABLE hierarchy;
 	TRUNCATE TABLE _selectedhierarchy;
     TRUNCATE TABLE _currentchild;
+    TRUNCATE TABLE request_withdrawal;
 
 	INSERT INTO `users`
 	(`user_id`, `user_name`, `password`, `first_name`, `last_name`, `gender`, `contact`, `address`, `entered_on`, `status`, `position`, `email`, `sponsor_by`)
