@@ -17,6 +17,7 @@
                -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"  ng-click="onClickMembers()">Members</a></li>
               <li><a href="#"  ng-click="onClickCashRequest()">Cash Request <span class="badge">{{cash_request_count}}</span></a></li>
               <li><a href="#"  data-toggle="modal" data-target="#code-modal">Generate Code</a></li>
               <li><a href="#" ng-click="onclickLogout()">Log Out</a></li>
@@ -25,10 +26,8 @@
         </div><!--/.container-fluid -->
       </nav>
 
-
       <!-- Main component for a primary marketing message or call to action -->
-    
-
+  
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
@@ -78,46 +77,6 @@
           </div>
         </div>
       </div>
-      <div class="container-fluid">
-            <div class="panel panel-default">
-              <div class="panel-heading"><b>Members <i class="fa fa-users pull-right" title="view list"></i> </b></div>
-              <div class="panel-body" style="max-height: 500px;overflow: auto;">
-                  <table class="table" style="margin-top:13px;">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Contact</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                   
-                        <th>Date Joined</th>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="list in member_list">
-                        <td>{{list.first_name}} {{list.last_name}}</td>
-                        <td>{{list.gender}}</td>
-                        <td>{{list.contact}}</td>
-                        <td>{{list.email}}</td>
-                        <td>{{list.address}}</td>
-                        <td>{{list.entered_on | date:'medium'}}</td>
-                        <td>{{list.user_name}}</td>
-                        <td>{{list.password}}</td>
-                        <td><button type="button" class="btn btn-primary" ng-click="onClickMember(list.user_id)"><i class="fa fa-pencil"></i></button></td>
-                       
-                      </tr>
-                     
-
-                    </tbody>
-                  </table>
-              </div>
-            </div>
-      </div>
-
     <div class="modal fade" id="cash-request-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog" style="width: auto;">
         <div class="loginmodal-container" style="width: 800px !important;max-width: 100%;">
@@ -168,6 +127,27 @@
       </div>
     </div>
 
+    <div class="modal fade" id="search-members-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="loginmodal-container" style="max-width:initial;">
+        <h1>Search Member</h1>
+        <br>
+          
+          <table ng-table="tableMembers" class="table" show-filter="true">
+              <tr ng-repeat="list in $data">
+                  <td title="'Name'" filter="{ full_name: 'text'}" sortable="'full_name'">
+                      {{list.full_name}}</td>
+                  <td title="'Date Joined'"  sortable="'entered_on'">
+                     {{list.entered_on | date:'medium'}}</td>
+                  <td><button type="button" class="btn btn-primary" ng-click="onClickMember(list.user_id)"><i class="fa fa-pencil"></i></button></td>
+
+              </tr>
+          </table>
+          
+        </div>
+      </div>
+    </div>
+
     <div class="modal fade" id="members-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
         <div class="loginmodal-container" style="max-width:initial;">
@@ -211,6 +191,10 @@
       </div>
     </div>
 
+
+  
+
+   
    
     </div>
        

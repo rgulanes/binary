@@ -1,4 +1,4 @@
-angular.module('binaryApp',['ui.select'])
+angular.module('binaryApp',['ui.select','ngTable'])
 	.controller('loginCtrl', function ($scope, $http, $location, $window){
 
 		$scope.firstname = '';

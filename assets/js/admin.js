@@ -1,5 +1,5 @@
 angular.module('binaryApp')
-	.controller('adminCtrl', function ($scope, $http, $location, $window){
+	.controller('adminCtrl', function ($scope, $http, $location, $window,NgTableParams){
 
 		$scope.firstname = '';
 		$scope.lastname = '';
@@ -48,14 +48,17 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	console.log(response.data);
 		        	angular.forEach(response.data.user_info,function(file){
 		        		file.entered_on = new Date(file.entered_on);
+		        		file.full_name = file.first_name +' '+file.last_name;
+		        	
 		        	})
-		        	$scope.member_list = response.data.user_info;
+		        	$scope.tableMembers = new NgTableParams({count : 5 }, { dataset: response.data.user_info});
 		      	});
 		}
 		$scope.getAllMembers();
+
+	
 
 		$scope.onclickGenerateCode = function(){
 			if($scope.code_number != ''){
@@ -71,7 +74,6 @@ angular.module('binaryApp')
 			        })
 			        .then(function(response) 
 			        {
-			        	console.log(response.data);
 			        	$scope.code_generated = response.data;
 			        	$('#code-modal').modal('hide');
 			        	$scope.code_number = '';
@@ -91,7 +93,6 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	console.log(response.data.generated_codes);
 		        	$scope.list_code_generated = response.data.generated_codes;
 		      	});
 		}
@@ -104,13 +105,11 @@ angular.module('binaryApp')
 				url 	: '../admin/get_cash_request',
 				headers : {'Content-Type' : 'application/x-www-form-urlencoded'} 
 			}).then(function(response){
-				console.log(response.data);
 				angular.forEach(response.data.cash_request,function(file){
 					file.date_requested = new Date(file.date_requested);
 				})
 				$scope.cash_request_list = response.data.cash_request;
 				$scope.cash_request_count = $scope.cash_request_list.length;
-				console.log('-->',$scope.cash_request_count);
 			});	
 			
 		}
@@ -130,7 +129,6 @@ angular.module('binaryApp')
 				data    : data,
 				headers : {'Content-Type' : 'application/x-www-form-urlencoded'}
 			}).then(function(response){
-				console.log(response.data);
 				$scope.cashRequest();
 			})
 		}
@@ -143,6 +141,9 @@ angular.module('binaryApp')
 
 		$scope.onClickMember = function($id){
 			$('#members-modal').modal('show');
+			$scope.saveMessage = false;
+			$scope.updateMemberError = false;
+
 			var data = angular.toJson({
 				id : $id
 			});
@@ -155,7 +156,6 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	console.log(response.data.member_details);
 		        	angular.forEach(response.data.member_details,function(data){
 		        		console.log(data);
 		        		$scope.firstname = data.first_name;
@@ -219,16 +219,13 @@ angular.module('binaryApp')
 					generated_code 	: '',
 
 				});	
-				console.log(data);
-				
 				$scope.file =  $http({
 		          method  : 'POST',
 		          url     : $base_url+'login/save_member',
 		          data    :  data, //forms user object
 		          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		         }).then(function(response){
-		         	console.log(response.data);
-
+		       
 		         	if(response.status == 200){
 		         	 	$scope.saveMessage = true;
 		         		$scope.firstname = '';
@@ -249,6 +246,19 @@ angular.module('binaryApp')
 		        });
 		    }     
 		}
+
+		$scope.onClickMembers = function(){
+			$("#search-members-modal").modal('show');
+		}
 		
 }); 
 
+$(document).ready(function(){
+	$('#member_tbl').DataTable({
+		"lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "All"]],
+    	"pageLength": 5,
+
+	});
+
+	
+});

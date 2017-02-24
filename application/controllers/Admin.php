@@ -97,7 +97,6 @@ class Admin extends CI_Controller{
 		return print json_encode($data);
 
 	}
-
 }
 
 

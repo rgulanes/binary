@@ -2,6 +2,8 @@
 	<script src="<?php echo base_url(); ?>bower_components/jquery/dist/jquery.js"></script>
 	<script src="<?php echo base_url(); ?>bower_components/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="<?php echo base_url(); ?>bower_components/angular-ui-select/dist/select.js"></script>
+	<script src="<?php echo base_url(); ?>bower_components/ng-table/bundles/ng-table.min.js"></script>
+
 
 	<!-- Datatables -->
 	<script src="<?php echo base_url(); ?>bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
