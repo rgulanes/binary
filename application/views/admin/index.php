@@ -25,8 +25,6 @@
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
-
-      <!-- Main component for a primary marketing message or call to action -->
   
       <div class="container-fluid">
         <div class="row">
@@ -126,17 +124,15 @@
 
     <div class="modal fade" id="cash-request-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog" style="width: auto;">
-        <div class="loginmodal-container" style="width: 800px !important;max-width: 100%;">
-          <h4>Request List</h4>
-          <br>
-          <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#home">New Request</a></li>
-          </ul>
 
-          <div class="tab-content">
-            <div id="home" class="tab-pane fade in active">
-              <br>
+         <div class="modal-dialog">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal" >&times;</span>
+            <h1 align="center">Request List</h1>
+          </div>
 
+          <div class="modal-body">
               <table class="table" style="margin-top:13px;">
                     <thead>
                       <tr>
@@ -154,12 +150,11 @@
                         <td><button type="button" class="btn btn-primary" ng-click="onClickUpdateRequest(list.request_withdrawal_id)"><i class="fa fa-pencil"></i></button></td>
                       </tr>
                     </tbody>
-                  </table>
-            </div>
+              </table>
           </div>
-
-          <button type="button" class="btn btn-danger" ng-click="onClickCloseCashRequest()">Close</button>
+          <br>
         </div>
+      </div>
       </div>
     </div>
 

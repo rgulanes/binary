@@ -78,9 +78,8 @@ angular.module('binaryApp')
 			$scope.requested_amount = '';
 		}
 
-		$scope.onClickRequestedAmount =function(){
-		
-			if($scope.requested_amount < '200'){
+		$scope.onClickRequestedAmount = function(){
+			if($scope.requested_amount < 200){
 				
 				$scope.show_cash_request_success = false;
 				$scope.show_cash_request_error = true;

@@ -170,7 +170,8 @@
           </div>
         </div>
       </div> 
-      <div class="container-fluid">
+      
+     <!--  <div class="container-fluid">
         <div class="panel panel-primary">
               <div class="panel-heading"><b>People Sponsored  <i class="fa fa-users pull-right"></i> </b></div>
               <div class="panel-body">
@@ -205,7 +206,7 @@
 
               </div>
         </div>
-      </div>
+      </div> -->
 
 
     <div class="modal fade" id="position-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
@@ -245,32 +246,28 @@
       </div>
     </div>
 
-     <div class="modal fade" id="cash-out-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-      <div class="modal-dialog" style="width: auto;">
-        <div class="loginmodal-container" style="width: 800px !important;max-width: 100%;">
-          <h4><i class="fa fa-money fa-fw"></i> Amount</h4>
-          <br>
-          
+
+
+    <div class="modal fade" id="cash-out-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close"  ng-click="onClickCloseRequestedAmount()" >&times;</span>
+            <h1 align="center">Cash Out</h1>
+          </div>
+
+          <div class="modal-body">
           <div class="alert alert-danger" role="alert" ng-show="show_cash_request_error">{{cash_request_message}}</div>
-            <div class="alert alert-success" role="alert" ng-show="show_cash_request_success">{{cash_request_message}}</div>
-        
+          <div class="alert alert-success" role="alert" ng-show="show_cash_request_success">{{cash_request_message}}</div>
           <div>
             <input type="text" name="requested-amount" ng-model="requested_amount" class="form-control" placeholder="Enter Amount">
           </div>
-         <button type="button" class="btn btn-primary" ng-click="onClickRequestedAmount()">Send Request</button>
-         <button type="button" class="btn btn-danger" ng-click="onClickCloseRequestedAmount()">Close</button>
+          <br>
+            <button type="button" class="btn btn-primary" ng-click="onClickRequestedAmount()">Send Request</button>
+          </div>
+          <br>
         </div>
       </div>
     </div>
 
-  <!--   <div class="modal fade" id="tree-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-      <div class="modal-dialog" style="width: auto;">
-        <div class="loginmodal-container" style="width: 800px !important;max-width: 100%;">
-          <h4><i class="fa fa-list-ul fa-fw"></i> Tree Details</h4>
-          <div id="generate-tree"></div>
-        </div>
-      </div>
-    </div>
-
-    -->
-    </div> <!-- /container -->
+   </div> <!-- /container -->
