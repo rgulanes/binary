@@ -557,9 +557,22 @@ class Member_model extends CI_Model{
         return $data;
     }
 
+    public function generate_userTree($userId){
+        $data = array();
+        $query = $this->db->query("CALL generate_userTree('$userId')");
+        mysqli_next_result($this->db->conn_id);
+        
+        if ($query->num_rows() > 0){
+            $data = $query->result();
+        }else{
+            $data = array();
+        }
+
+        return $data;
+    }
+
     public function get_childsDepth(){
         $result = $this->db->query("CALL get_childsDepth();");
-        //mysqli_next_result($this->db->conn_id);
         
         $response = 0;
         if ($this->db->trans_status() === FALSE)

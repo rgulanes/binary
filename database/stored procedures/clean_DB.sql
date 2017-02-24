@@ -28,7 +28,7 @@ BEGIN
 	INSERT INTO `hierarchy` (`p_id`,`parent`,`child`,`depth`,`position`, `created_by`,`datetime`) VALUES (1,2,2, 0,'parent','SystemCreate', NOW());
     
     SET cnt = 2;
-    WHILE cnt <= 7 DO
+    WHILE cnt <= 10 DO
 			INSERT INTO `users`
 				(`user_name`, `password`, `first_name`, `last_name`, `gender`, `contact`, `address`, `entered_on`, `status`, `position`, `email`, `sponsor_by`)
 			VALUES

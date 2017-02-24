@@ -39,52 +39,40 @@
 		tree.html('');
 		tree.append('<ul class="tree"></ul>');
 
+		var treeArray = new Array();
 		$.each(jsonData.tree, function(k, v){
-
-			if(v.position == 'parent'){
-				var parent = '<li data-parent="'+v.parent+'" data-node-id="'+v.child+'" data-position="'+v.position+'"><a class="mouse-over"> '+v.full_name+'</a> <ul class="pChildren"></ul></li>';
+			if(v.length == 1 && v[0].position == 'parent'){
+				var node = v[0];
+				var parent = '<li data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over"> '+node.full_name+'</a> <ul class="pChildren"></ul></li>';
 				tree.find('ul.tree').append(parent);
 			}else{
+				var sNode = v;
 				var subNode = tree.find('ul.tree');
-				var p = jsonData.tree[0];
-				if(k == 1){
-					var ajaxCall = 0;
-					for(var i = 1; i <= jsonData.size; i++){
+				var parentNode = subNode[0].firstChild.dataset;
+				$.each(sNode, function(k,v){
+					var node = v;
+					var order = v.position == 'left' ? 'even' : 'odd';
+					var leaf = '';
+					
 
-						function do_ajax(){
-							if(ajaxCall < i){
-								$.post('./get_selectedHierarchy', { 'id' : (ajaxCall + 1), 'str' : 'depth'}, function(data) {
-									var json = JSON.parse(data);
+					if(node.parent == parentNode.nodeId){
+						leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
 
-									$.each(json, function(k,node){
-										if(p.child == node.parent){
-											var order = node.position == 'left' ? 'even' : 'odd';
+						subNode.find('ul.pChildren').append(leaf);
+					}else{
+						var pNode = $('#node_' + node.parent)[0].dataset;
+						console.log(pNode);
+						console.log(node);
+						var cNode = subNode.find('ul.pChildren');
+						var order = node.position == 'left' ? 'even' : 'odd';
 
-											var leaf = '';
-											
-											leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
+						var leaf = '';
 
-											subNode.find('ul.pChildren').append(leaf);
-										}else{
-											var cNode = subNode.find('ul.pChildren');
-											var order = node.position == 'left' ? 'even' : 'odd';
+						leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
 
-											var leaf = '';
-
-											leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
-
-											$('#node_' + node.parent).find('ul.children_'+ ( node.depth - 1 )+'').append(leaf);
-										}
-									});
-									
-								});
-								ajaxCall++;
-								do_ajax();
-							}
-						}
-						do_ajax();
-					}
-				}
+						$('#node_' + node.parent).find('ul.children_'+ ( node.depth - 1 )+'').append(leaf);
+					}						
+				});
 			}
 		});
 	});

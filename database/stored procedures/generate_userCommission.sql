@@ -30,6 +30,21 @@ BEGIN
         SET _children = (SELECT SUM(child_count) FROM _userCommissions WHERE depth = _depth);
         SET _maxChild = POW(2, ( _depth + 1));
         
+<<<<<<< .mine
+        CALL update_ChildCount(_depth);
+        
+        SET upCount = (SELECT SUM(get_DescendantCount(s.child, s.depth)) AS count
+						FROM   _selectedhierarchy s
+						WHERE EXISTS (SELECT 1 
+										   FROM   _currentchild c
+										   WHERE  s.depth = c.depth)
+						AND s.depth = _depth
+						GROUP BY s.depth);
+		SET oldCount = (SELECT SUM(old_count) FROM _currentchild WHERE depth = _depth);
+		SET newCount = (SELECT SUM(new_count) FROM _currentchild WHERE depth = _depth);
+        
+||||||| .r25
+=======
         CALL update_ChildCount(_depth);
         
         SET upCount = (SELECT SUM(get_DescendantCount(s.child, s.depth)) AS count
@@ -42,6 +57,7 @@ BEGIN
 		SET oldCount = (SELECT old_count FROM _currentchild WHERE depth = 1);
 		SET newCount = (SELECT new_count FROM _currentchild WHERE depth = 1);
         
+>>>>>>> .r32
         -- SELECT  *, get_Parent(parent) AS parent_of_Parent, _depth FROM _userCommissions WHERE depth = _depth;
         IF _depth = 0 AND _position = 'parent' OR _position IS NULL
 			THEN

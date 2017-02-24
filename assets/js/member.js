@@ -345,7 +345,7 @@ angular.module('binaryApp')
 						   			
 						   			$http({
 								        method  : 'POST',
-								        url     : 'generate_Commission',
+								        url     : 'generateHierarchy',
 								        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 							        });
 						   		}else{
@@ -384,7 +384,7 @@ angular.module('binaryApp')
 
 						   			$http({
 								        method  : 'POST',
-								        url     : 'generate_Commission',
+								        url     : 'generateHierarchy',
 								        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 							        });
 						   		}else{
@@ -404,12 +404,10 @@ angular.module('binaryApp')
 
 $(document).ready(function(){
 	$.ajax({
-        url     : './generate_Commission'
+        url     : './generateHierarchy'
     });
 
     $('#view-tree').on('click', function(){
-    	//$('#tree-modal').modal('show');
-    	//$('#generate-tree').html('');
     	window.open("./tree_view", "_blank");
     });
 

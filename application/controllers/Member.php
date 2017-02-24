@@ -208,16 +208,61 @@ class Member extends CI_Controller{
 		return print json_encode($data);
 	}
 
+	private function _prettify($array){
+		echo '<pre>';
+		print_r($array);
+		echo '</pre>';
+	}
+
 	function getHierarchy(){
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		
 		$size = $this->Member_model->get_TreeDepth();
-		$data = $this->Member_model->get_childHierarchy($this->session->userdata('user_id'), 'child');
-		
-		$rdata['tree'] = $data;
+		$data = $this->Member_model->generate_userTree($this->session->userdata('user_id'), 'child');
+
 		$rdata['size'] = $size[0]->tree_size;
 
-		return print json_encode($rdata);
+		$treeArray = array();
+		foreach ($data as $k => $v) {
+			if (!array_key_exists($v->depth,$treeArray)) array_push($treeArray, $v->depth);
+		}
+
+		$tree = array();
+		$childs = array();
+		$node = array();
+		$cnt = 0;
+		foreach ($treeArray as $k => $v) {
+			foreach ($data as $key => $value) {
+				if($value->depth == $v[0] ){					
+					if($k == $value->depth){
+						$childs[$cnt] = $value;
+						$treeArray[$k] = $childs;
+					}
+					$cnt++;
+				}else{
+					$cnt = 0;
+				}
+			}
+			
+		}
+
+		$size = sizeof($treeArray);
+		for ($i=0; $i < $size; $i++) { 
+			$subNode = sizeof($treeArray[$i]);
+			//echo 'index => ' . $i . '</br>';
+			for ($a=0; $a < $subNode; $a++) { 
+				//echo 'sub-index => ' . $a . '</br>';
+				if($i != $treeArray[$i][$a]->depth){
+					unset($treeArray[$i][$a]);
+				}
+			}
+		}
+
+		//$this->_prettify($treeArray);
+
+		$rdata['tree'] = $treeArray;
+
+		return print json_encode($rdata, true);
 	}
 
 	function get_selectedHierarchy(){
@@ -227,18 +272,14 @@ class Member extends CI_Controller{
 		return print json_encode($data);
 	}
 
-	function generate_Commission(){
+	function generateHierarchy(){
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$userId = $this->session->userdata('user_id');
 		$generateTree = $this->Member_model->get_Hierarchy($userId);
-		$childCount = $this->Member_model->get_childsDepth();
-		$commission = $this->Member_model->generate_Commission($userId);
 
 		return print json_encode(
 			array(
-				'generat_tree' => $generateTree,
-				'childCount' => $childCount,
-				'commission' => $commission
+				'generate_tree' => $generateTree,
 			)
 		);
 	}
