@@ -77,6 +77,53 @@
           </div>
         </div>
       </div>
+
+       <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6 col-md-6 col-sm-6">
+
+            <div class="panel panel-default">
+              <div class="panel-heading"><b>Member Product Purchase <i class="fa fa-shopping-cart pull-right" title="view list"></i> </b></div>
+              <div class="panel-body">
+                <form name="searchProductMember"  ng-submit="onSearchProduct()">
+                <div class="row">
+                  <div class="col-md-5 col-lg-5">
+                    <input type="date" class="form-control" name="from" ng-model="date_from">
+                  </div>
+                  <div class="col-md-5 col-lg-5">
+                    <input type="date" class="form-control" name="to" ng-model="date_to">
+                  </div>
+                  <div class="col-md-2 col-lg-2">
+                     <button type="submit" class="btn btn-primary">Save</button>
+                  </div>                  
+                </div>
+                </form>
+
+                  <table class="table" style="margin-top:13px;">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr ng-repeat="list in member_product_purchase">
+                        <td>{{list.full_name}}</td>
+                        <td>{{list.amount}}</td>
+                     </tbody>
+                  </table>
+
+              </div>
+            </div>
+
+          </div>
+          
+          <div class="col-lg-6 col-md-6 col-sm-6">
+            
+          </div>
+        </div>
+      </div>
+
     <div class="modal fade" id="cash-request-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog" style="width: auto;">
         <div class="loginmodal-container" style="width: 800px !important;max-width: 100%;">
@@ -129,21 +176,24 @@
 
     <div class="modal fade" id="search-members-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
-        <div class="loginmodal-container" style="max-width:initial;">
-        <h1>Search Member</h1>
-        <br>
-          
-          <table ng-table="tableMembers" class="table" show-filter="true">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal" >&times;</span>
+            <h1 align="center">Search Member</h1>
+          </div>
+
+          <div class="modal-body">
+            <table ng-table="tableMembers" class="table" show-filter="true">
               <tr ng-repeat="list in $data">
                   <td title="'Name'" filter="{ full_name: 'text'}" sortable="'full_name'">
                       {{list.full_name}}</td>
                   <td title="'Date Joined'"  sortable="'entered_on'">
                      {{list.entered_on | date:'medium'}}</td>
                   <td><button type="button" class="btn btn-primary" ng-click="onClickMember(list.user_id)"><i class="fa fa-pencil"></i></button></td>
-
+                  <td><button type="button" class="btn btn-success" ng-click="onClickPrductPurchase(list.user_id,list.full_name)"><i class="fa fa-cart-plus"></i></button></td>
               </tr>
           </table>
-          
+          </div>
         </div>
       </div>
     </div>
@@ -190,6 +240,39 @@
         </div>
       </div>
     </div>
+
+
+    <div class="modal fade" id="product-purchase-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal" >&times;</span>
+            <h1 align="center">Product Purchase</h1>
+          </div>
+
+          <div class="modal-body">
+
+            <form name="productPurchaseForm" ng-submit="onClickSavePrductPurchase(user_purchase_id)">
+            <div class="alert alert-success" role="alert" ng-show="purchaseSaveMessage">Save successfully</div>
+            <label>Name : {{user_purchase}}</label>
+            <br>
+            <label>Product Amount: </label>
+            <input type="text" class="form-control" name="product_amount" ng-model="product_amount" required>
+             <br>
+             <label>Date Brought : </label> 
+            <input type="date" class="form-control" name="date_brought" ng-model="date_brought" required>
+             <br> 
+            <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+
+
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
 
 
   

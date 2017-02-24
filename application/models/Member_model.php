@@ -153,6 +153,18 @@ class Member_model extends CI_Model{
 
     }
 
+    public function save_product_purchase($data){
+
+        if(!empty($data))
+        {
+            $response = $this->db->insert('product_purchase', $data);
+            $latest_id = $this->db->insert_id();
+
+        }
+        return $latest_id;
+
+    }
+
     public function update_donwline_position($data,$id, $pos){
 
         if(!empty($data))
@@ -578,6 +590,21 @@ class Member_model extends CI_Model{
                                      WHERE  rw.status = 0");
 
         return $result->result(); 
+    }
+
+    public function get_member_product_purchase($from,$to){
+
+        $result = $this->db->query(" SELECT 
+                                        u.user_id,
+                                        CONCAT(u.first_name ,' ', u.last_name) as full_name,
+                                        pp.product_purchase_id,
+                                        pp.amount,
+                                        pp.amount,
+                                        pp.user_id
+                                     FROM product_purchase as pp
+                                     JOIN users as u ON u.user_id = pp.user_id
+                                     WHERE pp.  date_purchase  BETWEEN '$from' AND '$to'");
+        return $result->result();
     }
 
  

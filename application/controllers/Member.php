@@ -16,9 +16,6 @@ class Member extends CI_Controller{
 			$data['user_info'] = $this->Member_model->get_user_info($this->session->userdata('user_id'));
 			$data['sponsor_by'] = $this->Member_model->get_user_info($data['user_info']->sponsor_by);
 
-			// echo "<pre>";
-			// print_r($data['sponsor_by']);
-			// echo "</pre>";
 			$this->load->view('includes/header');
 			$this->load->view('member/index',$data);
 			$this->load->view('includes/footer');
@@ -159,48 +156,13 @@ class Member extends CI_Controller{
 			$result = $this->Member_model->update_donwline_position($updated_data,$upline, strtolower($m_position));
 		}
 
-		// if($upline  == ''){
-		// 	//the  upline  will be  user_id 
-		// 	$temp_upline = $user_id;
-		// }else{
-		// 	$temp_upline = $upline;
-		// }
-
-
-
-        // $updated_data = array(
-
-        //     'position_left' => $position == 'left' ? $temp_upline : 0 ,
-        //     'position_right' => $position == 'right' ? $temp_upline : 0,
-        //     'upline' => $temp_upline,
-        // );
-		
-
-
-
-
 		if($result > 0 )
         {
 
             $this->response_code = 0;
             $this->response_message = "Success.. .";
 
-			// if($available_position != ''){
-			// 	//update the upper person  pisitioning
-		 //            if($available_position == 'Left'){
-			// 	        $updated_data = array(
-			// 	            'position_left' => $available_position == 'Left' ? 1 : 0 ,
-			// 	        );
-			// 	    }else{
-			// 	        $updated_data = array(
-			// 	            'position_right' => $available_position == 'Right' ? 1 : 0 ,
-			// 	        );
-				    
-			// 	    }
-
-			// 	$this->Member_model->update_donwline_position($updated_data,$upline);
-			// }
-        }
+		}
         else
         {
             $this->response_code = 1;

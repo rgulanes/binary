@@ -26,6 +26,44 @@ class Admin extends CI_Controller{
 
 	}
 
+	function save_product_purchase(){
+		$_POST = json_decode(file_get_contents('php://input'),true);
+		$id 	= $_POST['user_id'];
+		$amount = $_POST['amount'];
+		$date_purchase = date("Y-m-d", strtotime($_POST['date_purchase']));
+	
+	  	$insert_data = array(
+            'amount' => $amount,
+            'date_purchase' => $date_purchase,
+            'user_id' => $id,
+        );
+
+	  	$result = $this->Member_model->save_product_purchase($insert_data);
+
+
+	  	if($result > 0 )
+        {
+
+            $this->response_code = 0;
+            $this->response_message = "Success.. .";
+
+		}
+        else
+        {
+            $this->response_code = 1;
+            $this->response_message = "Error...";
+        }
+
+
+        echo json_encode(array(
+            "error"			=> $this->response_code,
+            "message"		=> $this->response_message
+        ));
+
+
+
+	}
+
 	function generateCode(){
 		$_POST = json_decode(file_get_contents('php://input'), true);
         $number =  $_POST['number'];
@@ -96,6 +134,16 @@ class Admin extends CI_Controller{
 		$data['result'] = $this->Member_model->update_request_status($id,$update_data);
 		return print json_encode($data);
 
+	}
+
+	function get_member_product_purchase(){
+		$_POST = json_decode(file_get_contents('php://input'),true);
+		$from  = date("Y-m-d", strtotime($_POST['from']));
+		$to  = date("Y-m-d", strtotime($_POST['to']));
+
+		$data['member_product_purchase'] = $this->Member_model->get_member_product_purchase($from,$to);
+
+		return print json_encode($data);
 	}
 }
 

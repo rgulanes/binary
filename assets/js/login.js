@@ -111,7 +111,6 @@ angular.module('binaryApp',['ui.select','ngTable'])
 					password 	: $scope.password,
 					generated_code 		: $scope.code,
 				});	
-				console.log(data);
 				
 				$scope.file =  $http({
 		          method  : 'POST',
@@ -119,8 +118,6 @@ angular.module('binaryApp',['ui.select','ngTable'])
 		          data    :  data, //forms user object
 		          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		         }).then(function(response){
-		         	console.log(response.data);
-
 		         	if(response.status == 200){
 		         	 	$scope.saveMessage = true;
 		         		$scope.firstname = '';
@@ -164,14 +161,12 @@ angular.module('binaryApp',['ui.select','ngTable'])
 			var data = angular.toJson({
 				code : $scope.code
 			})
-			console.log($base_url);
 			$scope.file	= $http({
 				method  : 'POST',
 		        url     : $base_url+'login/check_code',
 		        data    :  data, //forms user object
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'}
 			}).then(function(response){
-				console.log(response.data);
 				if(response.data.error == 0){
 					$scope.enterCode = false;
 

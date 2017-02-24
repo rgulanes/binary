@@ -152,7 +152,6 @@ angular.module('binaryApp')
 				id:''
 			});
 
-
 			$scope.file =  $http({
 		        method  : 'POST',
 		        url     : 'get_all_left',
@@ -161,13 +160,8 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	//$scope.list_left_member = response.data.left_member;
 		        	$scope.left_member_count = response.data.left_member[0].countLeft;
-		        	// angular.forEach($scope.list_left_member,function(file){
-		        	// 	file.entered_on = new Date(file.entered_on);
-		        	// })
-
-		      	});
+		       	});
 		}
 
 		$scope.get_coh = function(){
@@ -207,7 +201,6 @@ angular.module('binaryApp')
 			var data = angular.toJson({
 				id: $id
 			});
-			console.log(data);
 			$scope.file =  $http({
 		        method  : 'POST',
 		        url     : 'get_members_not_assigned',
@@ -216,8 +209,7 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		   			console.log(response.data.not_assigned);
-		      		
+		   	  		
 		   			if(response.data.not_assigned.length > 0 ){
 		   				$scope.notAssigned = true;
 		   				$scope.not_assigned = response.data.not_assigned;
@@ -238,7 +230,6 @@ angular.module('binaryApp')
 				position : $selected_position
 
 			});
-			console.log(data);
 			$scope.file =  $http({
 		        method  : 'POST',
 		        url     : 'get_last_available_downline',
@@ -247,8 +238,7 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	console.log(response.data);
-		   			if(response.data.available_downline.length > 0){
+		    		if(response.data.available_downline.length > 0){
 		   				//check if the both position is not  full
 		   				$scope.available_downline = true;
 		   				angular.forEach(response.data.available_downline,function(file){
@@ -278,11 +268,9 @@ angular.module('binaryApp')
 	    });
 
 		$scope.onCheckAvailablePosition = function(selected_upline){
-			console.log(selected_upline);
 			var data = angular.toJson({
 				id: selected_upline.u_user_id
 			});
-			console.log(data);
 			$scope.file =  $http({
 		        method  : 'POST',
 		        url     : 'check_available_position',
@@ -291,8 +279,7 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	console.log(response.data.positions[0]);
-		   			if(response.data.positions.length > 0 ){
+		        	if(response.data.positions.length > 0 ){
 		   				$scope.available_position = true;
 
 		   				if((response.data.positions[0].position_right == '' && response.data.positions[0].position_left == '') || (response.data.positions[0].position_right == '0' && response.data.positions[0].position_left == '0')){
@@ -336,7 +323,6 @@ angular.module('binaryApp')
 							upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id,
 							available_position : $scope.selected_available_position == null ? '' : $scope.selected_available_position.position_name
 						});
-						//console.log(data);
 						$scope.file =  $http({
 					        method  : 'POST',
 					        url     : 'update_donwline_position',
@@ -376,7 +362,6 @@ angular.module('binaryApp')
 							upline : $scope.selected_upline == null ? '' : $scope.selected_upline.u_user_id,
 							available_position : $scope.selected_available_position == null ? '' : $scope.selected_available_position.position_name
 						});
-						console.log(data);
 						$scope.file =  $http({
 					        method  : 'POST',
 					        url     : 'update_donwline_position',

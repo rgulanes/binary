@@ -11,6 +11,7 @@ angular.module('binaryApp')
 
 		$scope.saveMessage = false;
 		$scope.updateMemberError = false;
+		$scope.purchaseSaveMessage = false;
 
 		$scope._username = '';
 		$scope._password = '';
@@ -157,7 +158,6 @@ angular.module('binaryApp')
 		        .then(function(response) 
 		        {
 		        	angular.forEach(response.data.member_details,function(data){
-		        		console.log(data);
 		        		$scope.firstname = data.first_name;
 		        		$scope.lastname = data.last_name;
 		        		$scope.gender = data.gender;
@@ -251,14 +251,55 @@ angular.module('binaryApp')
 			$("#search-members-modal").modal('show');
 		}
 		
+		$scope.onClickPrductPurchase = function($id,$full_name){
+			$scope.user_purchase = $full_name;
+			$scope.user_purchase_id = $id;
+ 			$scope.product_amount = '';
+ 			$scope.date_brought = '';
+			$scope.purchaseSaveMessage = false;
+			$('#product-purchase-modal').modal('show');
+
+		}
+
+		$scope.onClickSavePrductPurchase = function($id){
+
+			var data  = angular.toJson({
+				amount : $scope.product_amount,
+				date_purchase : $scope.date_brought,
+				user_id : $id
+			});
+
+			$scope.file  = $http({
+				method  : 'POST',
+		        url     : '../admin/save_product_purchase',
+		        data    :  data, //forms user object
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+			}).then(function(response){
+				if(response.data.error == 0 ){
+					$scope.purchaseSaveMessage = true;
+					setTimeout(function(){ 	
+				      	$('#product-purchase-modal').modal('hide'); 
+				  	}, 1500);
+				}
+
+			});
+		}
+
+		$scope.onSearchProduct = function(){
+
+			var data = angular.toJson({
+				from : $scope.date_from,
+				to : $scope.date_to
+			});
+
+			$scope.file = $http({
+				method  : 'POST',
+		        url     : '../admin/get_member_product_purchase',
+		        data    :  data, //forms user object
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+			}).then(function(response){
+				$scope.member_product_purchase = response.data.member_product_purchase;
+			});
+
+		}		
 }); 
-
-$(document).ready(function(){
-	$('#member_tbl').DataTable({
-		"lengthMenu": [[5, 10, 20, -1], [5, 10, 20, "All"]],
-    	"pageLength": 5,
-
-	});
-
-	
-});
