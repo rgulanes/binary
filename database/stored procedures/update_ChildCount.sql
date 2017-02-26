@@ -27,7 +27,7 @@ BEGIN
 		THEN
 			IF _newCount != count
 				THEN
-					IF _newCount <= _maxChild AND _oldCount != _newCount
+					IF _newCount <= _maxChild AND count != _newCount
 						THEN
 							UPDATE _currentchild SET old_count = count, new_count = _newCount WHERE depth = depthId;
 					ELSEIF _newCount = _maxChild
@@ -35,7 +35,7 @@ BEGIN
 							UPDATE _currentchild SET old_count = count, new_count = _newCount WHERE depth = depthId;
 					END IF;
 			ELSE
-				IF _newCount <= _maxChild AND _oldCount != _newCount
+				IF _newCount <= _maxChild AND count != _newCount
 					THEN
 						UPDATE _currentchild SET old_count = count, new_count = _newCount WHERE depth = depthId;
 				ELSEIF _newCount = _maxChild
