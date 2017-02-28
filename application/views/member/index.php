@@ -17,6 +17,14 @@
                -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Profile
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#" ng-click="onClickUpdateProfile()">Update Profile</a></li>
+                  <li><a href="#" ng-click="onClickChangePassword()">Change Passwrod</a></li>
+                </ul>
+              </li>
               <li><a style="cursor: pointer;" id="view-tree">View Tree</a></li>
               <li><a href="#" ng-click="onclickCashout()">Cash out</a></li>
               <li><a href="#" ng-click="onclickLogout()">Log Out</a></li>
@@ -264,6 +272,73 @@
           </div>
           <br>
             <button type="button" class="btn btn-primary" ng-click="onClickRequestedAmount()">Send Request</button>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="update-profile-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h1 align="center">Update Profile</h1>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-success" role="alert" ng-show="saveMessage">Save successfully</div>
+            <form name="update-profile" ng-submit="onUpdateProfile()">
+            
+            <label>First Name:</label>
+            <input type="text" name="requested-amount" ng-model="update_first_name" class="form-control" required placeholder="First Name">
+            <br>
+            <label>Last Name:</label>
+            <input type="text" name="requested-amount" ng-model="update_last_name" class="form-control" required placeholder="Last Name">
+            <br>
+            <label>Gender:</label>
+            <input type="text" name="requested-amount" ng-model="update_gender" class="form-control" required placeholder="Gender">
+            <br>
+            <label>Email:</label>
+            <input type="email" name="requested-amount" ng-model="update_email" class="form-control" required placeholder="Email">
+            <br>
+            <label>Contact:</label>
+            <input type="text" name="requested-amount" ng-model="update_contact" class="form-control" required placeholder="Contact">
+            <br>
+            <label>Address:</label>
+            <input type="text" name="requested-amount" ng-model="update_address" class="form-control" required placeholder="Address">
+            <br>
+            <button type="submit" class="btn btn-primary">Save</button>
+                      
+            </form>
+
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h1 align="center">Change Password</h1>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-success" role="alert" ng-show="saveMessage">Password change successfully</div>
+            <form name="update-profile" ng-submit="onChangePassword()">
+               <label>Current Password:</label>
+              <input type="text" name="requested-amount" ng-model="current_password" class="form-control"  required>
+              <br>
+              <label>Enter New Password:</label>
+              <input type="text" name="requested-amount" ng-model="new_password" class="form-control" required >
+              <br>
+              <button type="submit" class="btn btn-primary">Save New Password</button>
+                      
+            </form>
+
           </div>
           <br>
         </div>

@@ -65,8 +65,6 @@
                           <span class="label label-danger" ng-if="list.status == 1">Used</span>
                         </td>
                       </tr>
-                     
-
                     </tbody>
                   </table>
                
@@ -226,7 +224,7 @@
                      <span class="danger">(Required)</span> 
                     <input type="text" name="user" ng-model="username" placeholder="Username" >
                     <span class="danger">(Required)</span>
-                    <input type="password" name="pass" ng-model="password" placeholder="Password" >
+                    <input type="text" name="pass" ng-model="password" placeholder="Password" >
                     <input type="submit" name="login" class="login loginmodal-submit" value="Save" ng-click="onUpdateMember('<?php echo base_url();?>')">
 
                     </form>

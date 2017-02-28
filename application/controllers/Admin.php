@@ -145,6 +145,91 @@ class Admin extends CI_Controller{
 
 		return print json_encode($data);
 	}
+
+	function get_profile_info(){
+	
+		$id = $this->session->userdata('user_id');
+		$data['profile_info'] = $this->Member_model->get_user_info($id);
+		return print json_encode($data);
+	}
+
+	function update_profile_info(){
+
+		$_POST = json_decode(file_get_contents('php://input'),true);	
+
+		$user_id	= $_POST['user_id'];
+		$first_name = $_POST['first_name'];
+		$last_name 	= $_POST['last_name'];
+		$contact 	= $_POST['contact'];
+		$email 		= $_POST['email'];
+		$address 	= $_POST['address'];
+		$gender 	= $_POST['gender'];
+
+        $update_data = array(
+            'first_name' => ucwords($first_name),
+            'last_name' => ucwords($last_name),
+            'gender' => ucwords($gender),
+            'contact' => $contact,
+            'email' => $email,
+            'address' => ucwords($address),
+            
+        );
+        
+        $inserted = $this->Member_model->update_member($user_id,$update_data);
+
+		if($inserted > 0 )
+        {
+            $this->response_code = 0;
+            $this->response_message = "Save Successfully";
+        }
+        else
+        {
+            $this->response_code = 1;
+            $this->response_message = "Failed to save.";
+        }
+
+
+        echo json_encode(array(
+            "error"         => $this->response_code,
+            "message"       => $this->response_message,
+        ));
+    
+    }
+
+    function update_password(){
+
+    	$_POST = json_decode(file_get_contents('php://input'),true);	
+
+		$user_id	= $_POST['user_id'];
+    	$password 	= $_POST['new_password'];
+    
+    	$update_data = array(
+            'password' => ucwords($password),
+        );
+
+        $inserted = $this->Member_model->update_member($user_id,$update_data);
+
+		if($inserted > 0 )
+        {
+            $this->response_code = 0;
+            $this->response_message = "Save Successfully";
+        }
+        else
+        {
+            $this->response_code = 1;
+            $this->response_message = "Failed to save.";
+        }
+
+
+        echo json_encode(array(
+            "error"         => $this->response_code,
+            "message"       => $this->response_message,
+        ));
+
+    }	
+
+
+
 }
 
 

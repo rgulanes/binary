@@ -1,4 +1,7 @@
 angular.module('binaryApp')
+.config(['$qProvider', function ($qProvider) {
+    $qProvider.errorOnUnhandledRejections(false);
+}])
 	.controller('memberCtrl', function ($scope, $http, $location, $window){
 
 		$scope.firstname = '';
@@ -43,7 +46,6 @@ angular.module('binaryApp')
 		$scope.onShowModal = function($id,$firstname,$lastname){
 			$scope.unposition_user = $firstname +' '+ $lastname;
 			$scope.select_id = $id;
-
 			$('#position-modal').modal('show'); 
 		}
 
@@ -70,9 +72,8 @@ angular.module('binaryApp')
 			$scope.show_cash_request_error = false;
 			$scope.requested_amount = '';
 			$('#cash-out-modal').modal('show');
-			
-
 		}
+
 		$scope.onClickCloseRequestedAmount = function(){
 			$('#cash-out-modal').modal('hide');
 			$scope.requested_amount = '';
@@ -122,8 +123,6 @@ angular.module('binaryApp')
 				$scope.cash_request_message = 'Please enter amount';
 
 			} 
-			
-
 		}
 
 		$scope.sponsoredMember = function($id){
@@ -174,7 +173,7 @@ angular.module('binaryApp')
 		        		$scope.user_coh = v.totalCashOnHand;
 		        	});
 		      	});
-		};
+		}
 
 		$scope.get_right_member = function(){
 			
@@ -256,7 +255,6 @@ angular.module('binaryApp')
 		   				$scope.available_position = false;
 		   			}
 		      	});
-
 		}
 
 		//Modal Events
@@ -301,6 +299,7 @@ angular.module('binaryApp')
 		      	
 		      	});
 		}
+		
 		$scope.onclickSavePosition = function(){
 			$scope.position_error = false;
 			$scope.select_donwline = false;
@@ -398,8 +397,104 @@ angular.module('binaryApp')
 		}
 
 
+		$scope.onClickUpdateProfile =  function(){
+			$scope.saveMessage = false;
+			$scope.getProfileInfo();
+			$("#update-profile-modal").modal('show');
+		}
+
+		$scope.onClickChangePassword =  function(){
+			$scope.saveMessage = false;
+			$scope.getProfileInfo();
+			$("#change-password-modal").modal('show');
 		
-	}); 
+		}
+
+		$scope.getProfileInfo = function(){
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../admin/get_profile_info',
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        }).then(function(response) 
+		        {
+		      		angular.forEach(response.data,function(data){
+		   	  			$scope.update_user_id = data.user_id;
+		   	  			$scope.update_first_name = data.first_name;
+		   	  			$scope.update_last_name = data.last_name;
+		   	  			$scope.update_contact = data.contact;
+		   	  			$scope.update_address = data.address;
+		   	  			$scope.update_email = data.email;
+		   	  			$scope.update_gender = data.gender;
+		   	  			$scope.current_password = data.password;
+		   	  		})
+		      	});
+		}
+
+		$scope.onChangePassword = function(){
+
+			
+			var data = angular.toJson({
+				user_id : $scope.update_user_id,
+				new_password : $scope.new_password,
+			});	
+			
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../admin/update_password',
+		        data 	: data,
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		      		console.log(response.data);
+		      		if(response.data.error == 0){
+		      			$scope.saveMessage = true;
+		      			setTimeout(function(){ 	
+							$("#change-password-modal").modal('hide');
+						}, 1500);
+		      		}else{
+
+		      		}
+		      	});
+
+		
+
+		}
+
+		$scope.onUpdateProfile = function(){
+
+			var data = angular.toJson({
+				user_id : $scope.update_user_id,
+				first_name : $scope.update_first_name,
+				last_name : $scope.update_last_name,
+				contact : $scope.update_contact,
+				address : $scope.update_address,
+				email : $scope.update_email,
+				gender : $scope.update_gender,
+			});	
+		
+				$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../admin/update_profile_info',
+		        data 	: data,
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		      		console.log(response.data);
+		      		if(response.data.error == 0){
+		      			$scope.saveMessage = true;
+		      			setTimeout(function(){ 	
+							location.reload();
+						}, 1500);
+		      		}else{
+
+		      		}
+		      	});
+		}
+
+		
+}); 
 
 
 $(document).ready(function(){
