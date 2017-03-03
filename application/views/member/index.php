@@ -34,7 +34,7 @@
       </nav>
 
       <!-- Main component for a primary marketing message or call to action -->
-      <div class="container-fluid" ng-show="notAssigned">
+      <!-- <div class="container-fluid" ng-show="notAssigned">
         <div class="panel panel-danger">
               <div class="panel-heading"><b> Please Assign  <i class="fa fa-exclamation-triangle pull-right"></i> </b></div>
               <div class="panel-body">
@@ -63,7 +63,7 @@
 
               </div>
         </div>
-      </div>
+      </div> -->
 
       <div class="container-fluid">
         <div class="row">
@@ -140,7 +140,7 @@
           </div>
         </div>
       </div>
-      <div class="container-fluid">
+      <!-- <div class="container-fluid">
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="panel panel-primary">
@@ -177,46 +177,8 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>  -->
       
-     <!--  <div class="container-fluid">
-        <div class="panel panel-primary">
-              <div class="panel-heading"><b>People Sponsored  <i class="fa fa-users pull-right"></i> </b></div>
-              <div class="panel-body">
-                <table class="table" style="margin-top:13px;">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Contact</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                     
-                        <th>Date Joined</th>
-                       
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="list in sponsored_member">
-                        <td>{{list.first_name}} {{list.last_name}}</td>
-                        <td>{{list.gender}}</td>
-                        <td>{{list.contact}}</td>
-                        <td>{{list.email}}</td>
-                        <td>{{list.address}}</td>
-                        <td>{{list.entered_on | date:'medium'}}</td>
-                        
-                      </tr>
-                     
-
-                    </tbody>
-                  </table>
-
-              </div>
-        </div>
-      </div> -->
-
-
     <div class="modal fade" id="position-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
         <div class="loginmodal-container">

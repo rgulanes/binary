@@ -1,5 +1,37 @@
-angular.module('binaryApp',['ui.select','ngTable'])
-	.controller('loginCtrl', function ($scope, $http, $location, $window){
+angular.module('binaryApp',['ui.select','ngTable','ui.select'])
+.filter('propsFilter', function() {
+  return function(items, props) {
+    var out = [];
+
+    if (angular.isArray(items)) {
+      var keys = Object.keys(props);
+
+      items.forEach(function(item) {
+        var itemMatches = false;
+
+        for (var i = 0; i < keys.length; i++) {
+          var prop = keys[i];
+          var text = props[prop].toLowerCase();
+          if (item[prop].toString().toLowerCase().indexOf(text) !== -1) {
+            itemMatches = true;
+            break;
+          }
+        }
+
+        if (itemMatches) {
+          out.push(item);
+        }
+      });
+    } else {
+      // Let the output be the input untouched
+      out = items;
+    }
+
+    return out;
+  };
+})
+
+.controller('loginCtrl', function ($scope, $http, $location, $window){
 
 		$scope.firstname = '';
 		$scope.lastname = '';
@@ -23,6 +55,15 @@ angular.module('binaryApp',['ui.select','ngTable'])
 
 		$scope.enterCode = true;
 		$scope.errorCode = false;
+		$scope.sponsor = [];
+		$scope.upline = [];
+
+		$scope.available_downline = false;
+
+		$scope.sponsor_position = [
+			{ position_name : 'Left' },
+			{ position_name : 'Right' }
+		]
 
 		$scope.onLoadUrl = function($base_url){
 			$scope.getAllMembers($base_url);
@@ -68,35 +109,99 @@ angular.module('binaryApp',['ui.select','ngTable'])
 			}
 		}
 
-		$scope.onSaveMember = function($base_url){
-			var error = 0;
-			if($scope.firstname == '' ){
-				error+=1;
-			}else if($scope.lastname == ''){
-				error+=1;
-				
-			}else if($scope.gender == ''){
-				error+=1;
-		
-			}else if($scope.contact == ''){
-				error+=1;
-		 
-			}else if($scope.address == ''){
-				error+=1;
-		
-			}else if($scope.sponsor == null){
-				error+=1;
-		
-			}else if($scope.username == ''){
-				error+=1;
-		
-			}else if($scope.password == ''){
-				error+=1;
-		
+		$scope.onSavePosition = function($lastest_id){
+			// var data = angular.toJson({
+			// 	id 		 : $scope.sponsor.selected.user_id,
+			// 	downline : $lastest_id,
+			// 	position : $scope.sponsor_position,
+			// 	upline   : $scope.upline.selected.u_user_id,
+			// 	available_position : $scope.downline_position
+			// });
+			var data = new Object;
+			if($scope.list_available_downline.length != 0){
+				data = angular.toJson({
+					id 		 : $scope.sponsor,
+					downline : $lastest_id,
+					position : $scope.sponsor_position,
+					upline   : $scope.available_downline_id,
+					available_position : $scope.downline_position
+				});
+			}else{
+				data = angular.toJson({
+					id 		 : $scope.sponsor,
+					downline : $lastest_id,
+					position : $scope.sponsor_position,
+					upline   : '',
+					available_position : ''
+				});
 			}
+
+			console.log(data);
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../member/update_donwline_position',
+		        data    :  data, //forms user object
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		   			console.log(response);
+		   			if(response.data.error == 0 ){
+		   				$scope.position_save = true;
+		   				setTimeout(function(){ 	
+					      	$('#position-modal').modal('hide'); 
+					      	$scope.position_save = false;
+						}, 1500);
+
+			   		}else{
+		   			}
+		   			
+		      	});
+		}
+
+		$scope.onSaveMember = function($base_url){
+
+			
+
+			console.log('$scope.list_available_downline.length',$scope.list_available_downline);
+
+			$scope._errorMessage = '';
+			var error = 0;
+			var sponsor_errorMessage = '';
+			var sponsor_position_errorMessage = '';
+			var downline_position_errorMessage = '';
+			var available_downline_errorMessage = '';
+
+			if($scope.sponsor.selected == undefined ){
+				sponsor_errorMessage = '(Sponsor)';
+				error+=1;
+			}
+			if($scope.sponsor_position_selected  == undefined ){
+				sponsor_position_errorMessage = '(Sponsor Position)';
+				error+=1;
+			}
+			
+			if($scope.list_available_downline.length !=  0)
+			{
+
+				if($scope.upline.selected == undefined){
+					available_downline_errorMessage = '(Available Downline)';
+					error+=1;
+				}
+				if($scope.downline_position == undefined){
+					downline_position_errorMessage = '(Downline Position)';
+					error+=1;
+				}
+			}
+
 			if(error > 0){
 				$scope.newMemberError = true;
+				$scope._errorMessage = sponsor_errorMessage+' '+sponsor_position_errorMessage+' '+available_downline_errorMessage+' '+downline_position_errorMessage; 
 			}else{
+				errro = 0;
+				$scope.newMemberError = false;
+				$scope.sponsor = $scope.sponsor.selected.user_id;
+				$scope.upline = $scope.upline.selected.user_id;
 
 				var data = angular.toJson({
 					user_id 	: '',
@@ -112,13 +217,23 @@ angular.module('binaryApp',['ui.select','ngTable'])
 					generated_code 		: $scope.code,
 				});	
 				
-				$scope.file =  $http({
+					$scope.file =  $http({
 		          method  : 'POST',
 		          url     : $base_url+'login/save_member',
 		          data    :  data, //forms user object
 		          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		         }).then(function(response){
+		         	console.log('save_member',response.status);
 		         	if(response.status == 200){
+		         	 	//save the positioning
+		         	 	if(response.data.user_id > 0 ){
+							if($scope.list_available_downline.length != 0){
+								$scope.onSavePosition(response.data.user_id);
+							}else{
+							}
+		         	 	}else{
+
+		         	 	}
 		         	 	$scope.saveMessage = true;
 		         		$scope.firstname = '';
 						$scope.lastname = '';
@@ -130,13 +245,100 @@ angular.module('binaryApp',['ui.select','ngTable'])
 						$scope.email = '';
 						$scope.sponsor = '';
 		         	}
-		         	setTimeout(function(){ 	
-				      	$('#add-modal').modal('hide'); 
-				      	$scope.saveMessage = true;
-				   	}, 1500);
+		      //    	setTimeout(function(){ 	
+				    //   	$('#add-modal').modal('hide'); 
+				    //   	$scope.saveMessage = true;
+				   	// }, 1500);
 		        });
 		    }     
 		}
+
+		
+
+
+		$scope.onChangePosition = function($selected_position){
+
+			$scope.list_available_downline = [];
+			$scope.sponsor_position_selected = $selected_position;
+			$scope.selected_position = $selected_position;
+			var data = angular.toJson({
+				id 		 :	$scope.sponsor.selected.user_id,
+				position : 	$selected_position
+
+			});
+			console.log(data);
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../member/get_last_available_downline',
+		        data    :  data, //forms user object
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		        	console.log(response.data);
+		    		if(response.data.available_downline.length > 0){
+		   				//check if the both position is not  full
+		   				$scope.available_downline = true;
+		   				angular.forEach(response.data.available_downline,function(file){
+		   					if(file.p_left == '1' && file.p_right == '1'){
+		  					}else{
+		  						file.full_name = '';
+		  						file.full_name = file.u_first_name+' '+file.u_last_name;
+		   			  			$scope.list_available_downline.push(file); 
+		   					}
+		   				});
+		   				//required the selected downline 
+
+
+		   			}else{
+		   				//doesnt yet donwlines.
+		   				$scope.list_available_downline = [];
+		   				$scope.available_downline = false;
+		   				$scope.available_position = false;
+		   			}
+		      	});
+		}
+
+		$scope.onCheckAvailablePosition = function(selected_upline){
+
+			$scope.available_downline_id = selected_upline.u_user_id;
+			var data = angular.toJson({
+				id: selected_upline.u_user_id
+			});
+
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../member/check_available_position',
+		        data    :  data, //forms user object
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		        	if(response.data.positions.length > 0 ){
+
+		        		$scope.available_position = true;
+		        		if((response.data.positions[0].position_right == '' && response.data.positions[0].position_left == '') || (response.data.positions[0].position_right == '0' && response.data.positions[0].position_left == '0')){
+		   					$scope.available_list_position = [
+		   						{ position_name : 'Left' },
+		   						{ position_name : 'Right' }
+		   					]
+		   				}else if((response.data.positions[0].position_right == '' && response.data.positions[0].position_left > '1') || (response.data.positions[0].position_right == '0' && response.data.positions[0].position_left > '1')){
+		   					$scope.available_list_position = [
+		   						{ position_name : 'Right' }
+		   					]
+		   				}else if((response.data.positions[0].position_right > '1' && response.data.positions[0].position_left == '') || response.data.positions[0].position_right > '1' && response.data.positions[0].position_left == '0'){
+		   					$scope.available_list_position = [
+		   						{ position_name : 'Left' }
+		   					]
+		   			
+		   				}
+
+		   			}
+		      	
+		      	});
+		}
+		
+
 
 
 		$scope.getAllMembers = function($base_url){
@@ -151,6 +353,8 @@ angular.module('binaryApp',['ui.select','ngTable'])
 		        .then(function(response) 
 		        {
 		        	angular.forEach(response.data.user_info,function(file){
+		        		file.full_name = '';
+		        		file.full_name = file.first_name +' '+ file.last_name;
 		        		$scope.member_list.push(file);
 		        	})
 		        		
@@ -181,9 +385,9 @@ angular.module('binaryApp',['ui.select','ngTable'])
 		}
 
 		//Modal Events
-	    $('#add-modal').on('hidden.bs.modal', function () {
-			location.reload();
-	    });
+	  //   $('#add-modal').on('hidden.bs.modal', function () {
+			// location.reload();
+	  //   });
 		
 	}); 
 

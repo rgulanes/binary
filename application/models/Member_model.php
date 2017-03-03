@@ -165,7 +165,7 @@ class Member_model extends CI_Model{
 
     }
 
-    public function update_donwline_position($data,$id, $pos){
+    public function update_donwline_position($data,$id, $pos, $userId){
 
         if(!empty($data))
         {
@@ -199,7 +199,7 @@ class Member_model extends CI_Model{
                             $position = 'left';
                         }
 
-                        $this->add_userDownline($id, $child, $position, $pos, $this->session->userdata('user_id'));
+                        $this->add_userDownline($id, $child, $position, $pos, $userId);
 
                     }
                 }else{
@@ -398,7 +398,7 @@ class Member_model extends CI_Model{
             $response = 0;
             $this->db->trans_start();
             $this->db->query("CALL add_userCommission('$userId', '$amount', '$desc', '$rUserid', null)");
-            mysqli_next_result($this->db->conn_id);
+            //mysqli_next_result($this->db->conn_id);
             $this->db->trans_complete();
 
             if ($this->db->trans_status() === FALSE)

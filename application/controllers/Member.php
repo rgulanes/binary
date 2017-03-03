@@ -103,7 +103,7 @@ class Member extends CI_Controller{
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$id = $_POST['id'];
 		$position = $_POST['position'];
-
+		$this->Member_model->get_Hierarchy($id);
 		$data['available_downline'] = $this->Member_model->get_last_available_downline($id,$position);
 		return print json_encode($data);
 		
@@ -118,7 +118,7 @@ class Member extends CI_Controller{
 		$position = $_POST['position'];
 		$downline  = $_POST['downline'];
 		$upline = $_POST['upline'];
-		$available_position = $_POST['available_position'];
+		$available_position = strtolower($_POST['available_position']);
 
 
 		$m_position = '';
@@ -138,7 +138,7 @@ class Member extends CI_Controller{
 			}	
 
 			$m_position = $position;
-			$result = $this->Member_model->update_donwline_position($updated_data,$user_id, strtolower($m_position));
+			$result = $this->Member_model->update_donwline_position($updated_data,$user_id, strtolower($m_position), $downline);
 		}else{
 			if(strtolower($available_position) == 'left'){
 				$updated_data = array(
@@ -153,7 +153,7 @@ class Member extends CI_Controller{
 			}	
 
 			$m_position = $position;
-			$result = $this->Member_model->update_donwline_position($updated_data,$upline, strtolower($m_position));
+			$result = $this->Member_model->update_donwline_position($updated_data,$upline, strtolower($m_position), $downline);
 		}
 
 		if($result > 0 )

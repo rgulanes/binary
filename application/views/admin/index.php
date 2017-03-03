@@ -156,6 +156,28 @@
       </div>
     </div>
 
+
+
+    <div class="modal fade" id="code-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal" >&times;</span>
+            <h1 align="center">Generate Code</h1>
+          </div>
+          <div class="modal-body">
+            <form name="productPurchaseForm" ng-submit="onclickGenerateCode()">
+              <input type="text" name="pass" class="form-control" ng-model="code_number" placeholder="How many codes?" required>
+              <br>
+              <button class="btn btn-primary" type="submit">Generate</button>
+            </form>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+
+<!-- 
     <div class="modal fade" id="code-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
         <div class="loginmodal-container">
@@ -165,7 +187,7 @@
           </form>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <div class="modal fade" id="search-members-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
@@ -193,47 +215,79 @@
 
     <div class="modal fade" id="members-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
-        <div class="loginmodal-container" style="max-width:initial;">
-        <h1>Update Profile</h1><br>
-        <div class="alert alert-success" role="alert" ng-show="saveMessage">Save successfully</div>
-        <div class="alert alert-danger" role="alert" ng-show="updateMemberError">Fill Required Fields</div>
-         <div class="row">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h1 align="center">Update Employee</h1>
+          </div>
+          <div class="modal-body">
+          <div class="alert alert-success" role="alert" ng-show="saveMessage">Save successfully</div>
+          <div class="alert alert-danger" role="alert" ng-show="updateMemberError">Fill Required Fields</div>
+          <form name="add-employee" ng-submit="onUpdateMember('<?php echo base_url();?>')">
+              <div class="row">
                 <div class="col-md-6 col-lg-6">
-                  <form>
-                    <span class="danger">(Required)</span>
-                    <input type="text" style="text-transform: capitalize;" name="user" ng-model="firstname" placeholder="First Name" autofocus >
-                    <span class="danger">(Required)</span>
-                    <input type="text" style="text-transform: capitalize;" name="pass" ng-model="lastname" placeholder="Last Name" >
-                    <span class="danger">(Required)</span>
-                    <input type="text" style="text-transform: capitalize;" name="pass" ng-model="gender" placeholder="Gender" >
-                    <span class="danger">(Required)</span>
-                    <input type="text" name="pass" maxlength="11" ng-model="contact" placeholder="Contact" >
-                    
-                    <input type="text" name="pass" ng-model="email" placeholder="Email">
-                  </form>
+                    <div class="form-group">
+                        <label for="usr">First Name:</label>
+                      <input class="form-control" required type="text" name="user" ng-model="firstname" placeholder="First Name" autofocus >
+                      </div>  
+                    <div class="form-group">
+                        <label for="usr">Last Name:</label>
+                      <input class="form-control" required type="text" name="pass" ng-model="lastname" placeholder="Last Name" >
+                    </div>  
+                    <div class="form-group">
+                        <label for="usr">Gender:</label>
+                      <input class="form-control" required type="text" name="pass" ng-model="gender" placeholder="Gender" >
+                    </div>  
+                    <div class="form-group">
+                        <label for="usr">Contact Number :</label>
+                      <input class="form-control" required type="text" name="pass" maxlength="11" ng-model="contact" placeholder="Contact" >
+                      </div>  
+                    <div class="form-group">
+                        <label for="usr">Email:</label>
+                      <input class="form-control"  type="text" name="pass" ng-model="email" placeholder="Email">
+                    </div>  
+                    <div class="form-group">
+                        <label for="usr">Address:</label>
+                      <input class="form-control" required type="text"  name="pass" ng-model="address" placeholder="Address" >
+                    </div>  
                 </div>
                 <div class="col-md-6 col-lg-6">
-                  <form>
-                    <span class="danger">(Required)</span>
-                    <input type="text"  style="text-transform: capitalize;" name="pass" ng-model="address" placeholder="Address" >
-                    <span class="danger">(Required)</span>
-                    <select  class="sponsor" name="repeatSelect" id="repeatSelect" ng-model="sponsor">
-                        <option value="" disabled selected>Select Sponsor</option>
-                        <option ng-repeat="list in member_list" value="{{list.user_id}}">{{list.first_name}} {{list.last_name}}</option>
-                      </select>
-                     <span class="danger">(Required)</span> 
-                    <input type="text" name="user" ng-model="username" placeholder="Username" >
-                    <span class="danger">(Required)</span>
-                    <input type="text" name="pass" ng-model="password" placeholder="Password" >
-                    <input type="submit" name="login" class="login loginmodal-submit" value="Save" ng-click="onUpdateMember('<?php echo base_url();?>')">
-
-                    </form>
+                    <div class="form-group">
+                        <label for="usr">Username:</label>
+                      <input class="form-control" required type="text" name="user" ng-model="username" placeholder="Username" >
+                    </div>  
+                    <div class="form-group">
+                        <label for="usr">Password:</label>
+                      <input class="form-control" required type="password"  ng-model="password" placeholder="Password" >
+                      </div>
+                       <div class="form-group">
+                        <label for="usr">Sponsor:</label>
+                      <input class="form-control" required type="text" readonlys name="user" ng-model="sponsor" placeholder="Username" >
+                    </div>
+                    <div class="form-group">
+                        <label for="usr">Sponsor Position:</label>
+                      <input class="form-control" readonly type="text" name="user" ng-model="sponsor_position" placeholder="Username" >
+                    </div>    
+                    <div class="form-group">
+                        <label for="usr">Upline:</label>
+                      <input class="form-control" required readonly type="text" name="user" ng-model="upline" placeholder="Username" >
+                    </div>  
+                    <div class="form-group">
+                        <label for="usr">Upline Position:</label>
+                      <input class="form-control" readonly type="text" name="user" ng-model="upline_position" placeholder="Username" >
+                    </div>  
+                  
+                
                 </div>
               </div>
+              <br>
+              <button type="submit" class="btn btn-primary center-block">Save</button>
+            </form>   
+          </div>
+          <br>
         </div>
       </div>
     </div>
-
 
     <div class="modal fade" id="product-purchase-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
@@ -276,4 +330,4 @@
        
     
 
-    </div> <!-- /container -->
+    

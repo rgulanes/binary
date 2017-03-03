@@ -104,6 +104,7 @@ class Login extends CI_Controller {
 
             $this->response_code = 0;
             $this->response_message = "Save Successfully";
+            $this->response_id = $inserted;
 
             if($user_id == ''){
                 $this->Member_model->update_code($update_codes,$generated_code);
@@ -120,11 +121,10 @@ class Login extends CI_Controller {
         echo json_encode(array(
             "error"         => $this->response_code,
             "message"       => $this->response_message,
+            "user_id"       => $this->response_id,
         ));
     
     }
-
-
 
 
 	function user_authentication(){

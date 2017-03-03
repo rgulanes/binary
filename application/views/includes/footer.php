@@ -3,6 +3,7 @@
 	<script src="<?php echo base_url(); ?>bower_components/bootstrap/dist/js/bootstrap.js"></script>
 	<script src="<?php echo base_url(); ?>bower_components/angular-ui-select/dist/select.js"></script>
 	<script src="<?php echo base_url(); ?>bower_components/ng-table/bundles/ng-table.min.js"></script>
+	<script src="<?php echo base_url(); ?>bower_components/angular-ui-select/dist/select.min.js"></script>
 
 
 	<!-- Datatables -->
