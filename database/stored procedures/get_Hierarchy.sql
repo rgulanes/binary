@@ -35,10 +35,15 @@ BEGIN
 		IF ROUND((childCount / 2), 2) % 1 = 0.00
 			THEN
 				WHILE _depth < _maxCount DO
+					SET oDepth = _depth;
 					INSERT INTO _selectedhierarchy (child, depth, full_name, parent, position, m_position) 
-						SELECT child, _depth AS depth,
-						full_name, parent, position, m_position FROM _hierarchy WHERE depth = _depth;
-					SET _depth = _depth + 1;
+						SELECT child,
+						CASE
+							WHEN _depth IN (0, 1) THEN _depth
+							WHEN _depth - oDepth = 1 THEN _depth ELSE oDepth - 1 END AS depth,
+					full_name, parent, position, m_position FROM _hierarchy WHERE depth = _depth
+					HAVING depth IS NOT NULL;
+				SET _depth = _depth + 1;
 				END WHILE;
         ELSE
 			WHILE _depth <= _maxCount DO
@@ -55,9 +60,12 @@ BEGIN
 	ELSE
 		WHILE _depth < _maxCount DO
 			INSERT INTO _selectedhierarchy (child, depth, full_name, parent, position, m_position) 
-				SELECT child, _depth AS depth,
+				SELECT child,
+                CASE
+					WHEN _depth IN (0, 1, 2) THEN _depth ELSE oDepth END AS depth,
 				full_name, parent, position, m_position FROM _hierarchy WHERE depth = _depth;
 			SET _depth = _depth + 1;
+            SET oDepth = _depth - 1;
 		END WHILE;
     END IF;
     

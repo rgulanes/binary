@@ -1,5 +1,5 @@
 DROP PROCEDURE IF EXISTS update_ChildCount;
--- CALL update_ChildCount(1)
+-- CALL update_ChildCount(2)
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_ChildCount`(IN `depthId` INT(11))
 BEGIN

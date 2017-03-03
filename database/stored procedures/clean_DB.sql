@@ -28,7 +28,7 @@ BEGIN
 	INSERT INTO `hierarchy` (`p_id`,`parent`,`child`,`depth`,`position`, `created_by`,`datetime`) VALUES (1,2,2, 0,'parent','SystemCreate', NOW());
     
     SET cnt = 2;
-    WHILE cnt <= 10 DO
+    WHILE cnt <= 7 DO
 			INSERT INTO `users`
 				(`user_name`, `password`, `first_name`, `last_name`, `gender`, `contact`, `address`, `entered_on`, `status`, `position`, `email`, `sponsor_by`)
 			VALUES
@@ -40,6 +40,17 @@ BEGIN
 			INSERT INTO `hierarchy` (`parent`,`child`,`depth`,`position`, `created_by`,`datetime`) VALUES (cnt,cnt, 0,'parent','SystemCreate', NOW());
         SET cnt = cnt + 1;
     END WHILE;
-
+    
+    UPDATE position SET position_left = 3, position_right = 4, upline = 2 WHERE user_id = 2;
+	UPDATE position SET position_left = 5, position_right = 6, upline = 3 WHERE user_id = 3;
+	UPDATE position SET position_left = 7, position_right = 8, upline = 4 WHERE user_id = 4;
+    
+    -- CALL add_userDownlines('parent_id', 'child_id', 'position', 'main_position', 'system')
+    CALL add_userDownlines(2, 3, 'left', 'left', 'system');
+    CALL add_userDownlines(2, 4, 'right', 'right', 'system');
+    CALL add_userDownlines(3, 5, 'left', 'left', 'system');
+    CALL add_userDownlines(3, 6, 'right', 'left', 'system');
+    CALL add_userDownlines(4, 7, 'left', 'right', 'system');
+    CALL add_userDownlines(4, 8, 'right', 'right', 'system');
 END$$
 DELIMITER ;
