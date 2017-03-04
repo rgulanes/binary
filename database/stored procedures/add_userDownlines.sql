@@ -13,23 +13,9 @@ BEGIN
 		SET userId = (SELECT user_name FROM users WHERE user_id = createdBy);
 	END IF;
     
-    IF (SELECT COALESCE(depth, 0) FROM hierarchy WHERE parent = parentId ORDER BY datetime DESC LIMIT 1) IS NULL
-    THEN
-		SET _depth = 0;
-		INSERT INTO hierarchy (parent, child, depth, position, m_position, created_by, datetime) 
-			VALUES (parentId, childId, (_depth), _position, _pos, userId, NOW());
-	ELSE
-		#SET _depth = (SELECT COALESCE(depth, 0) FROM hierarchy WHERE parent = parentId ORDER BY datetime DESC LIMIT 1);
-		INSERT INTO hierarchy (parent, child, depth, position, m_position, created_by, datetime)
-			SELECT parent, childId, 
-            CASE
-				WHEN 
-					depth = 0 THEN 1 
-				WHEN
-					depth >= 1	THEN (((SELECT MAX(COALESCE(depth, 0)) FROM hierarchy WHERE child = parentId)) + 1)
-				END
-            , _position, _pos, userId, NOW() FROM hierarchy
-				WHERE child = parentId;
-	END IF;
+    INSERT INTO hierarchy (parent, child, depth, position, m_position, created_by, datetime)
+	SELECT parent, childId, depth+1, _position, _pos, userId, NOW() FROM hierarchy
+		WHERE child = parentId
+	UNION ALL SELECT childId, childId, 0, _position, _pos, userId, NOW();
 END$$
 DELIMITER ;

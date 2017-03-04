@@ -36,6 +36,7 @@ class CronController extends CI_Controller {
 	private function _getUserCommission(){
 		$data = array();
 		$userTree = array();
+        $commissions = array();
 
 		$this->db->trans_start();
         $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin') AND status = 1;");
@@ -58,13 +59,28 @@ class CronController extends CI_Controller {
             $response = 1;
         }
 
+        set_time_limit(0);
+        $size = sizeof($data);
         foreach ($data as $k => $v) {
         	$userId = $v['user_id'];
-        	
-        	$userTree[$v['user_id']] = $this->_generateCommission($userId);
+            for ($i=0; $i <= $size; $i++) { 
+                $userTree[$v['user_id']] = $this->_generateCommission($userId);
+            }
         }
 
-        return $userTree;
+        $this->db->trans_start();
+        $result = $this->db->query("SELECT CONCAT(u.first_name, ' ', u.last_name) AS name, c_amount AS amount, c.depth AS pairing_count FROM 
+                        commission c
+                            JOIN users u ON u.user_id = c.c_user_id
+                    WHERE c.remarks = 'upline' AND DATE(c.date_create) = DATE(NOW());");
+        if ($result->num_rows() > 0){
+            $commissions = $result->result_array();
+        }else{
+            $commissions = array();
+        }
+        $this->db->trans_complete();
+
+        return $commissions;
 	}
 
 	private function _generateCommission($userId){
@@ -78,7 +94,6 @@ class CronController extends CI_Controller {
             foreach ($result->result_array() as $_result){
             	$data = array(
             		'tree_generate' => $_result['tree_generate'],
-            		'updated_depths' => $_result['updated_depths'],
             		'generated_commission' => $_result['generated_commission'],
             	);
             };

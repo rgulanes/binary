@@ -46,11 +46,11 @@ BEGIN
 	UPDATE position SET position_left = 7, position_right = 8, upline = 4 WHERE user_id = 4;
     
     -- CALL add_userDownlines('parent_id', 'child_id', 'position', 'main_position', 'system')
-    CALL add_userDownlines(2, 3, 'left', 'left', 'system');
-    CALL add_userDownlines(2, 4, 'right', 'right', 'system');
-    CALL add_userDownlines(3, 5, 'left', 'left', 'system');
-    CALL add_userDownlines(3, 6, 'right', 'left', 'system');
-    CALL add_userDownlines(4, 7, 'left', 'right', 'system');
-    CALL add_userDownlines(4, 8, 'right', 'right', 'system');
+    CALL add_userDownlines(2, 3, 'left', 'left', '');
+    CALL add_userDownlines(2, 4, 'right', 'right', '');
+    CALL add_userDownlines(3, 5, 'left', 'left', '');
+    CALL add_userDownlines(3, 6, 'right', 'left', '');
+    CALL add_userDownlines(4, 7, 'left', 'right', '');
+    CALL add_userDownlines(4, 8, 'right', 'right', '');
 END$$
 DELIMITER ;

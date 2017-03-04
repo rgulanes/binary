@@ -105,8 +105,7 @@ class Member extends CI_Controller{
 		$position = $_POST['position'];
 		$this->Member_model->get_Hierarchy($id);
 		$data['available_downline'] = $this->Member_model->get_last_available_downline($id,$position);
-		return print json_encode($data);
-		
+		return print json_encode($data);		
 	}
 
 	function update_donwline_position(){
@@ -384,6 +383,55 @@ class Member extends CI_Controller{
             "message"		=> $this->response_message
         ));
 
+	}
+
+	function add_downline_position(){
+		$temp_upline = '';
+		$temp_user = '';
+		
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		//$user_id  = $_POST['id'];
+		$position = $_POST['position'];
+		$downline  = $_POST['downline'];
+		$upline = $_POST['upline'];
+		$available_position = strtolower($_POST['available_position']);
+
+
+		$m_position = '';
+
+		if(strtolower($available_position) == 'left'){
+			$updated_data = array(
+	            'position_left' => strtolower($available_position) == 'left' ? $downline : 0 ,
+	            'upline' => $upline,
+	        );
+		}else{
+			$updated_data = array(
+	            'position_right' => strtolower($available_position) == 'right' ? $downline : 0,
+	            'upline' => $upline,
+	        );
+		}	
+
+		$m_position = $position;
+		$result = $this->Member_model->update_donwline_position($updated_data,$upline, strtolower($m_position));
+
+		if($result > 0 )
+        {
+
+            $this->response_code = 0;
+            $this->response_message = "Success.. .";
+
+		}
+        else
+        {
+            $this->response_code = 1;
+            $this->response_message = "Error...";
+        }
+
+
+        echo json_encode(array(
+            "error"			=> $this->response_code,
+            "message"		=> $this->response_message
+        ));
 	}
 }
 

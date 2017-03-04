@@ -165,7 +165,7 @@ class Member_model extends CI_Model{
 
     }
 
-    public function update_donwline_position($data,$id, $pos, $userId){
+    public function update_donwline_position($data,$id, $pos){
 
         if(!empty($data))
         {
@@ -191,6 +191,7 @@ class Member_model extends CI_Model{
 
                         $child = 0;
                         $position = '';
+
                         if(array_key_exists('position_right', $data)){
                             $child = $data['position_right'];
                             $position = 'right';
@@ -199,7 +200,7 @@ class Member_model extends CI_Model{
                             $position = 'left';
                         }
 
-                        $this->add_userDownline($id, $child, $position, $pos, $userId);
+                        $this->add_userDownline($id, $child, $position, $pos, $id);
 
                     }
                 }else{
@@ -482,7 +483,7 @@ class Member_model extends CI_Model{
 
     public function add_userDownline($pId, $cId, $position, $pos, $createdBy){
         $this->db->trans_start();
-        $this->db->query("CALL add_userDownlines('$pId', '$cId', '$position', '$pos', '$createdBy')");
+        $this->db->query("CALL add_userDownlines('$pId', '$cId', '$position', '$pos', '$pId')");
         $this->db->trans_complete();
 
         $response= 0;
@@ -534,7 +535,7 @@ class Member_model extends CI_Model{
     }
 
     public function get_TreeDepth(){
-        $query = $this->db->query("SELECT MAX(depth) AS tree_size FROM _selectedHierarchy;");
+        $query = $this->db->query("SELECT COUNT(DISTINCT depth) AS tree_size FROM _selectedHierarchy;");
         if ($query->num_rows() > 0){
             $data = $query->result();
         }else{

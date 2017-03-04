@@ -135,8 +135,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 					available_position : ''
 				});
 			}
-
-			console.log(data);
+			
 			$scope.file =  $http({
 		        method  : 'POST',
 		        url     : '../member/update_donwline_position',
@@ -145,15 +144,15 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		        })
 		        .then(function(response) 
 		        {
-		   			console.log(response);
 		   			if(response.data.error == 0 ){
 		   				$scope.position_save = true;
-		   				setTimeout(function(){ 	
-					      	$('#position-modal').modal('hide'); 
-					      	$scope.position_save = false;
-						}, 1500);
+		   	// 			setTimeout(function(){ 	
+					 //      	$('#position-modal').modal('hide');
+					 //      	$scope.position_save = false;
+						// }, 1500);
 
 			   		}else{
+
 		   			}
 		   			
 		      	});
@@ -245,10 +244,10 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 						$scope.email = '';
 						$scope.sponsor = '';
 		         	}
-		      //    	setTimeout(function(){ 	
-				    //   	$('#add-modal').modal('hide'); 
-				    //   	$scope.saveMessage = true;
-				   	// }, 1500);
+		         	setTimeout(function(){ 	
+				      	$('#add-modal').modal('hide'); 
+				      	$scope.saveMessage = true;
+				   	}, 1500);
 		        });
 		    }     
 		}
@@ -384,10 +383,10 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 			});
 		}
 
-		//Modal Events
-	  //   $('#add-modal').on('hidden.bs.modal', function () {
-			// location.reload();
-	  //   });
+		// Modal Events
+	    $('#add-modal').on('hidden.bs.modal', function () {
+			location.reload();
+	    });
 		
 	}); 
 
