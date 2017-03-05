@@ -535,7 +535,7 @@ class Member_model extends CI_Model{
     }
 
     public function get_TreeDepth(){
-        $query = $this->db->query("SELECT COUNT(DISTINCT depth) AS tree_size FROM _selectedHierarchy;");
+        $query = $this->db->query("SELECT COUNT(DISTINCT depth) AS tree_size FROM _selectedhierarchy;");
         if ($query->num_rows() > 0){
             $data = $query->result();
         }else{

@@ -1,7 +1,7 @@
 DROP PROCEDURE IF EXISTS generateCommissionSvc;
 -- CALL generateCommissionSvc(3)
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `generateCommissionSvc`(IN userId INT(11))
+CREATE DEFINER=`admindev_db`@`localhost` PROCEDURE `generateCommissionSvc`(IN userId INT(11))
 BEGIN
 	DECLARE tree_generate INT(11);
     DECLARE generated_commission INT(11);
@@ -9,6 +9,11 @@ BEGIN
 
 	CALL get_Hierarchy(userId);
     SET tree_generate = (SELECT ROW_COUNT());
+    
+    IF userId = 2
+		THEN
+			CALL get_childsDepth();
+	END IF;
     
     SET count_commissions = (SELECT COUNT(*) FROM commission WHERE c_user_id = userId AND remarks = 'upline' AND DATE(date_create) = DATE(NOW()));
     

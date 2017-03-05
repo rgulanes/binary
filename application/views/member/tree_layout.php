@@ -65,7 +65,7 @@
 
 			var treeArray = new Array();
 			$.each(jsonData.tree, function(k, v){
-				if(v.length == 1 && v[0].position == 'parent'){
+				if(v[0].position == 'parent'){
 					var node = v[0];
 					var parent = '<li data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree"> '+node.full_name+'</a> <ul class="pChildren"></ul></li>';
 					tree.find('ul.tree').append(parent);
