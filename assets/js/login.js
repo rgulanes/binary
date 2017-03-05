@@ -109,7 +109,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 			}
 		}
 
-		$scope.onSavePosition = function($lastest_id){
+		$scope.onSavePosition = function($base_url,$lastest_id){
 			// var data = angular.toJson({
 			// 	id 		 : $scope.sponsor.selected.user_id,
 			// 	downline : $lastest_id,
@@ -138,7 +138,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 			
 			$scope.file =  $http({
 		        method  : 'POST',
-		        url     : 'member/update_donwline_position',
+		        url     : $base_url+'member/update_donwline_position',
 		        data    :  data, //forms user object
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		        })
@@ -227,7 +227,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		         	 	//save the positioning
 		         	 	if(response.data.user_id > 0 ){
 							if($scope.list_available_downline.length != 0){
-								$scope.onSavePosition(response.data.user_id);
+								$scope.onSavePosition($base_url,response.data.user_id);
 							}else{
 							}
 		         	 	}else{
@@ -255,8 +255,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		
 
 
-		$scope.onChangePosition = function($selected_position){
-
+		$scope.onChangePosition = function($base_url,$selected_position){
 			$scope.list_available_downline = [];
 			$scope.sponsor_position_selected = $selected_position;
 			$scope.selected_position = $selected_position;
@@ -265,10 +264,10 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 				position : 	$selected_position
 
 			});
-			console.log(data);
+			// console.log('onChangePosition', $base_url+'member/get_last_available_downline');
 			$scope.file =  $http({
 		        method  : 'POST',
-		        url     : '../member/get_last_available_downline',
+		        url     : $base_url+'member/get_last_available_downline',
 		        data    :  data, //forms user object
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		        })
@@ -298,21 +297,23 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		      	});
 		}
 
-		$scope.onCheckAvailablePosition = function(selected_upline){
+		$scope.onCheckAvailablePosition = function($base_url,selected_upline){
 
 			$scope.available_downline_id = selected_upline.u_user_id;
 			var data = angular.toJson({
 				id: selected_upline.u_user_id
 			});
-
+			// console.log('onCheckAvailablePosition',$base_url+'member/check_available_position')
 			$scope.file =  $http({
 		        method  : 'POST',
-		        url     : '../member/check_available_position',
+		        url     : $base_url+'member/check_available_position',
 		        data    :  data, //forms user object
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		        })
 		        .then(function(response) 
-		        {
+		        {	
+
+
 		        	if(response.data.positions.length > 0 ){
 
 		        		$scope.available_position = true;
@@ -337,6 +338,12 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		      	});
 		}
 		
+		$scope.onChangeSponsor = function($base_url){
+			$scope.available_downline = false;
+			if($scope.sponsor_position_selected != undefined){
+				$scope.onChangePosition($base_url,$scope.sponsor_position_selected);
+			}	
+		}
 
 
 

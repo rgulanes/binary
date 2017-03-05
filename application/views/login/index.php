@@ -92,7 +92,7 @@
 								  	</div>
 								    <div class="form-group">
 								    <label for="usr">Select Sponsor:</label>
-									<ui-select ng-model="sponsor.selected" ng-required="true" title="Choose an sponsor">
+									<ui-select ng-model="sponsor.selected" ng-required="true" title="Choose an sponsor" ng-change="onChangeSponsor('<?php echo base_url();?>')">
 									    <ui-select-match placeholder="Search Sponsor...">{{$select.selected.full_name}}</ui-select-match>
 									    <ui-select-choices repeat="list in member_list  | propsFilter: {full_name: $select.search, user_name: $select.search}"" >
 									      <small>
@@ -106,7 +106,7 @@
 
 									<div class="form-group">
 								    	<label for="singleSelect">Select Sponsor Position</label><br>
-									    <select name="singleSelect" class="form-control" required ng-model="sponsor_position" ng-change="onChangePosition(sponsor_position)">
+									    <select name="singleSelect" class="form-control" required ng-model="sponsor_position" ng-change="onChangePosition('<?php echo base_url();?>',sponsor_position)">
 									      <option value="left">Left</option>
 									      <option value="right">Right</option>
 									    </select>
@@ -115,7 +115,7 @@
 									<div ng-show="available_downline">
 									    <div class="form-group">
 									    <label for="usr">Select Available Downline:</label>
-										<ui-select ng-model="upline.selected"  on-select="onCheckAvailablePosition($item)" ng-required="true" title="Choose an upline">
+										<ui-select ng-model="upline.selected"  on-select="onCheckAvailablePosition('<?php echo base_url();?>',$item)" ng-required="true" title="Choose an upline">
 										    <ui-select-match placeholder="Search Available Downline...">{{$select.selected.full_name}}</ui-select-match>
 										    <ui-select-choices repeat="list in list_available_downline | propsFilter: {full_name: $select.search, user_name: $select.search}"" >
 										      <small>
