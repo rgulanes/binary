@@ -138,7 +138,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 			
 			$scope.file =  $http({
 		        method  : 'POST',
-		        url     : '../member/update_donwline_position',
+		        url     : 'member/update_donwline_position',
 		        data    :  data, //forms user object
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		        })
@@ -268,7 +268,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 			console.log(data);
 			$scope.file =  $http({
 		        method  : 'POST',
-		        url     : '../member/get_last_available_downline',
+		        url     : 'member/get_last_available_downline',
 		        data    :  data, //forms user object
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		        })
@@ -307,7 +307,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 
 			$scope.file =  $http({
 		        method  : 'POST',
-		        url     : '../member/check_available_position',
+		        url     : 'member/check_available_position',
 		        data    :  data, //forms user object
 		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		        })
