@@ -26,6 +26,12 @@ class CronController extends CI_Controller {
                 $data = $this->_backupDatabase();
                 print_r($data);
                 break;
+            case 'cleanDB':
+                $_data = $this->_backupDatabase();
+                $data = $this->_cleanDB();
+                print_r($_data);
+                print_r($data);
+                break;
             default:
                 echo 'Cron Request not found.' . PHP_EOL;
                 return;
@@ -147,5 +153,25 @@ class CronController extends CI_Controller {
 
         $this->load->helper('file');
         write_file($c_path, $backup);
+    }
+
+    private function _cleanDB(){
+        $this->db->trans_start();
+        $result = $this->db->query("CALL clean_DB();");
+        $this->db->trans_complete();
+
+        $response = 0;
+        if ($this->db->trans_status() === FALSE)
+        {
+            $response = 0;
+            $result->free_result();
+        }
+        else
+        {
+            $response = 1;
+            $result->free_result();
+        }
+
+        return $response;
     }
 }
