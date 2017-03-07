@@ -14,7 +14,8 @@ BEGIN
 	END IF;
     
     INSERT INTO hierarchy (parent, child, depth, position, m_position, created_by, datetime)
-	SELECT parent, childId, depth+1, _position, _pos, userId, NOW() FROM hierarchy
+	SELECT parentId, childId, 1, _position, _pos, userId, NOW()
+    UNION ALL SELECT parent, childId, depth+1, _position, _pos, userId, NOW() FROM hierarchy
 		WHERE child = parentId
 	UNION ALL SELECT childId, childId, 0, _position, _pos, userId, NOW();
 END$$

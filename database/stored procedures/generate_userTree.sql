@@ -14,6 +14,6 @@ BEGIN
     SET _depth = 0;
     SET maxDepth = (SELECT MAX(depth) FROM _userTree);
     
-    SELECT  child, depth, full_name, parent, position, m_position FROM _userTree;
+    SELECT  child, depth, full_name, parent, position, m_position FROM _userTree ORDER BY depth ASC, position ASC;
 END$$
 DELIMITER ;

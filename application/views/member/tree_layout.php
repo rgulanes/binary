@@ -75,7 +75,7 @@
 					var parentNode = subNode[0].firstChild.dataset;
 					$.each(sNode, function(k,v){
 						var node = v;
-						var order = v.position == 'left' ? 'even' : 'odd';
+						var order = v.position == 'left' ? 'odd' : 'even';
 						var leaf = '';
 						
 
@@ -84,10 +84,10 @@
 
 							subNode.find('ul.pChildren').append(leaf);
 						}else{
-							if(node.depth <= 3){
+							if(node.depth <= 10){
 								var pNode = $('#node_' + node.parent)[0].dataset;
 								var cNode = subNode.find('ul.pChildren');
-								var order = node.position == 'left' ? 'even' : 'odd';
+								var order = node.position == 'left' ? 'odd' : 'even';
 
 								var leaf = '';
 
@@ -131,7 +131,7 @@
 					var parentNode = subNode[0].firstChild.dataset;
 					$.each(sNode, function(k,v){
 						var node = v;
-						var order = v.position == 'left' ? 'even' : 'odd';
+						var order = v.position == 'left' ? 'odd' : 'even';
 						var leaf = '';
 						
 
@@ -140,10 +140,10 @@
 
 							subNode.find('ul.pChildren').append(leaf);
 						}else{
-							if(node.depth <= 3){
+							if(node.depth <= 10){
 								var pNode = $('#node_' + node.parent)[0].dataset;
 								var cNode = subNode.find('ul.pChildren');
-								var order = node.position == 'left' ? 'even' : 'odd';
+								var order = node.position == 'left' ? 'odd' : 'even';
 
 								var leaf = '';
 

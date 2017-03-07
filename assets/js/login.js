@@ -200,7 +200,10 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 				errro = 0;
 				$scope.newMemberError = false;
 				$scope.sponsor = $scope.sponsor.selected.user_id;
-				$scope.upline = $scope.upline.selected.user_id;
+				if($scope.upline.selected != undefined){
+					$scope.upline = $scope.upline.selected.user_id;
+				}
+				
 
 				var data = angular.toJson({
 					user_id 	: '',

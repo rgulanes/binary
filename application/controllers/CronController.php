@@ -66,63 +66,102 @@ class CronController extends CI_Controller {
         }
 
         set_time_limit(0);
+
         $size = sizeof($data);
         foreach ($data as $k => $v) {
         	$userId = $v['user_id'];
-            for ($i=0; $i <= $size; $i++) { 
-                $userTree[$v['user_id']] = $this->_generateCommission($userId);
+
+            $this->db->trans_start();
+            $this->db->query("CALL get_Hierarchy('$userId');");
+
+            if($userId == 2){
+                $this->db->query("CALL get_childsDepth();");
+            }
+
+            $sql = "SELECT * FROM _selectedhierarchy;";
+
+            $result = $this->db->query($sql);
+            $output = array();
+            if ($result->num_rows() > 0){
+                $output[$userId] = $result->result_array();
+            }else{
+                $output = array();
+            }
+            $result->free_result();
+            $this->db->trans_complete();
+            
+            $size = sizeof($output[$userId]);
+
+            $commission = array();
+            for ($i=0; $i < $size; $i++) { 
+                foreach ($output as $k => $v) {
+                    $depth = $v[$i]['depth'];
+
+                    $this->db->select('COUNT(*) AS count');
+                    $query = $this->db->get_where('_selectedhierarchy', array('depth' => $depth, 'f_position' => 'left'));
+                    $lCount = $query->row_array();
+                    
+                    $this->db->select('COUNT(*) AS count');
+                    $query = $this->db->get_where('_selectedhierarchy', array('depth' => $depth, 'f_position' => 'right'));
+                    $rCount = $query->row_array();
+
+                    $this->db->select('COUNT(*) AS count');
+                    $query = $this->db->get_where('commission', array('depth' => $depth, 'c_user_id' => $userId));
+                    $iCommission = $query->row_array();
+
+                    $maxChild = pow(2, $depth);
+
+                    if($depth != 0){
+                        $commission[$depth] = array(
+                            'lCount' => $lCount['count'],
+                            'rCount' => $rCount['count'],
+                            'max_child' => $maxChild,
+                            'inserted_commissions' => $iCommission['count']
+                        );
+                    }
+                }
+            }
+
+            $maxSize = sizeof($commission);
+            $genCommission = array();
+            for ($i=1;$i<=$maxSize;$i++) { 
+                $lCount = $commission[$i]['lCount'];
+                $rCount = $commission[$i]['rCount'];
+                $maxChild = $commission[$i]['max_child'];
+                $commissioned = $commission[$i]['inserted_commissions'];
+
+                $c_lvl = 0;
+                if($lCount == $rCount && ($lCount + $rCount) == $maxChild){
+                    $c_lvl = ($maxChild / 2);
+                }else{
+                    if($lCount > $rCount && ($lCount != 0 && $rCount != 0)){
+                        $c_lvl = $rCount;
+                    }else{
+                        if(($lCount != 0 && $rCount != 0)){
+                            $c_lvl = $lCount;
+                        }
+                    }
+                }
+
+                $totCommission = ($c_lvl - $commissioned);
+
+                $this->db->trans_start();
+                $genCommission = $this->db->query("CALL generateCommission('$userId', '$i', '$totCommission')");
+                $this->db->trans_complete();
+
+                if ($this->db->trans_status() === FALSE)
+                {
+                    $genCommission->free_result();
+                }
+                else
+                {
+                    $genCommission->free_result();
+                }
+
             }
         }
-
-        $this->db->trans_start();
-        $result = $this->db->query("SELECT CONCAT(u.first_name, ' ', u.last_name) AS name, c_amount AS amount, c.depth AS pairing_count FROM 
-                        commission c
-                            JOIN users u ON u.user_id = c.c_user_id
-                    WHERE c.remarks = 'upline' AND DATE(c.date_create) = DATE(NOW());");
-        if ($result->num_rows() > 0){
-            $commissions = $result->result_array();
-        }else{
-            $commissions = array();
-        }
-        $this->db->trans_complete();
-
-        return $commissions;
 	}
-
-	private function _generateCommission($userId){
-		$data = array();
-
-		$this->db->trans_start();
-    	$result = $this->db->query("CALL generateCommissionSvc('$userId');");
-    	mysqli_next_result($this->db->conn_id);
-
-    	if ($result->num_rows() > 0){
-            foreach ($result->result_array() as $_result){
-            	$data = array(
-            		'tree_generate' => $_result['tree_generate'],
-            		'generated_commission' => $_result['generated_commission'],
-            	);
-            };
-        }else{
-            $data = array();
-        }
-    	$this->db->trans_complete();
-
-    	$response = 0;
-        if ($this->db->trans_status() === FALSE)
-        {
-            $response = 0;
-            $result->free_result();
-        }
-        else
-        {
-            $response = 1;
-            $result->free_result();
-        }
-
-        return $data;
-	}
-
+    
     private function _backupDatabase(){
         // Load the DB utility class
         $this->load->dbutil();

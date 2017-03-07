@@ -103,7 +103,6 @@ class Member extends CI_Controller{
 		$_POST = json_decode(file_get_contents('php://input'), true);
 		$id = $_POST['id'];
 		$position = $_POST['position'];
-		$this->Member_model->get_Hierarchy($id);
 		$data['available_downline'] = $this->Member_model->get_last_available_downline($id,$position);
 		return print json_encode($data);		
 	}
