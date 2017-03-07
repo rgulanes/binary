@@ -135,6 +135,8 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 					available_position : ''
 				});
 			}
+
+			console.log(data);
 			
 			$scope.file =  $http({
 		        method  : 'POST',
@@ -229,10 +231,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		         	if(response.status == 200){
 		         	 	//save the positioning
 		         	 	if(response.data.user_id > 0 ){
-							if($scope.list_available_downline.length != 0){
-								$scope.onSavePosition($base_url,response.data.user_id);
-							}else{
-							}
+		         	 		$scope.onSavePosition($base_url,response.data.user_id);
 		         	 	}else{
 
 		         	 	}
