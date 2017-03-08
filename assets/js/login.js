@@ -58,6 +58,8 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		$scope.sponsor = [];
 		$scope.upline = [];
 
+		$scope.save_buttton_status = false;
+
 		$scope.available_downline = false;
 
 		$scope.sponsor_position = [
@@ -161,11 +163,7 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		}
 
 		$scope.onSaveMember = function($base_url){
-
 			
-
-			console.log('$scope.list_available_downline.length',$scope.list_available_downline);
-
 			$scope._errorMessage = '';
 			var error = 0;
 			var sponsor_errorMessage = '';
@@ -199,7 +197,8 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 				$scope.newMemberError = true;
 				$scope._errorMessage = sponsor_errorMessage+' '+sponsor_position_errorMessage+' '+available_downline_errorMessage+' '+downline_position_errorMessage; 
 			}else{
-				errro = 0;
+				error = 0;
+				$scope.save_buttton_status = true;
 				$scope.newMemberError = false;
 				$scope.sponsor = $scope.sponsor.selected.user_id;
 				if($scope.upline.selected != undefined){

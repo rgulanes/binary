@@ -379,7 +379,13 @@ class Member_model extends CI_Model{
     }
 
     public function get_members_data($id){
-        $query = $this->db->query("SELECT * FROM users WHERE user_id = ".$id);
+        $query = $this->db->query("SELECT u.*, t.m_position AS sponsor_position, CONCAT(p.first_name, ' ', p.last_name, ' [' , p.user_name ,']') AS sponsor,
+                    CONCAT(up.first_name, ' ', up.last_name, ' [' , up.user_name ,']') AS upline, t.position
+                    FROM luyabaya_tree t
+                    LEFT JOIN users u ON u.user_id = t.child
+                    LEFT JOIN users p ON p.user_id = u.sponsor_by
+                    LEFT JOIN users up ON up.user_id = t.parent
+                WHERE t.child = '$id';");
         return $query->result();
     }
 

@@ -258,11 +258,11 @@
                     </div>  
                     <div class="form-group">
                         <label for="usr">Password:</label>
-                      <input class="form-control" required type="password"  ng-model="password" placeholder="Password" >
+                      <input class="form-control" required type="text"  ng-model="password" placeholder="Password" >
                       </div>
                        <div class="form-group">
                         <label for="usr">Sponsor:</label>
-                      <input class="form-control" required type="text" readonlys name="user" ng-model="sponsor" placeholder="Username" >
+                      <input class="form-control" readonly type="text" readonlys name="user" ng-model="sponsor" placeholder="Username" >
                     </div>
                     <div class="form-group">
                         <label for="usr">Sponsor Position:</label>

@@ -157,6 +157,7 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
+		        	console.log(response.data);
 		        	angular.forEach(response.data.member_details,function(data){
 		        		$scope.firstname = data.first_name;
 		        		$scope.lastname = data.last_name;
@@ -166,8 +167,14 @@ angular.module('binaryApp')
 		        		$scope.address = data.address;
 		        		$scope.username = data.user_name;
 		        		$scope.password = data.password;
-		        		$scope.sponsor = data.sponsor_by;
 		        		$scope.user_id = data.user_id;
+		        		
+		        		$scope.sponsor = data.sponsor;
+		        		$scope.sponsor_position = data.sponsor_position;
+		        		$scope.upline = data.upline;
+		        		$scope.upline_position = data.position;
+
+
 
 		        	})
 		        	

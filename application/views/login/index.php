@@ -140,7 +140,7 @@
 							</div>
 						</div>
 						<br>
-						<button type="submit" class="btn btn-primary center-block">Save</button>
+						<button type="submit" class="btn btn-primary center-block" id="save-new-member" ng-hide="save_buttton_status">Save</button>
 					</form>		
 
 				</div>
