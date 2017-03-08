@@ -21,6 +21,13 @@
 		    left: 0;
 		    margin: auto 5%;
 		}
+
+		.user_name{
+			margin: 0px;
+		    font-size: 13px;
+		    color: #d07311;
+		    font-weight: 600;
+		}
 	</style>
 </head>
 <body>
@@ -67,7 +74,7 @@
 			$.each(jsonData.tree, function(k, v){
 				if(v[0].position == 'parent'){
 					var node = v[0];
-					var parent = '<li data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree"> '+node.full_name+'</a> <ul class="pChildren"></ul></li>';
+					var parent = '<li data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree"> '+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="pChildren"></ul></li>';
 					tree.find('ul.tree').append(parent);
 				}else{
 					var sNode = v;
@@ -80,7 +87,7 @@
 						
 
 						if(node.parent == parentNode.nodeId){
-							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
+							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
 
 							subNode.find('ul.pChildren').append(leaf);
 						}else{
@@ -91,7 +98,7 @@
 
 								var leaf = '';
 
-								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
+								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
 
 								$('#node_' + node.parent).find('ul.children_'+ ( node.depth - 1 )+'').append(leaf);
 							}
@@ -123,7 +130,7 @@
 				if(v[0].position == 'parent'){
 					var node = v[0];
 					
-					var parent = '<li data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree"> '+node.full_name+'</a> <ul class="pChildren"></ul></li>';
+					var parent = '<li data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree"> '+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="pChildren"></ul></li>';
 					tree.find('ul.tree').append(parent);
 				}else{
 					var sNode = v;
@@ -136,7 +143,7 @@
 						
 
 						if(node.parent == parentNode.nodeId){
-							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
+							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
 
 							subNode.find('ul.pChildren').append(leaf);
 						}else{
@@ -147,7 +154,7 @@
 
 								var leaf = '';
 
-								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'</a> <ul class="children_'+ node.depth +'"></ul></li>';
+								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
 
 								$('#node_' + node.parent).find('ul.children_'+ ( node.depth - 1 )+'').append(leaf);
 							}

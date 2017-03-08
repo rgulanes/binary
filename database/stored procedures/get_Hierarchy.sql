@@ -43,5 +43,7 @@ BEGIN
     TRUNCATE TABLE _selectedhierarchy;
     INSERT INTO _selectedhierarchy (child, depth, full_name, parent, position, m_position, m_parent, f_position)
 		SELECT child, depth, full_name, parent, position, m_position, m_parent, fin_position FROM __hierarchy;
+	
+    UPDATE _selectedhierarchy SET m_position = NULL, f_position = 'parent', position = 'parent' WHERE depth = 0 AND child = userId;
 END$$
 DELIMITER ;

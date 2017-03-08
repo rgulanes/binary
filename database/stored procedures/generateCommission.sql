@@ -1,7 +1,7 @@
 DROP PROCEDURE IF EXISTS generateCommission;
 -- CALL generateCommission(2, 1)
 DELIMITER $$
-CREATE DEFINER=`admindev_db`@`localhost` PROCEDURE `generateCommission`(IN userId INT(11), IN _depth VARCHAR(50), IN cLevel INT(11))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `generateCommission`(IN userId INT(11), IN _depth VARCHAR(50), IN cLevel INT(11))
 BEGIN
 	DECLARE maxChild INT(11);
     DECLARE iCommission INT(11);

@@ -9,11 +9,12 @@ BEGIN
 
 	DROP TEMPORARY TABLE IF EXISTS _userTree;
 	CREATE TEMPORARY TABLE IF NOT EXISTS _userTree AS (
-	SELECT *, get_DescendantCount(child, depth) AS child_count FROM _selectedhierarchy);
+	SELECT s.*, get_DescendantCount(s.child, s.depth) AS child_count, u.user_name FROM _selectedhierarchy s
+		LEFT JOIN users u ON u.user_id = s.child);
     
     SET _depth = 0;
     SET maxDepth = (SELECT MAX(depth) FROM _userTree);
     
-    SELECT  child, depth, full_name, parent, position, m_position FROM _userTree ORDER BY depth ASC, position ASC;
+    SELECT  child, depth, full_name, parent, position, m_position, user_name FROM _userTree ORDER BY depth ASC, position ASC;
 END$$
 DELIMITER ;

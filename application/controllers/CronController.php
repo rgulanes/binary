@@ -20,7 +20,9 @@ class CronController extends CI_Controller {
         switch ($action) {
             case 'generateCommissionSvc':
                 $data = $this->_getUserCommission();
-                print_r($data);
+                break;
+            case 'generateCommissionSvc2':
+                $data = $this->_getUserCommissionByPosition();
                 break;
             case 'backupDatabase':
                 $data = $this->_backupDatabase();
@@ -162,6 +164,124 @@ class CronController extends CI_Controller {
             }
         }
 	}
+
+    private function _getUserCommissionByPosition(){
+        $data = array();
+        $userTree = array();
+        $commissions = array();
+
+        $this->db->trans_start();
+        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin');");
+
+        if ($query->num_rows() > 0){
+            $data = $query->result_array();
+        }else{
+            $data = array();
+        }
+
+        $this->db->trans_complete();
+
+        $response = 0;
+        if ($this->db->trans_status() === FALSE)
+        {
+            $response = 0;
+        }
+        else
+        {
+            $response = 1;
+        }
+
+        set_time_limit(0);
+
+        $size = sizeof($data);
+
+        $commission = array();
+        foreach ($data as $k => $v) {
+            $userId = $v['user_id'];
+
+            $this->db->trans_start();
+            $this->db->query("CALL get_Hierarchy('$userId');");
+            $this->db->trans_complete();
+
+            if($userId == 2){
+                $this->db->trans_start();
+                $this->db->query("CALL get_childsDepth();");
+                $this->db->trans_complete();
+            }
+
+            $this->db->select('COUNT(*) AS count');
+            $query = $this->db->get_where('_selectedhierarchy', array('f_position' => 'left'));
+            $lCount = $query->row_array();
+            
+            $this->db->select('COUNT(*) AS count');
+            $query = $this->db->get_where('_selectedhierarchy', array('f_position' => 'right'));
+            $rCount = $query->row_array();
+
+            $this->db->select('COUNT(*) AS count');
+            $query = $this->db->get_where('commission', array('c_user_id' => $userId , 'r_user_id' => $userId, 'remarks' => 'upline'));
+            $iCommission = $query->row_array();
+
+            $this->db->select('COUNT(*) AS count');
+            $query = $this->db->get_where('commission', array('c_user_id' => $userId , 'remarks' => 'upline', 'DATE(date_create)' => date('o-m-d')));
+            $generateCommission = $query->row_array();
+
+            
+            $commission[$userId] = array(
+                'lCount' => $lCount['count'],
+                'rCount' => $rCount['count'],
+                'inserted_commissions' => $iCommission['count'],
+                'inserted_commissions_per_day' => $generateCommission['count']
+            );
+        }
+
+        foreach ($commission as $id => $v) {
+            $userId = $id;
+            $lCount = $v['lCount'];
+            $rCount = $v['rCount'];
+            $commissioned = $v['inserted_commissions'];
+            $iCommission = $v['inserted_commissions_per_day'];
+            
+            $c_lvl = 0;
+            $totPairs = ($lCount + $rCount);
+
+            if($lCount == $rCount){
+                $c_lvl = ($totPairs / 2);
+            }else{
+                if($lCount > $rCount && ($lCount != 0 && $rCount != 0)){
+                    $c_lvl = $rCount;
+                }else{
+                    if(($lCount != 0 && $rCount != 0)){
+                        $c_lvl = $lCount;
+                    }
+                }
+            }
+            
+
+            $totCommission = floor(($c_lvl - $commissioned));
+            $pairing = 'pairing_'. $userId;
+            if($totCommission > 0){
+                if($iCommission <= 10){
+                    for($i = 1; $i <= $totCommission; $i++){
+                        $_data = array(
+                            'c_user_id' => $id,
+                            'c_amount' => '60',
+                            'r_user_id' => $id,
+                            'depth' => $pairing,
+                            'remarks' => "upline",
+                            'date_create' => date('o-m-d H:i:s')
+                        );
+                        $this->db->insert('commission', $_data);
+                        $insert_id = $this->db->insert_id();
+                    }
+                }
+            }
+            
+        }
+
+        echo '<pre>';
+        print_r($commission);
+        echo '</pre>';
+    }
     
     private function _backupDatabase(){
         // Load the DB utility class
