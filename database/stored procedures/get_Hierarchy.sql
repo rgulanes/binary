@@ -6,22 +6,23 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_Hierarchy`(IN userId INT)
 BEGIN
 	DROP TEMPORARY TABLE IF EXISTS _hierarchy;
     CREATE TEMPORARY TABLE IF NOT EXISTS _hierarchy AS (
-	SELECT
-		DISTINCT t.user_id AS child,
-		CONCAT(t.first_name, ' ', t.last_name) AS full_name,
-		h.depth,
-		get_Parent(t.user_id) AS parent,
-        h.position,
-        h.m_position,
-        h.parent AS m_parent
-	FROM users t
-		JOIN hierarchy h ON t.user_id = h.child
+	SELECT 
+		DISTINCT h.child,
+		(SELECT CONCAT(first_name, ' ', last_name) FROM users WHERE user_id = h.child LIMIT 1) AS full_name,
+		(SELECT DISTINCT depth FROM hierarchy WHERE parent = userId AND child = h.child ORDER BY depth ASC LIMIT 1) AS depth,
+		get_Parent(h.child) AS parent,
+		h.position,
+		h.m_position,
+		h.parent AS m_parent
+			FROM hierarchy h
 	WHERE h.parent = userId);
     
     TRUNCATE TABLE _selectedhierarchy;
     INSERT INTO _selectedhierarchy (child, depth, full_name, parent, position, m_position, m_parent, f_position)
 		SELECT child, depth, full_name, parent, position, m_position, m_parent, NULL FROM _hierarchy;
-        
+	
+    UPDATE _selectedhierarchy SET m_position = NULL WHERE m_position = '';
+    
 	IF (SELECT COUNT(*) FROM _selectedhierarchy WHERE m_parent = userId AND depth = 0) = 2
 	THEN
 		DELETE FROM _selectedhierarchy WHERE child = userId AND m_position IS NOT NULL;

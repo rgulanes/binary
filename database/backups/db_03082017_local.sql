@@ -2,9 +2,9 @@ CREATE DATABASE  IF NOT EXISTS `binary` /*!40100 DEFAULT CHARACTER SET latin1 */
 USE `binary`;
 -- MySQL dump 10.13  Distrib 5.7.12, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: binary
+-- Host: localhost    Database: binary
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.10-MariaDB
+-- Server version	5.6.33-cll-lve
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -51,7 +51,7 @@ CREATE TABLE `_selectedhierarchy` (
   `m_parent` int(10) DEFAULT NULL,
   `f_position` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -607,7 +607,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = 'NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `clean_DB`()
 BEGIN
@@ -659,6 +659,12 @@ BEGIN
     CALL add_userDownlines(3, 6, 'right', 'left', '');
     CALL add_userDownlines(4, 7, 'left', 'right', '');
     CALL add_userDownlines(4, 8, 'right', 'right', '');
+    
+    SET cnt = 1;
+    WHILE cnt <= 100 DO
+		INSERT INTO codes  (description, generated_date, generated_by, status) VALUES (CONCAT('a', cnt), NOW(), 'SystemCreate', 0);
+        SET cnt = cnt + 1;
+    END WHILE;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1347,4 +1353,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-03-08  2:06:56
+-- Dump completed on 2017-03-08 19:55:41

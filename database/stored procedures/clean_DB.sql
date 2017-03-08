@@ -2,7 +2,7 @@ DROP PROCEDURE IF EXISTS clean_DB;
 DELIMITER $$
 
 # CALL clean_DB();
-CREATE DEFINER=`root`@`localhost` PROCEDURE `clean_DB`()
+CREATE DEFINER=`admindev_db`@`localhost` PROCEDURE `clean_DB`()
 BEGIN
 	
 	DECLARE cnt INT(11);
@@ -52,5 +52,11 @@ BEGIN
     CALL add_userDownlines(3, 6, 'right', 'left', '');
     CALL add_userDownlines(4, 7, 'left', 'right', '');
     CALL add_userDownlines(4, 8, 'right', 'right', '');
+    
+    SET cnt = 1;
+    WHILE cnt <= 100 DO
+		INSERT INTO codes  (description, generated_date, generated_by, status) VALUES (CONCAT('a', cnt), NOW(), 'SystemCreate', 0);
+        SET cnt = cnt + 1;
+    END WHILE;
 END$$
 DELIMITER ;

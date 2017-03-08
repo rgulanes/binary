@@ -252,9 +252,12 @@ class Member extends CI_Controller{
 			//echo 'index => ' . $i . '</br>';
 			for ($a=0; $a < $subNode; $a++) { 
 				//echo 'sub-index => ' . $a . '</br>';
-				if($i != $treeArray[$i][$a]->depth){
-					unset($treeArray[$i][$a]);
+				if(isset($treeArray[$i][$a]->depth)){
+					if($i != $treeArray[$i][$a]->depth){
+						unset($treeArray[$i][$a]);
+					}
 				}
+				
 			}
 		}
 

@@ -45,7 +45,7 @@ class CronController extends CI_Controller {
         $commissions = array();
 
 		$this->db->trans_start();
-        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin') AND status = 1;");
+        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin');");
 
         if ($query->num_rows() > 0){
             $data = $query->result_array();
@@ -123,6 +123,7 @@ class CronController extends CI_Controller {
             }
 
             $maxSize = sizeof($commission);
+
             $genCommission = array();
             for ($i=1;$i<=$maxSize;$i++) { 
                 $lCount = $commission[$i]['lCount'];
