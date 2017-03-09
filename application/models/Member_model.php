@@ -627,6 +627,22 @@ class Member_model extends CI_Model{
         return $result->result();
     }
 
+    public function generateLuyabayaTree(){
+        $result = $this->db->query("CALL generateLuyabayaTree();");
+        
+        $response = 0;
+        if ($this->db->trans_status() === FALSE)
+        {
+            $response = 0;
+        }
+        else
+        {
+            $response = 1;
+        }
+
+        return $response;
+    }
+
     
  
 

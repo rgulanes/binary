@@ -12,6 +12,7 @@ class Admin extends CI_Controller{
 		if($this->session->userdata('user_id') != NULL){
 
 			//get the user info
+			$generateLuyabayaTree = $this->Member_model->generateLuyabayaTree();
 			$data['user_info'] = $this->Member_model->get_user_info($this->session->userdata('user_id'));
 
 			// echo "<pre>";
