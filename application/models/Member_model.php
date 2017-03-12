@@ -2,6 +2,12 @@
 
 class Member_model extends CI_Model{
 
+    function __construct()
+    {
+        parent::__construct();
+        date_default_timezone_set('Asia/Manila');
+    }
+
     public function update_tax($data,$id){
 
         if(!empty($data))

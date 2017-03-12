@@ -6,6 +6,7 @@ class CronController extends CI_Controller {
 	function __construct(){
         parent::__construct();
         $this->load->model('Member_model');
+        date_default_timezone_set('Asia/Manila');
     }
 
     public function cron_request()
@@ -171,7 +172,7 @@ class CronController extends CI_Controller {
         $commissions = array();
 
         $this->db->trans_start();
-        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin');");
+        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin') AND user_id = 2;");
 
         if ($query->num_rows() > 0){
             $data = $query->result_array();
@@ -222,15 +223,14 @@ class CronController extends CI_Controller {
             $iCommission = $query->row_array();
 
             $this->db->select('COUNT(*) AS count');
-            $query = $this->db->get_where('commission', array('c_user_id' => $userId , 'remarks' => 'upline', 'DATE(date_create)' => date('o-m-d')));
-            $generateCommission = $query->row_array();
-
+            $query = $this->db->get_where('commission', array('c_user_id' => $userId , 'r_user_id' => $userId , 'remarks' => 'upline', 'DATE(date_create)' => date('o-m-d')));
+            $generatedCommission = $query->row_array();
             
             $commission[$userId] = array(
                 'lCount' => $lCount['count'],
                 'rCount' => $rCount['count'],
                 'inserted_commissions' => $iCommission['count'],
-                'inserted_commissions_per_day' => $generateCommission['count']
+                'generate_commission_today' => $generatedCommission['count']
             );
         }
 
@@ -239,8 +239,6 @@ class CronController extends CI_Controller {
             $lCount = $v['lCount'];
             $rCount = $v['rCount'];
             $commissioned = $v['inserted_commissions'];
-            $iCommission = $v['inserted_commissions_per_day'];
-            
             $c_lvl = 0;
             $totPairs = ($lCount + $rCount);
 
@@ -260,8 +258,10 @@ class CronController extends CI_Controller {
             $totCommission = floor(($c_lvl - $commissioned));
             $pairing = 'pairing_'. $userId;
             if($totCommission > 0){
-                if($iCommission <= 10){
-                    for($i = 1; $i <= $totCommission; $i++){
+                for($i = 1; $i <= $totCommission; $i++){
+                    $iCommission = $this->_commissionForToday($id);
+                    echo $iCommission;
+                    if($iCommission < 10){
                         $_data = array(
                             'c_user_id' => $id,
                             'c_amount' => '60',
@@ -281,6 +281,14 @@ class CronController extends CI_Controller {
         echo '<pre>';
         print_r($commission);
         echo '</pre>';
+    }
+
+    private function _commissionForToday($id){
+        $this->db->select('COUNT(*) AS count');
+        $query = $this->db->get_where('commission', array('c_user_id' => $id , 'r_user_id' => $id , 'remarks' => 'upline', 'DATE(date_create)' => date('o-m-d')));
+        $generatedCommission = $query->row_array();
+
+        return $generatedCommission['count'];
     }
     
     private function _backupDatabase(){
