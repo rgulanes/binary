@@ -36,23 +36,28 @@ var generateTree = function (){
 					
 
 					if(node.parent == parentNode.nodeId){
-						leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
+						if( node.child_count == 1 || node.child_count == 0){
+							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a></li>';
+						}else{
+							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
+						}
+
 
 						subNode.find('ul.pChildren').append(leaf);
 					}else{
-						if(node.depth <= 100){
+						if(node.depth <= 3){
 							var pNode = $('#node_' + node.parent)[0].dataset;
 							var cNode = subNode.find('ul.pChildren');
 							var order = node.position == 'left' ? 'odd' : 'even';
 
 							var leaf = '';
 
-							// if(node.depth == 3 || node.child_count == 1){
-							// 	leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a></li>';
-							// }else{
-							// 	leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
-							// }
-							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
+							if(node.depth == 3 || node.child_count == 1 || node.child_count == 0){
+								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a></li>';
+							}else{
+								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
+							}
+							//leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
 
 							$('#node_' + node.parent).find('ul.children_'+ ( node.depth - 1 )+'').append(leaf);
 						}
@@ -114,18 +119,23 @@ var getTree = function (nodeId){
 					
 
 					if(node.parent == parentNode.nodeId){
-						leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
+						
+						if( node.child_count == 1 || node.child_count == 0){
+							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a></li>';
+						}else{
+							leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
+						}
 
 						subNode.find('ul.pChildren').append(leaf);
 					}else{
-						if(node.depth <= 100){
+						if(node.depth <= 3){
 							var pNode = $('#node_' + node.parent)[0].dataset;
 							var cNode = subNode.find('ul.pChildren');
 							var order = node.position == 'left' ? 'odd' : 'even';
 
 							var leaf = '';
 
-							if(node.depth == 3 || node.child_count == 1){
+							if(node.depth == 3 || node.child_count == 1 || node.child_count == 0){
 								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a></li>';
 							}else{
 								leaf = '<li class="'+order+'" id="node_'+node.child+'" data-depth="'+node.depth+'" data-parent="'+node.parent+'" data-node-id="'+node.child+'" data-position="'+node.position+'"><a class="mouse-over viewTree" >'+node.full_name+'<p class="user_name"><small>'+node.user_name+'</small></p></a> <ul class="children_'+ node.depth +'"></ul></li>';
@@ -166,8 +176,8 @@ $('#printTree').click(function(){
 });
 
 $(document).ready(function(){
+	$('#prev-parentId').val($('#loggedInUser').val()).focus().trigger('change');
 	generateTree();
-	$('#parentId').val($('#loggedInUser').val()).focus().trigger('change');
 
 	$('#parentId').on('focusin', function(){
 		$(this).attr('data-val', $(this).val());

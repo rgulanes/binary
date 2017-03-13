@@ -6,6 +6,7 @@ class Member extends CI_Controller{
 	function __construct(){
         parent::__construct();
         $this->load->model('Member_model');
+        date_default_timezone_set('Asia/Manila');
     }
 
 	function index(){
