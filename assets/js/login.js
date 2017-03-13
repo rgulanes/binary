@@ -62,6 +62,8 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 
 		$scope.available_downline = false;
 
+		$scope.createdAccountError = false;
+
 		$scope.sponsor_position = [
 			{ position_name : 'Left' },
 			{ position_name : 'Right' }
@@ -226,29 +228,35 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		          data    :  data, //forms user object
 		          headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
 		         }).then(function(response){
-		         	console.log('save_member',response.status);
-		         	if(response.status == 200){
-		         	 	//save the positioning
-		         	 	if(response.data.user_id > 0 ){
-		         	 		$scope.onSavePosition($base_url,response.data.user_id);
-		         	 	}else{
+		         	if(response.data.error == 0 ){
+			         	if(response.status == 200){
+			         	 	//save the positioning
+			         	 	if(response.data.user_id > 0 ){
+			         	 		$scope.onSavePosition($base_url,response.data.user_id);
+			         	 	}else{
 
-		         	 	}
-		         	 	$scope.saveMessage = true;
-		         		$scope.firstname = '';
-						$scope.lastname = '';
-						$scope.gender = '';
-						$scope.contact = '';
-						$scope.address = '';
-						$scope.username = '';
-						$scope.password = '';
-						$scope.email = '';
-						$scope.sponsor = '';
-		         	}
-		         	setTimeout(function(){ 	
-				      	$('#add-modal').modal('hide'); 
-				      	$scope.saveMessage = true;
-				   	}, 1500);
+			         	 	}
+			         	 	$scope.createdAccountError = false;
+			         	 	$scope.saveMessage = true;
+			         		$scope.firstname = '';
+							$scope.lastname = '';
+							$scope.gender = '';
+							$scope.contact = '';
+							$scope.address = '';
+							$scope.username = '';
+							$scope.password = '';
+							$scope.email = '';
+							$scope.sponsor = '';
+			         	}
+			         	setTimeout(function(){ 	
+					      	$('#add-modal').modal('hide'); 
+					      	$scope.saveMessage = true;
+					   	}, 1500);
+					}else{
+						$scope.createdAccountError = true;
+						$scope.save_buttton_status = false;
+
+					}
 		        });
 		    }     
 		}

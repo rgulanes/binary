@@ -649,6 +649,19 @@ class Member_model extends CI_Model{
         return $response;
     }
 
+    public function user_account_created($first_name,$last_name){
+        $data = array();
+        $query = $this->db->query("CALL get_userCount('$first_name','$last_name')");
+        mysqli_next_result($this->db->conn_id);
+        
+        if ($query->num_rows() > 0){
+            $data = $query->result();
+        }else{
+            $data = array();
+        }
+
+        return $data;
+    }
     
  
 

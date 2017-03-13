@@ -51,6 +51,7 @@
           </div>
           <div class="modal-body">
             	<div ng-hide="enterCode">
+            		<div class="alert alert-danger" role="alert" ng-show="createdAccountError">Max account already created!</div>
 					<div class="alert alert-success" role="alert" ng-show="saveMessage">Save successfully</div>
 					<div class="alert alert-danger" role="alert" ng-show="newMemberError">Fill Required Fields <b>{{_errorMessage}}</b></div>
 					<form name="add-employee" ng-submit="onSaveMember('<?php echo base_url();?>')">

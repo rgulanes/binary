@@ -30,92 +30,102 @@ class Login extends CI_Controller {
         $sponsor = $_POST['sponsor'];
         $username = $_POST['username'];
         $password = $_POST['password'];
-      
-        if($user_id == ''){
-            $generated_code = $_POST['generated_code'];
 
-            $insert_data = array(
-                'first_name' => ucwords($first_name),
-                'last_name' => ucwords($last_name),
-                'gender' => ucwords($gender),
-                'contact' => $contact,
-                'email' => $email,
-                'address' => ucwords($address),
-                'sponsor_by' => $sponsor,
-                'user_name' => $username,
-                'password' => $password,
-                'position' => 0,
-                'entered_on' => date("Y-m-d H:i:s"),
-            );
-
-            $inserted = $this->Member_model->save_member($insert_data);
-
-
-            $insert_position = array(
-
-                'user_id' => $inserted,
-                'position_left' => '',
-                'position_right' => '',
-                'sponsor_by' => $sponsor,
-                'upline' => ''
-            );
-
-            $this->Member_model->save_position($insert_position);
-            $this->Member_model->add_userDownline($inserted, $inserted, 'parent', '', '');
-        
-        
-        }else{
-
-            $update_data = array(
-                'first_name' => ucwords($first_name),
-                'last_name' => ucwords($last_name),
-                'gender' => ucwords($gender),
-                'contact' => $contact,
-                'email' => $email,
-                'address' => ucwords($address),
-                'sponsor_by' => $sponsor,
-                'user_name' => $username,
-                'password' => $password,
-                'position' => 0,
-                'entered_on' => date("Y-m-d H:i:s"),
-            );
-
-            $inserted = $this->Member_model->update_member($user_id,$update_data);
-
-
-            $insert_position = array(
-
-                'user_id' => $inserted,
-                'position_left' => '',
-                'position_right' => '',
-                'sponsor_by' => $sponsor,
-                'upline' => ''
-            );
-        }
-
-        if($inserted > 0 )
-        {
-            $update_codes = array(
-                'status' => 1,
-                'used_by' => $inserted
-            );
-
+        //count how many  account is created.
+        $result_account_created = $this->Member_model->user_account_created($first_name,$last_name); 
           
-
-            $this->response_code = 0;
-            $this->response_message = "Save Successfully";
-            $this->response_id = $inserted;
-
+        if($result_account_created[0]->counter < 7){  
             if($user_id == ''){
-                $this->Member_model->update_code($update_codes,$generated_code);
-                $this->Member_model->add_commission($sponsor, 50, 'referral', $inserted);
+                $generated_code = $_POST['generated_code'];
+
+                $insert_data = array(
+                    'first_name' => ucwords($first_name),
+                    'last_name' => ucwords($last_name),
+                    'gender' => ucwords($gender),
+                    'contact' => $contact,
+                    'email' => $email,
+                    'address' => ucwords($address),
+                    'sponsor_by' => $sponsor,
+                    'user_name' => $username,
+                    'password' => $password,
+                    'position' => 0,
+                    'entered_on' => date("Y-m-d H:i:s"),
+                );
+
+                $inserted = $this->Member_model->save_member($insert_data);
+
+
+                $insert_position = array(
+
+                    'user_id' => $inserted,
+                    'position_left' => '',
+                    'position_right' => '',
+                    'sponsor_by' => $sponsor,
+                    'upline' => ''
+                );
+
+                $this->Member_model->save_position($insert_position);
+                $this->Member_model->add_userDownline($inserted, $inserted, 'parent', '', '');
+            
+            
+            }else{
+
+                $update_data = array(
+                    'first_name' => ucwords($first_name),
+                    'last_name' => ucwords($last_name),
+                    'gender' => ucwords($gender),
+                    'contact' => $contact,
+                    'email' => $email,
+                    'address' => ucwords($address),
+                    'sponsor_by' => $sponsor,
+                    'user_name' => $username,
+                    'password' => $password,
+                    'position' => 0,
+                    'entered_on' => date("Y-m-d H:i:s"),
+                );
+
+                $inserted = $this->Member_model->update_member($user_id,$update_data);
+
+
+                $insert_position = array(
+
+                    'user_id' => $inserted,
+                    'position_left' => '',
+                    'position_right' => '',
+                    'sponsor_by' => $sponsor,
+                    'upline' => ''
+                );
             }
-        }
-        else
-        {
-            $this->response_code = 1;
-            $this->response_message = "Failed to save.";
-        }
+
+            if($inserted > 0 )
+            {
+                $update_codes = array(
+                    'status' => 1,
+                    'used_by' => $inserted
+                );
+
+              
+
+                $this->response_code = 0;
+                $this->response_message = "Save Successfully";
+                $this->response_id = $inserted;
+
+                if($user_id == ''){
+                    $this->Member_model->update_code($update_codes,$generated_code);
+                    $this->Member_model->add_commission($sponsor, 50, 'referral', $inserted);
+                }
+            }
+            else
+            {
+                $this->response_code = 1;
+                $this->response_message = "Failed to save.";
+                $this->response_id = '';
+            }
+        }else{
+                $this->response_code = 1;
+                $this->response_message = "You are max on creating an account.";
+                $this->response_id = '';
+        }  
 
 
         echo json_encode(array(
