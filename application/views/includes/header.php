@@ -13,6 +13,11 @@
 
 	<!-- Datatables -->
 	<link rel="stylesheet" href="<?php echo base_url(); ?>bower_components/datatables/media/css/dataTables.bootstrap.min.css" />
+	<style type="text/css">
+		.huge {
+		    font-size: 40px;
+		}
+	</style>
 </head>
 <body>
 

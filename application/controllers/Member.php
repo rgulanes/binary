@@ -436,6 +436,35 @@ class Member extends CI_Controller{
             "message"		=> $this->response_message
         ));
 	}
+
+	public function board_stats(){
+		$userId = $this->session->userdata('user_id');
+
+		$this->db->select('COALESCE(SUM(c_amount), 0) AS count');
+        $query = $this->db->get_where('commission', array('remarks' => 'referral', 'c_user_id' => $userId, 'DATE(date_create) <=' => date('o-m-d')));
+        $referral = $query->row_array();
+
+        $this->db->select('COALESCE(SUM(c_amount), 0) AS count');
+        $query = $this->db->get_where('commission', array('remarks' => 'upline', 'c_user_id' => $userId, 'DATE(date_create) <=' => date('o-m-d')));
+        $upline = $query->row_array();
+
+        $this->db->select('COALESCE(SUM(w_amount), 0) AS count');
+        $query = $this->db->get_where('withdrawal', array('remarks' => 'Approved', 'w_user_id' => $userId, 'DATE(date_create)' => date('o-m-d')));
+        $withdrawal = $query->row_array();
+
+        $this->db->select('COALESCE(COUNT(*), 0) AS count');
+        $query = $this->db->get_where('_selectedhierarchy', array('f_position !=' => 'parent'));
+        $treeSize = $query->row_array();
+
+
+        echo json_encode(array(
+            "treeSize"			=> $treeSize['count'],
+            "withdrawal"		=> $withdrawal['count'],
+            "upline"			=> $upline['count'],
+            "referral"			=> $referral['count'],
+        ));
+
+	}
 }
 
 ?>

@@ -625,4 +625,15 @@ $(document).ready(function(){
 		],
 		"order": [[1, 'asc']]
 	} );
+
+    $.get('board_stats', function(data){
+    	var json = JSON.parse(data);
+
+    	$('#treeSize-panel').html(json.treeSize);
+		$('#commission-panel').html(json.upline);
+		$('#withdrawal-panel').html(json.withdrawal);
+		$('#referrals-panel').html(json.referral);
+    });
+
+	
 });
