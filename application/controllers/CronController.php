@@ -309,7 +309,7 @@ class CronController extends CI_Controller {
         $commissions = array();
 
         $this->db->trans_start();
-        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin');");
+        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin') AND user_id = 2;");
 
         if ($query->num_rows() > 0){
             $data = $query->result_array();
@@ -398,8 +398,11 @@ class CronController extends CI_Controller {
                 }
             }
             
-            $totLvl = $c_lvl - $tCommissions;
+            $totLvl = $c_lvl;
 
+            $this->db->trans_start();
+            $this->db->query("DELETE FROM pair_logs WHERE date_generated = '$date' AND user_id = '$userId';");
+            $this->db->trans_complete();
             $_logs = array(
                 'user_id' => $id,
                 'log_count' => $totLvl,
