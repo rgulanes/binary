@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class CronController extends CI_Controller {
 
-	function __construct(){
+    function __construct(){
         parent::__construct();
         $this->load->model('Member_model');
         date_default_timezone_set('Asia/Manila');
@@ -45,12 +45,12 @@ class CronController extends CI_Controller {
         }
     }
 
-	private function _getUserCommission(){
-		$data = array();
-		$userTree = array();
+    private function _getUserCommission(){
+        $data = array();
+        $userTree = array();
         $commissions = array();
 
-		$this->db->trans_start();
+        $this->db->trans_start();
         $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin');");
 
         if ($query->num_rows() > 0){
@@ -75,7 +75,7 @@ class CronController extends CI_Controller {
 
         $size = sizeof($data);
         foreach ($data as $k => $v) {
-        	$userId = $v['user_id'];
+            $userId = $v['user_id'];
 
             $this->db->trans_start();
             $this->db->query("CALL get_Hierarchy('$userId');");
@@ -167,7 +167,7 @@ class CronController extends CI_Controller {
 
             }
         }
-	}
+    }
 
     private function _getUserCommissionByPosition(){
         $data = array();
@@ -283,7 +283,7 @@ class CronController extends CI_Controller {
             if($totCommission > 0){
                 for($i = 1; $i <= $totCommission; $i++){
                     $iCommission = $this->_commissionForToday($id);
-                    echo $iCommission;
+                    //echo $iCommission . '</br>';
                     if($iCommission < 10){
                         $_data = array(
                             'c_user_id' => $id,
@@ -312,7 +312,7 @@ class CronController extends CI_Controller {
         $commissions = array();
 
         $this->db->trans_start();
-        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin');");
+        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin') AND user_id = 2;");
 
         if ($query->num_rows() > 0){
             $data = $query->result_array();
@@ -417,7 +417,8 @@ class CronController extends CI_Controller {
             $pairing = 'pairing_'. $userId;
             if($totCommission > 0){
                 for($i = 1; $i <= $totCommission; $i++){
-                    $iCommission = $this->_commissionForToday($id);
+                    $iCommission = $this->_commissionForDate($id, $date);
+                    //echo $iCommission . '</br>';
                     if($iCommission < 10){
                         $_data = array(
                             'c_user_id' => $id,
@@ -443,6 +444,14 @@ class CronController extends CI_Controller {
     private function _commissionForToday($id){
         $this->db->select('COUNT(*) AS count');
         $query = $this->db->get_where('commission', array('c_user_id' => $id , 'r_user_id' => $id , 'remarks' => 'upline', 'DATE(date_create)' => date('o-m-d')));
+        $generatedCommission = $query->row_array();
+
+        return $generatedCommission['count'];
+    }
+
+    private function _commissionForDate($id, $date){
+        $this->db->select('COUNT(*) AS count');
+        $query = $this->db->get_where('commission', array('c_user_id' => $id , 'r_user_id' => $id , 'remarks' => 'upline', 'DATE(date_create)' => $date));
         $generatedCommission = $query->row_array();
 
         return $generatedCommission['count'];
