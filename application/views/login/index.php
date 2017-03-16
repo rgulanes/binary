@@ -121,7 +121,7 @@
 										    <ui-select-choices repeat="list in list_available_downline | propsFilter: {full_name: $select.search, user_name: $select.search}"" >
 										      <small>
 										      <div>Name: {{list.full_name}}</div>
-										      <div>Username:  {{list.user_name}}</div>
+										      <div>Username: {{list.u_username}}</div>
 										      <br>
 										      </small>
 										    </ui-select-choices>
