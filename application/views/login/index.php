@@ -4,25 +4,67 @@
 </video> -->
 <div class="login" ng-controller="loginCtrl" ng-init="onLoadUrl('<?php echo base_url();?>')" ng-cloak>
 	<br>
-	<div class="container-fluid pull-right">
+<!-- 	<div class="container-fluid pull-right">
 	  	<a href="#" class="btn btn-default" data-toggle="modal" data-target="#login-modal"><i class="fa fa-sign-in" aria-hidden="true"></i> Login</a>
 	  	<a href="#" class="btn btn-primary" data-toggle="modal" data-target="#add-modal"><i class="fa fa-user" aria-hidden="true"></i> New Member</a>
-	</div>
+	</div> -->
 
-	<div class="container-fluid pull-left branding">
+	<!-- <div class="container-fluid pull-left branding">
 	  	<a href="http://www.luyabaya.com"><i class="fa fa-leaf fa-fw" aria-hidden="true"></i> LUYABAYA | Organic Liniment</a>
 	</div>
+ -->
+		<div class="middlePage">
+			<div class="page-header">
+			  <h1 class="branding"><a href="http://www.luyabaya.com"><i class="fa fa-leaf fa-fw" aria-hidden="true"></i>LUYABAYA |<small> Organic Liniment</small></a></h1>
+			</div>
+
+			<div class="panel panel-info">
+			  <div class="panel-heading">
+			    <!-- <h3 class="panel-title">Please Sign In</h3> -->
+			  </div>
+			  <div class="panel-body">
+			  
+			  <div class="row">
+			  
+			<div class="col-md-5" >
+			<!-- <a href="#"><img src="http://techulus.com/buttons/fb.png" /></a><br/>
+			<a href="#"><img src="http://techulus.com/buttons/tw.png" /></a><br/>
+			<a href="#"><img src="http://techulus.com/buttons/gplus.png" /></a> -->
+			</div>
+
+			    <div class="col-md-7" style="border-left:1px solid #ccc;height:160px">
+			<form class="form-horizontal" ng-submit="onclickLogin('<?php echo base_url();?>')">
+			<fieldset>
+
+			  <input id="textinput" name="textinput" type="text" placeholder="Username" ng-model="_username" class="form-control input-md">
+			  <br>	
+			  <input id="textinput" name="textinput" type="password" placeholder="Password" ng-model="_password" class="form-control input-md">
+			  <div class="spacing"><a href="#" data-toggle="modal" data-target="#add-modal"><small> Add New Member?</small></a><br/></div>
+			  <button id="singlebutton" type="submit" name="singlebutton" class="btn btn-info btn-sm pull-right">Sign In</button>
+
+
+			</fieldset>
+			</form>
+			</div>
+			    
+			</div>
+			    
+			</div>
+			</div>
+			<div class="alert alert-danger" role="alert" ng-show="errorMessage">Login Failed!</div>
+		</div>
+
 
     <div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
           <div class="modal-content">
           <div class="modal-header">
             <span class="close" data-dismiss="modal">&times;</span>
-        		 <h1>Login</h1>
+        		 <h>Login</h1>
           </div>
           <div class="modal-body">
             <div class="alert alert-success" role="alert" ng-show="saveMessage">Password change successfully</div>
-               <div class="alert alert-danger" role="alert" ng-show="errorMessage">Login Failed!</div>
+             
                <form name="login" ng-submit="onclickLogin('<?php echo base_url();?>')">
                	<div class="form-group">
 				    <label for="usr">Username</label>
@@ -46,8 +88,8 @@
           <div class="modal-header">
             <span class="close" data-dismiss="modal">&times;</span>
 
-           	<h1 align="center" ng-show="enterCode">Enter Code</h1> 	
-            <h1 align="center" ng-hide="enterCode">Add Employee</h1>
+           	<h3 align="center" ng-show="enterCode">Enter Code</h3> 	
+            <h3 align="center" ng-hide="enterCode">Add Employee</h3>
           </div>
           <div class="modal-body">
             	<div ng-hide="enterCode">

@@ -37,7 +37,7 @@
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
 
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
               <div class="panel-heading"><b>User Information <i class="fa fa-user pull-right" title="view list"></i> </b></div>
               <div class="panel-body">
                 <h2 > Welcome! <?php echo $user_info->first_name; ?> <?php echo $user_info->last_name; ?></h2>
@@ -52,7 +52,7 @@
           </div>
           
           <div class="col-lg-6 col-md-6 col-sm-6">
-             <div class="panel panel-default">
+             <div class="panel panel-primary">
               <div class="panel-heading"><b>Code <i class="fa fa-eye pull-right" title="view list"></i></b></div>
               <div class="panel-body" style="max-height: 245px;overflow: auto;">
                   <table class="table" style="margin-top:13px;">
@@ -85,7 +85,7 @@
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
 
-            <div class="panel panel-default">
+            <div class="panel panel-primary">
               <div class="panel-heading"><b>Member Product Purchase <i class="fa fa-shopping-cart pull-right" title="view list"></i> </b></div>
               <div class="panel-body">
                 <form name="searchProductMember"  ng-submit="onSearchProduct()">

@@ -183,3 +183,23 @@ tr.shown td.details-control {
   background-color: #ff2424!important;
   color: #fff !important;
 }
+
+  
+.spacing {
+  padding-top:7px;
+  padding-bottom:7px;
+}
+.middlePage {
+  width: 680px;
+    height: 500px;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+
+.logo {
+  color:#CCC;
+}
