@@ -308,5 +308,68 @@ angular.module('binaryApp')
 				$scope.member_product_purchase = response.data.member_product_purchase;
 			});
 
-		}		
+		}	
+
+
+		$scope.getProfileInfo = function(){
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../admin/get_profile_info',
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        }).then(function(response) 
+		        {
+		        	// console.log('--->',response);
+		      		angular.forEach(response.data,function(data){
+		   	  			$scope.update_user_id = data.user_id;
+		   	  			$scope.update_first_name = data.first_name;
+		   	  			$scope.update_last_name = data.last_name;
+		   	  			$scope.update_contact = data.contact;
+		   	  			$scope.update_address = data.address;
+		   	  			$scope.update_email = data.email;
+		   	  			$scope.update_gender = data.gender;
+		   	  			$scope.current_password = data.password;
+		   	  		})
+		      	});
+		}
+
+		
+		$scope.onChangePassword = function(){
+
+			
+			var data = angular.toJson({
+				user_id : $scope.update_user_id,
+				new_password : $scope.new_password,
+			});	
+			
+			$scope.file =  $http({
+		        method  : 'POST',
+		        url     : '../admin/update_password',
+		        data 	: data,
+		        headers : {'Content-Type': 'application/x-www-form-urlencoded'} 
+		        })
+		        .then(function(response) 
+		        {
+		      		// console.log(response.data);
+		      		if(response.data.error == 0){
+		      			$scope.saveMessage = true;
+		      			setTimeout(function(){ 	
+							$("#change-password-modal").modal('hide');
+						}, 1500);
+		      		}else{
+
+		      		}
+		      	});
+
+		
+
+		}
+
+
+		$scope.onClickChangePassword =  function(){
+			$scope.saveMessage = false;
+			$scope.getProfileInfo();
+			$("#change-password-modal").modal('show');
+		
+		}
+
 }); 

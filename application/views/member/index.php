@@ -33,38 +33,6 @@
         </div><!--/.container-fluid -->
       </nav>
 
-      <!-- Main component for a primary marketing message or call to action -->
-      <!-- <div class="container-fluid" ng-show="notAssigned">
-        <div class="panel panel-danger">
-              <div class="panel-heading"><b> Please Assign  <i class="fa fa-exclamation-triangle pull-right"></i> </b></div>
-              <div class="panel-body">
-                <table class="table" style="margin-top:13px;">
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Gender</th>
-                        <th>Contact</th>
-                        <th>Email</th>
-                        <th>Address</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="list in not_assigned">
-                        <td>{{list.u_first_name}} {{list.u_last_name}}</td>
-                        <td>{{list.u_gender}}</td>
-                        <td>{{list.u_contact}}</td>
-                        <td>{{list.u_email}}</td>
-                        <td>{{list.u_address}}</td>
-                        <td><button type="button" class="btn btn-primary" ng-click="onShowModal(list.u_user_id,list.u_first_name,list.u_last_name)"><i class="fa fa-pencil"></i></button></td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-              </div>
-        </div>
-      </div> -->
-
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">

@@ -261,8 +261,6 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		    }     
 		}
 
-		
-
 
 		$scope.onChangePosition = function($base_url,$selected_position){
 			$scope.list_available_downline = [];
@@ -295,7 +293,6 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 		   					}
 		   				});
 		   				//required the selected downline 
-
 
 		   			}else{
 		   				//doesnt yet donwlines.
@@ -353,8 +350,6 @@ angular.module('binaryApp',['ui.select','ngTable','ui.select'])
 				$scope.onChangePosition($base_url,$scope.sponsor_position_selected);
 			}	
 		}
-
-
 
 		$scope.getAllMembers = function($base_url){
 			var data = angular.toJson({

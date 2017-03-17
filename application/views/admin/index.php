@@ -17,6 +17,13 @@
                -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Profile
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#" ng-click="onClickChangePassword()">Change Passwrod</a></li>
+                </ul>
+              </li>
               <li><a href="#"  ng-click="onClickMembers()">Members</a></li>
               <li><a href="#"  ng-click="onClickCashRequest()">Cash Request <span class="badge">{{cash_request_count}}</span></a></li>
               <li><a href="#"  data-toggle="modal" data-target="#code-modal">Generate Code</a></li>
@@ -320,6 +327,31 @@
       </div>
     </div>
 
+      <div class="modal fade" id="change-password-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+          <div class="modal-content">
+          <div class="modal-header">
+            <span class="close" data-dismiss="modal">&times;</span>
+            <h1 align="center">Change Password</h1>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-success" role="alert" ng-show="saveMessage">Password change successfully</div>
+            <form name="update-profile" ng-submit="onChangePassword()">
+               <label>Current Password:</label>
+              <input type="text" name="requested-amount" ng-model="current_password" class="form-control"  required>
+              <br>
+              <label>Enter New Password:</label>
+              <input type="text" name="requested-amount" ng-model="new_password" class="form-control" required >
+              <br>
+              <button type="submit" class="btn btn-primary">Save New Password</button>
+                      
+            </form>
+
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
 
 
   
