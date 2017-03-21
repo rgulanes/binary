@@ -18,38 +18,31 @@
 			  <h1 class="branding"><a href="http://www.luyabaya.com"><i class="fa fa-leaf fa-fw" aria-hidden="true"></i>LUYABAYA |<small> Organic Liniment</small></a></h1>
 			</div>
 
-			<div class="panel panel-info">
-			  <div class="panel-heading">
-			    <!-- <h3 class="panel-title">Please Sign In</h3> -->
-			  </div>
-			  <div class="panel-body">
-			  
-			  <div class="row">
-			  
-			<div class="col-md-5" >
-			<!-- <a href="#"><img src="http://techulus.com/buttons/fb.png" /></a><br/>
-			<a href="#"><img src="http://techulus.com/buttons/tw.png" /></a><br/>
-			<a href="#"><img src="http://techulus.com/buttons/gplus.png" /></a> -->
-			</div>
-
-			    <div class="col-md-7" style="border-left:1px solid #ccc;height:160px">
-			<form class="form-horizontal" ng-submit="onclickLogin('<?php echo base_url();?>')">
-			<fieldset>
-
-			  <input id="textinput" name="textinput" type="text" placeholder="Username" ng-model="_username" class="form-control input-md">
-			  <br>	
-			  <input id="textinput" name="textinput" type="password" placeholder="Password" ng-model="_password" class="form-control input-md">
-			  <div class="spacing"><a href="#" data-toggle="modal" data-target="#add-modal"><small> Add New Member?</small></a><br/></div>
-			  <button id="singlebutton" type="submit" name="singlebutton" class="btn btn-info btn-sm pull-right">Sign In</button>
-
-
-			</fieldset>
-			</form>
-			</div>
-			    
-			</div>
-			    
-			</div>
+			<div class="panel panel-warning">
+				<div class="panel-body">
+				  	<div class="row">
+						<div class="col-md-5" >
+							<div class="row">
+								<br>
+								<div class="col-xs-12 text-center">
+	                                <h2 id="runtime"></h2>
+	                                <h4><i class="fa fa-clock-o fa-fw"></i> Time Today</h4>
+	                            </div>
+							</div>
+						</div>
+						<div class="col-md-7" style="border-left:2px solid #efec96; height:160px">
+							<form class="form-horizontal" ng-submit="onclickLogin('<?php echo base_url();?>')">
+								<fieldset>
+								  <input id="textinput" name="textinput" type="text" placeholder="Username" ng-model="_username" class="form-control input-md">
+								  <br>	
+								  <input id="textinput" name="textinput" type="password" placeholder="Password" ng-model="_password" class="form-control input-md">
+								  <div class="spacing"><a href="#" data-toggle="modal" data-target="#add-modal"><small> Add New Member?</small></a><br/></div>
+								  <button id="singlebutton" type="submit" name="singlebutton" class="btn btn-warning btn-sm pull-right">Sign In</button>
+								</fieldset>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="alert alert-danger" role="alert" ng-show="errorMessage">Login Failed!</div>
 		</div>

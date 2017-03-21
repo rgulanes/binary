@@ -324,6 +324,15 @@ $(document).ready(function(){
         url     : './generateHierarchy'
     });
 
+    $.get('board_stats', function(data){
+    	var json = JSON.parse(data);
+
+    	$('#treeSize-panel').html(json.treeSize);
+		$('#commission-panel').html(json.upline);
+		$('#withdrawal-panel').html(json.withdrawal);
+		$('#referrals-panel').html(json.referral);
+    });
+
     $('#view-tree').on('click', function(){
     	window.open("./tree_view", "_blank");
     });
