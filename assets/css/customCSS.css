@@ -203,3 +203,7 @@ tr.shown td.details-control {
 .logo {
   color:#CCC;
 }
+
+.huge {
+    font-size: 40px;
+}

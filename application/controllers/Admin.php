@@ -231,7 +231,45 @@ class Admin extends CI_Controller{
     }	
 
 
+    public function board_stats(){
+		$this->db->select('COALESCE(SUM(c_amount), 0) AS count');
+        $query = $this->db->get_where('commission', array('remarks' => 'referral', 'DATE(date_create) <=' => date('o-m-d')));
+        $referral = $query->row_array();
 
+        $this->db->select('COALESCE(SUM(c_amount), 0) AS count');
+        $query = $this->db->get_where('commission', array('remarks' => 'upline', 'DATE(date_create) =' => date('o-m-d')));
+        $upline = $query->row_array();
+
+        $this->db->select('COALESCE(SUM(w_amount), 0) AS count');
+        $query = $this->db->get_where('withdrawal', array('remarks' => 'Approved', 'DATE(date_create)' => date('o-m-d')));
+        $withdrawal = $query->row_array();
+
+        $query = $this->db->query('SELECT DISTINCT depth FROM luyabaya_tree ORDER BY depth DESC LIMIT 1;');
+        $treeSize = $query->row_array();
+
+        $this->db->select('COALESCE(COUNT(*), 0) AS count');
+        $query = $this->db->get_where('luyabaya_tree', array('m_position =' => 'left'));
+        $left = $query->row_array();
+
+        $this->db->select('COALESCE(COUNT(*), 0) AS count');
+        $query = $this->db->get_where('luyabaya_tree', array('m_position =' => 'right'));
+        $right = $query->row_array();
+
+        $query = $this->db->query("SELECT COUNT(*) AS count FROM luyabaya_tree WHERE m_position != 'parent';");
+        $members = $query->row_array();
+
+
+        echo json_encode(array(
+            "treeSize"			=> $treeSize['depth'],
+            "withdrawal"		=> $withdrawal['count'],
+            "upline"			=> $upline['count'],
+            "referral"			=> $referral['count'],
+            "left"			=> $left['count'],
+            "right"			=> $right['count'],
+            'totMembers'	=> $members['count']
+        ));
+
+	}
 }
 
 

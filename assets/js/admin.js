@@ -373,3 +373,19 @@ angular.module('binaryApp')
 		}
 
 }); 
+
+
+// jQuery
+$(document).ready(function(){
+	$.get('board_stats', function(data){
+    	var json = JSON.parse(data);
+
+    	$('#treeSize-board').html(json.treeSize);
+		$('#commission-board').html(json.upline);
+		$('#withdrawal-board').html(json.withdrawal);
+		$('#referrals-board').html(json.referral);
+		$('#treeSize-left-board').html(json.left);
+		$('#treeSize-right-board').html(json.right);
+		$('#members-board').html(json.totMembers);
+    });
+});
