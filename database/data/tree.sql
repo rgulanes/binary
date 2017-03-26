@@ -1,0 +1,1 @@
+INSERT INTO tree (description, create_by, date_create) VALUES ('Reports', 'SystemCreate', NOW());

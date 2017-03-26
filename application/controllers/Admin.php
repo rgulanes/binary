@@ -28,6 +28,15 @@ class Admin extends CI_Controller{
 
 	}
 
+	function Reports(){
+		if($this->session->userdata('user_id') != NULL){
+			$this->load->view('admin/reports');
+		}else{
+			redirect('login/index');
+		}
+
+	}
+
 	function save_product_purchase(){
 		$_POST = json_decode(file_get_contents('php://input'),true);
 		$id 	= $_POST['user_id'];
@@ -270,6 +279,13 @@ class Admin extends CI_Controller{
         ));
 
 	}
+
+	public function get_tree_nodes(){
+		$_POST = json_decode(file_get_contents('php://input'),true);
+		$desc = $_POST['desc'];
+        $data = $this->Member_model->get_tree_nodes($desc);
+        return print json_encode($data);
+    }
 }
 
 

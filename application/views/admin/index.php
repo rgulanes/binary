@@ -27,6 +27,7 @@
               <li><a href="#"  ng-click="onClickMembers()">Members</a></li>
               <li><a href="#"  ng-click="onClickCashRequest()">Cash Request <span class="badge">{{cash_request_count}}</span></a></li>
               <li><a href="#"  data-toggle="modal" data-target="#code-modal">Generate Code</a></li>
+              <li><a href="<?php echo base_url().('admin/Reports');?>">Reports</a></li>
               <li><a href="#" ng-click="onclickLogout()">Log Out</a></li>
             </ul>
           </div><!--/.nav-collapse -->

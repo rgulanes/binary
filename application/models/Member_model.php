@@ -664,5 +664,32 @@ class Member_model extends CI_Model{
     }
     
  
+    public function get_tree_nodes($desc){
+        $result = $this->db->query("CALL getTreeNodes('$desc');");
+        mysqli_next_result($this->db->conn_id);
+        $data = array();
+        if ($result->num_rows() > 0){
+            foreach ($result->result_array() as $k => $v) {
+                if($v['id'] != null){
+                    $data[$k] = array(
+                        'id' => $v['id'],
+                        'text' => $v['text'],
+                        'parent' => $v['parent'],
+                        'icon' => $v['icon'],
+                        'data' => array(
+                            'node_id' => $v['node_id'],
+                            'created_by' => $v['created_by'],
+                            'datetime' => $v['datetime'],
+                            'tree_id' => $v['tree_id'],
+                            'file_url' => $v['file_url']
+                        )
+                    );
+                }
+            }
+        }else{
+            $data = array();
+        }
 
+        return $data;
+    }
 }?>
