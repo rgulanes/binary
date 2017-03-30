@@ -387,5 +387,6 @@ $(document).ready(function(){
 		$('#treeSize-left-board').html(json.left);
 		$('#treeSize-right-board').html(json.right);
 		$('#members-board').html(json.totMembers);
+		$('#withdrawal-forApproval-board').html(json.withdrawalForApproval);
     });
 });

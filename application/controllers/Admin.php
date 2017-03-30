@@ -267,6 +267,9 @@ class Admin extends CI_Controller{
         $query = $this->db->query("SELECT COUNT(*) AS count FROM luyabaya_tree WHERE m_position != 'parent';");
         $members = $query->row_array();
 
+        $query = $this->db->query("SELECT COUNT(*) AS count FROM request_withdrawal WHERE status = 0;");
+        $forApproval = $query->row_array();
+
 
         echo json_encode(array(
             "treeSize"			=> $treeSize['depth'],
@@ -275,7 +278,8 @@ class Admin extends CI_Controller{
             "referral"			=> $referral['count'],
             "left"			=> $left['count'],
             "right"			=> $right['count'],
-            'totMembers'	=> $members['count']
+            'totMembers'	=> $members['count'],
+            'withdrawalForApproval' => $forApproval['count']
         ));
 
 	}

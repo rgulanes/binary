@@ -443,9 +443,10 @@ $(document).ready(function(){
 		"ajax": "getUserWithdrawals",
 		"columns": [
 		    { "data": "w_amount" },
+		    { "data": "status" },
 		    { "data": "date_create" }
 		],
-		"order": [[1, 'asc']]
+		"order": [[2, 'asc']]
 	} );
 
     $('#userCohDataTable').DataTable( {

@@ -465,6 +465,25 @@ class Member extends CI_Controller{
         ));
 
 	}
+
+	public function Cash_on_Hand_Report(){
+		if($this->session->userdata('user_id') != NULL){
+			$this->load->model('Reports_model');
+			$data['tot_COH'] = $this->Member_model->get_totalCashOnHand($this->session->userdata('user_id'));
+			$data['report'] = $this->Reports_model->get_user_cash_on_hand($this->session->userdata('user_id'));
+	        $html = $this->load->view('report_template/cash_on_hand_report', $data, true);
+	        $file = "";
+
+			ini_set('memory_limit','32M');
+             
+	        $this->load->library('m_pdf');
+	        $pdf = $this->m_pdf->load();
+	        $pdf->WriteHTML($html);
+	        $pdf->Output($file, 'I');
+		}else{
+			redirect('login/index');
+		}
+	}
 }
 
 ?>

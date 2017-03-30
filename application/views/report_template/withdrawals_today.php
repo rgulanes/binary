@@ -64,6 +64,7 @@
 			<tr>
 				<th>Full Name</th>
 				<th>Date of Withdrawal</th>
+				<th>Amount Withdrawn</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -72,6 +73,7 @@
 				echo '<tr>';
 				echo '<td>'.$key['full_name'].'</td>';
 				echo '<td>'.$key['date_create'].'</td>';
+				echo '<td>'.'Php. ' . number_format($key['w_amount'], 2, '.', ',').'</td>';
 				echo '</tr>';
 			}
 		?>

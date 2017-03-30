@@ -1,4 +1,4 @@
-    <div ng-controller="memberCtrl" ng-init="onLoadUserInfo(<?php echo $user_info->user_id;?>)" ng-cloak>
+     <div ng-controller="memberCtrl" ng-init="onLoadUserInfo(<?php echo $user_info->user_id;?>)" ng-cloak>
      <!-- Static navbar -->
       <nav class="navbar navbar-default" style="border-radius: 0px!important;">
         <div class="container-fluid">
@@ -27,6 +27,7 @@
               </li>
               <li><a style="cursor: pointer;" id="view-tree">View Tree</a></li>
               <li><a href="#" ng-click="onclickCashout()">Cash out</a></li>
+              <li><a href="<?php echo base_url().('member/Cash_on_Hand_Report');?>" target="_blank">Print Cash On Hand</a></li>
               <li><a href="#" ng-click="onclickLogout()">Log Out</a></li>
             </ul>
           </div><!--/.nav-collapse -->
@@ -143,7 +144,8 @@
                             <thead>
                               <tr>
                                 <th>Amount</th>
-                                <th>Date Withdrawn</th>
+                                <th>Status</th>
+                                <th>Date</th>
                               </tr>
                             </thead>
                           </table>

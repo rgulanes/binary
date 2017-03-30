@@ -20688,6 +20688,7 @@ class mPDF
 			$bodystyle['COLOR'] = $this->cssmgr->CSS['BODY']['COLOR'];
 		}
 		if (isset($bodystyle)) {
+			ini_set('memory_limit', '-1');
 			$this->setCSS($bodystyle, 'BLOCK', 'BODY');
 		}
 	}

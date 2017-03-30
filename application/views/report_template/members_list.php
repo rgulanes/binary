@@ -55,7 +55,7 @@
 			<tr>
 				<th rowspan="2" colspan="1" style="width: 125px;">Membership Code</th>
 				<th colspan="3">Member Information</th>
-				<th colspan="3">Membership Information</th>
+				<th colspan="5">Membership Information</th>
 			</tr>
 			<tr>
 				<th>Full Name</th>
@@ -64,6 +64,8 @@
 				<th>Username</th>
 				<th>Date Joined</th>
 				<th>Sponsored By</th>
+				<th>Position on Tree</th>
+				<th>Parent on Tree</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -77,6 +79,8 @@
 				echo '<td>'.$key['user_name'].'</td>';
 				echo '<td>'.$key['entered_on'].'</td>';
 				echo '<td>'.$key['sponsor_name'].'</td>';
+				echo '<td>'.$key['position'].'</td>';
+				echo '<td>'.$key['parent_name'].'</td>';
 				echo '</tr>';
 			}
 		?>
