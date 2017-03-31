@@ -29,6 +29,7 @@ class CronController extends CI_Controller {
                 $data = $this->_getUserCommissionByDate($_GET['date']);
                 break;
             case 'generateRebates':
+                $this->_cleanUniLevel();
                 $data = $this->_generateRebates();
                 break;
             case 'backupDatabase':
@@ -512,8 +513,28 @@ class CronController extends CI_Controller {
         return $response;
     }
 
+    private function _cleanUniLevel(){
+        set_time_limit(0);
+
+        $this->db->trans_start();
+        $result = $this->db->query("CALL update_UniLevel();");
+        mysqli_next_result($this->db->conn_id);
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE)
+        {
+            $result->free_result();
+        }
+        else
+        {
+            $result->free_result();
+        }
+    }
+
     private function _generateRebates(){
         $data = array();
+
+        set_time_limit(0);
 
         $this->db->trans_start();
         $query = $this->db->query("SELECT 
