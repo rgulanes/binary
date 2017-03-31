@@ -41,12 +41,14 @@ class Admin extends CI_Controller{
 		$_POST = json_decode(file_get_contents('php://input'),true);
 		$id 	= $_POST['user_id'];
 		$amount = $_POST['amount'];
+		$product_desc = $_POST['product_description'];
 		$date_purchase = date("Y-m-d", strtotime($_POST['date_purchase']));
 	
 	  	$insert_data = array(
             'amount' => $amount,
             'date_purchase' => $date_purchase,
             'user_id' => $id,
+            'product_desc' => $product_desc
         );
 
 	  	$result = $this->Member_model->save_product_purchase($insert_data);
@@ -270,6 +272,10 @@ class Admin extends CI_Controller{
         $query = $this->db->query("SELECT COUNT(*) AS count FROM request_withdrawal WHERE status = 0;");
         $forApproval = $query->row_array();
 
+        $this->db->select('COALESCE(SUM(c_amount), 0) AS count');
+        $query = $this->db->get_where('commission', array('remarks' => 'rebates', 'DATE(date_create) <=' => date('o-m-d')));
+        $rebate = $query->row_array();
+
 
         echo json_encode(array(
             "treeSize"			=> $treeSize['depth'],
@@ -279,7 +285,8 @@ class Admin extends CI_Controller{
             "left"			=> $left['count'],
             "right"			=> $right['count'],
             'totMembers'	=> $members['count'],
-            'withdrawalForApproval' => $forApproval['count']
+            'withdrawalForApproval' => $forApproval['count'],
+            "rebate"			=> $rebate['count']
         ));
 
 	}

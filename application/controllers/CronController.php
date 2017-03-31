@@ -28,6 +28,9 @@ class CronController extends CI_Controller {
             case 'postGenerateCommissionSvc':
                 $data = $this->_getUserCommissionByDate($_GET['date']);
                 break;
+            case 'generateRebates':
+                $data = $this->_generateRebates();
+                break;
             case 'backupDatabase':
                 $data = $this->_backupDatabase();
                 print_r($data);
@@ -507,5 +510,50 @@ class CronController extends CI_Controller {
         }
 
         return $response;
+    }
+
+    private function _generateRebates(){
+        $data = array();
+
+        $this->db->trans_start();
+        $query = $this->db->query("SELECT 
+            u.* , COALESCE(SUM(p.amount), 0) AS amount, COALESCE((SUM(p.amount)/ 1000 - (SELECT COUNT(*) FROM commission WHERE remarks = 'rebates' AND c_user_id = u.child)), 0) AS rebate_count,
+            CASE 
+                WHEN u.depth IN (0, 1) THEN 30
+                WHEN u.depth = 2 THEN 15
+                WHEN u.depth IN (3,4,5) THEN 10
+                ELSE 5 END AS rebate
+            FROM _unilevel_tree u
+            LEFT JOIN product_purchase p ON p.user_id = u.child
+            GROUP BY child;");
+
+        if ($query->num_rows() > 0){
+            $data = $query->result_array();
+        }else{
+            $data = array();
+        }
+
+        $this->db->trans_complete();
+
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+
+        foreach ($data as $k => $v) {
+            for ($i=1; $i <= $v['rebate_count']; $i++) { 
+                $this->db->trans_start();
+                $genCommission = $this->db->query("INSERT INTO commission (c_user_id, c_amount, r_user_id, remarks, date_create) VALUES(".$v['child'].", ".$v['rebate'].", ".$v['child'].", 'rebates', NOW())");
+                $this->db->trans_complete();
+
+                if ($this->db->trans_status() === FALSE)
+                {
+                    $genCommission->free_result();
+                }
+                else
+                {
+                    $genCommission->free_result();
+                }
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ BEGIN
         (CASE 
 			WHEN remarks = 'referral' THEN 'Direct Referral'
             WHEN remarks = 'upline' THEN 'Pairing'
+            WHEN remarks = 'rebates' THEN 'Rebates'
 			ELSE ''
 		END) AS remarks
 	FROM commission WHERE c_user_id = userId;

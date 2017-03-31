@@ -42,11 +42,11 @@
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-cubes fa-5x"></i>
+                                <i class="fa fa-money fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
-                                <div class="huge" id="treeSize-board"></div>
-                                <div>Tree Size as of Today</div>
+                                <div class="huge" id="rebates-board"></div>
+                                <div>Rebates as of Today</div>
                             </div>
                         </div>
                     </div>
@@ -222,7 +222,7 @@
                     <input type="date" class="form-control" name="to" ng-model="date_to">
                   </div>
                   <div class="col-md-2 col-lg-2">
-                     <button type="submit" class="btn btn-primary">Save</button>
+                     <button type="submit" class="btn btn-primary"><i class="fa fa-search fa-fw"></i></button>
                   </div>                  
                 </div>
                 </form>
@@ -231,12 +231,14 @@
                     <thead>
                       <tr>
                         <th>Name</th>
+                        <th>Product Description</th>
                         <th>Amount</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr ng-repeat="list in member_product_purchase">
                         <td>{{list.full_name}}</td>
+                        <td>{{list.product_desc}}</td>
                         <td>{{list.amount}}</td>
                      </tbody>
                   </table>
@@ -437,6 +439,9 @@
             <br>
             <label>Product Amount: </label>
             <input type="text" class="form-control" name="product_amount" ng-model="product_amount" required>
+             <br>
+             <label>Product Description: </label>
+            <input type="text" class="form-control" name="product_description" ng-model="product_description" required>
              <br>
              <label>Date Brought : </label> 
             <input type="date" class="form-control" name="date_brought" ng-model="date_brought" required>

@@ -161,6 +161,7 @@ class Reports_model extends CI_Model{
         $result = $this->db->query("SELECT CONCAT(u.last_name, ', ', u.first_name) AS full_name, SUM(c.c_amount) AS c_amount , c.date_create, (CASE 
                 WHEN remarks = 'referral' THEN 'Direct Referral'
                 WHEN remarks = 'upline' THEN 'Pairing'
+                WHEN remarks = 'rebates' THEN 'Rebate'
                 ELSE ''
             END) AS remarks, DATE_FORMAT(u.entered_on,'%M %e, %Y') AS sign_up_date  
             FROM commission c
@@ -176,6 +177,24 @@ class Reports_model extends CI_Model{
         }
 
         return $output;
+    }
+
+    function get_member_rebates_uptodate(){
+        $result = $this->db->query("SELECT CONCAT(u.last_name, ', ', u.first_name) AS full_name, SUM(c.c_amount) AS c_amount , c.date_create FROM commission c
+                LEFT JOIN users u ON c.c_user_id = u.user_id
+            WHERE u.user_name NOT IN ('admin') AND c.remarks = 'rebates'
+            GROUP BY c.date_create, u.user_id
+            ORDER BY c.date_create DESC, u.last_name ASC;");
+        $output = array();
+        if ($result->num_rows() > 0){
+            $output = $result->result_array();
+        }else{
+            $output = array();
+        }
+
+        $data = array('report' => $output);
+
+        return $data;
     }
 
 }

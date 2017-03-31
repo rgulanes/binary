@@ -118,5 +118,23 @@ class Reports extends CI_Controller {
         $pdf->Output($file, 'I');
     }
 
+    function rebates_report(){
+        $data = $this->Reports_model->get_member_rebates_uptodate();
+
+        foreach ($data['report'] as $key => $v) {
+            $data['tot_amount'] += $v['c_amount'];
+        }
+
+        $html = $this->load->view('report_template/rebates_report', $data, true);
+        $file = "";
+
+        ini_set('memory_limit','32M');
+             
+        $this->load->library('m_pdf');
+        $pdf = $this->m_pdf->load();
+        $pdf->WriteHTML($html);
+        $pdf->Output($file, 'I');
+    }
+
 }
 ?>

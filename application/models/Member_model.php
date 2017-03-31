@@ -626,7 +626,8 @@ class Member_model extends CI_Model{
                                         pp.product_purchase_id,
                                         pp.amount,
                                         pp.amount,
-                                        pp.user_id
+                                        pp.user_id,
+                                        pp.product_desc
                                      FROM product_purchase as pp
                                      JOIN users as u ON u.user_id = pp.user_id
                                      WHERE pp.  date_purchase  BETWEEN '$from' AND '$to'");

@@ -263,6 +263,7 @@ angular.module('binaryApp')
 			$scope.user_purchase_id = $id;
  			$scope.product_amount = '';
  			$scope.date_brought = '';
+ 			$scope.product_description = '';
 			$scope.purchaseSaveMessage = false;
 			$('#product-purchase-modal').modal('show');
 
@@ -272,6 +273,7 @@ angular.module('binaryApp')
 
 			var data  = angular.toJson({
 				amount : $scope.product_amount,
+				product_description : $scope.product_description,	
 				date_purchase : $scope.date_brought,
 				user_id : $id
 			});
@@ -380,7 +382,7 @@ $(document).ready(function(){
 	$.get('board_stats', function(data){
     	var json = JSON.parse(data);
 
-    	$('#treeSize-board').html(json.treeSize);
+    	$('#rebates-board').html(json.rebate);
 		$('#commission-board').html(json.upline);
 		$('#withdrawal-board').html(json.withdrawal);
 		$('#referrals-board').html(json.referral);

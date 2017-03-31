@@ -466,6 +466,7 @@ $(document).ready(function(){
 		$('#commission-panel').html(json.upline);
 		$('#withdrawal-panel').html(json.withdrawal);
 		$('#referrals-panel').html(json.referral);
+		$('#rebates-panel').html(json.rebate);
     });
 
 	

@@ -3,7 +3,8 @@
 <head>
  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
-	<title>Binary</title>
+	<title>LUYABAYA | Admin Panel</title>
+    <link rel="icon" type="image/png" href="<?php echo base_url().('assets/pic/favicon.png');?>" />
 	<link rel="stylesheet" href="<?php echo base_url(); ?>bower_components/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/plugins/jstree/dist/themes/default/style.min.css" />
 </head>
