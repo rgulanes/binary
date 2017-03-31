@@ -26,6 +26,16 @@ class Member extends CI_Controller{
 
 	}
 
+	function tree_generated(){
+		
+		if($this->session->userdata('user_id') != NULL){
+			$this->load->view('member/tree_generated');
+		}else{
+			redirect('login/index');
+		}
+
+	}
+
 	function tree_view(){
 		if($this->session->userdata('user_id') != NULL){
 			$this->load->view('member/tree_layout');
