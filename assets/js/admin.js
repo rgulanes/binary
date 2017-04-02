@@ -84,6 +84,10 @@ angular.module('binaryApp')
 		}
 
 		$scope.get_all_generated_codes = function(){
+
+			$scope.available_codes = [];
+			$scope.used_codes = [];
+
 			var data = angular.toJson({
 			});
 			$scope.file =  $http({
@@ -94,7 +98,13 @@ angular.module('binaryApp')
 		        })
 		        .then(function(response) 
 		        {
-		        	$scope.list_code_generated = response.data.generated_codes;
+		        	angular.forEach(response.data.generated_codes,function(code){
+		        		if(code.status == 0){
+		        			$scope.available_codes.push(code);
+		        		}else{	
+		        			$scope.used_codes.push(code);	
+		        		}
+		        	});
 		      	});
 		}
 		$scope.get_all_generated_codes();

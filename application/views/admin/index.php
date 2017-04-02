@@ -180,25 +180,60 @@
              <div class="panel panel-primary">
               <div class="panel-heading"><b>Code <i class="fa fa-eye pull-right" title="view list"></i></b></div>
               <div class="panel-body" style="max-height: 245px;overflow: auto;">
-                  <table class="table" style="margin-top:13px;">
-                    <thead>
-                      <tr>
-                        <th>Code</th>
-                        <th>Used by</th>
-                        <th>Status</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr ng-repeat="list in list_code_generated">
-                        <td>{{list.description}}</td>
-                        <td>{{list.user_name}}</td>
-                        <td>
-                          <span class="label label-success" ng-if="list.status == 0">Available</span>
-                          <span class="label label-danger" ng-if="list.status == 1">Used</span>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+
+                <ul class="nav nav-pills">
+                  <li class="active"><a data-toggle="pill" href="#available">Available</a></li>
+                  <li><a data-toggle="pill" href="#used">Used</a></li>
+                </ul>
+                
+                <div class="tab-content">
+                  <div id="available" class="tab-pane fadein active">
+                    <div  class="table-responsive"> 
+                      <table class="table" style="margin-top:13px;">
+                        <thead>
+                          <tr>
+                            <th>Code</th>
+                            <th>Used by</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr ng-repeat="list in available_codes">
+                            <td ng-if="list.status == 0">{{list.description}}</td>
+                            <td ng-if="list.status == 0">{{list.user_name}}</td>
+                            <td>
+                              <span class="label label-success" ng-if="list.status == 0">Available</span>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+                  <div id="used" class="tab-pane fade">
+                  <div  class="table-responsive"> 
+                    <table class="table" style="margin-top:13px;">
+                      <thead>
+                        <tr>
+                          <th>Code</th>
+                          <th>Used by</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr ng-repeat="list in used_codes">
+                          <td ng-if="list.status == 1">{{list.description}}</td>
+                          <td ng-if="list.status == 1">{{list.user_name}}</td>
+                          <td>
+                            <span class="label label-danger" ng-if="list.status == 1">Used</span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                   </div> 
+
+                  </div>
+                </div>
                
               </div>
             </div>
