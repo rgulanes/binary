@@ -493,6 +493,34 @@ class Member_model extends CI_Model{
         return $output;
     }
 
+    public function getUserRebates($id){
+        $result = $this->db->query("CALL get_userRebates('$id');");
+        mysqli_next_result($this->db->conn_id);
+        $data = array();
+        $counter = 0;
+
+        if ($result->num_rows() > 0){
+            $data = $result->result_array();
+            $counter = sizeof($data);
+        }else{
+            $data = array();
+            $counter = 0;
+        }
+
+        $output = array(
+            "iTotalRecords" => $counter,
+            "aaData" => array()
+        );
+
+        if($counter != 0){
+            $output['aaData'] = $data;
+        }else{
+            $output['aaData'] = [];
+        }
+
+        return $output;
+    }
+
     public function add_userDownline($pId, $cId, $position, $pos, $createdBy){
         $this->db->trans_start();
         $this->db->query("CALL add_userDownlines('$pId', '$cId', '$position', '$pos', '$pId')");

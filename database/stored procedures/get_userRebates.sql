@@ -1,8 +1,8 @@
-DROP PROCEDURE IF EXISTS get_userCommissions;
+DROP PROCEDURE IF EXISTS get_userRebates;
 DELIMITER $$
 
-# CALL get_userCommissions(2);
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_userCommissions`(IN userId INT)
+# CALL get_userRebates(2);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_userRebates`(IN userId INT)
 BEGIN
 	SELECT 
 		CONCAT('Php. ', CONVERT(COALESCE(c_amount, 0), DECIMAL(10, 2))) AS c_amount, 
@@ -13,6 +13,6 @@ BEGIN
             WHEN remarks = 'rebates' THEN 'Rebates'
 			ELSE ''
 		END) AS remarks
-	FROM commission WHERE c_user_id = userId AND remarks != 'rebates';
+	FROM commission WHERE c_user_id = userId AND remarks NOT IN ('upline', 'referral');
 END$$
 DELIMITER ;

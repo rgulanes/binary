@@ -1,0 +1,40 @@
+body{
+	font-family: Tahoma;
+}
+
+h3.report-title{
+	margin: 0px;
+}
+
+small{
+	font-size: 9px;
+}
+
+.report-table{
+	font-size: 10px;
+	vertical-align: middle;
+}
+
+thead, th{
+	text-transform: uppercase;
+	text-align: center;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    padding: 8px;
+}
+
+tbody, td{
+    text-align: left;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}

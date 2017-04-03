@@ -37,7 +37,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-lg-12">
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-3 col-md-6">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <div class="row">
@@ -52,22 +52,22 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-3 col-md-6">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
                         <div class="row">
                             <div class="col-xs-3">
-                                <i class="fa fa-cc fa-5x"></i>
+                                <i class="fa fa-usd fa-5x"></i>
                             </div>
                             <div class="col-xs-9 text-right">
                                 <div class="huge" id="commission-panel"></div>
-                                <div>Commissions as of Today</div>
+                                <div>Pairing Commission upto Date</div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-3 col-md-6">
                 <div class="panel panel-warning">
                     <div class="panel-heading">
                         <div class="row">
@@ -82,7 +82,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-3 col-md-6">
                 <div class="panel panel-info">
                     <div class="panel-heading">
                         <div class="row">
@@ -97,7 +97,52 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-shopping-cart fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge" id="productPurchase-panel"></div>
+                                <div>Current Product Purchases</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-hand-o-left fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge" id="treeSize-left-board"></div>
+                                <div>Total Left Members</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <i class="fa fa-hand-o-right fa-5x"></i>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="huge" id="treeSize-right-board"></div>
+                                <div>Total Right Members</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
                 <div class="panel panel-success">
                     <div class="panel-heading">
                         <div class="row">
@@ -148,7 +193,8 @@
                 <div class="container-fluid">
                   <ul class="nav nav-pills">
                     <li class="active"><a data-toggle="pill" data-target="#userWithdrawals"><i class="fa fa-bank fa-fw"></i> Withdrawals</a></li>
-                    <li><a data-toggle="pill" data-target="#userCoh"><i class="fa fa-cc fa-fw"></i> Cash On Hand</a></li>
+                    <li><a data-toggle="pill" data-target="#userCoh"><i class="fa fa-usd fa-fw"></i> Cash On Hand</a></li>
+                    <li><a data-toggle="pill" data-target="#userRebates"><i class="fa fa-money fa-fw"></i> Rebates</a></li>
                   </ul>
                   
                   <div class="tab-content ">
@@ -175,6 +221,21 @@
                               <tr>
                                 <th>Amount</th>
                                 <th>Date Commissioned</th>
+                                <th>Note</th>
+                              </tr>
+                            </thead>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="userRebates" class="tab-pane fade">
+                      <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-12 col-xs-12">
+                          <table id="userRebatesDataTable" class="table table-condensed" width="100%">
+                            <thead>
+                              <tr>
+                                <th>Amount</th>
+                                <th>Date Acquired</th>
                                 <th>Note</th>
                               </tr>
                             </thead>

@@ -324,15 +324,6 @@ $(document).ready(function(){
         url     : './generateHierarchy'
     });
 
-    $.get('board_stats', function(data){
-    	var json = JSON.parse(data);
-
-    	$('#treeSize-panel').html(json.treeSize);
-		$('#commission-panel').html(json.upline);
-		$('#withdrawal-panel').html(json.withdrawal);
-		$('#referrals-panel').html(json.referral);
-    });
-
     $('#view-tree').on('click', function(){
     	window.open("./tree_view", "_blank");
     });
@@ -459,6 +450,16 @@ $(document).ready(function(){
 		"order": [[1, 'asc']]
 	} );
 
+	$('#userRebatesDataTable').DataTable( {
+		"ajax": "getUserRebates",
+		"columns": [
+		    { "data": "c_amount" },
+		    { "data": "date_create" },
+		    { "data": "remarks" }
+		],
+		"order": [[1, 'asc']]
+	} );
+
     $.get('board_stats', function(data){
     	var json = JSON.parse(data);
 
@@ -467,7 +468,9 @@ $(document).ready(function(){
 		$('#withdrawal-panel').html(json.withdrawal);
 		$('#referrals-panel').html(json.referral);
 		$('#rebates-panel').html(json.rebate);
+		$('#productPurchase-panel').html(json.productPurchase);
+		$('#treeSize-left-board').html(json.left);
+		$('#treeSize-right-board').html(json.right);
     });
-
 	
 });

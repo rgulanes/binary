@@ -2,48 +2,7 @@
 <html lang="en">
 <head>
 	<title>List of Withdrawals for Today</title>
-	<style type="text/css">
-		body{
-			font-family: Tahoma;
-		}
-
-		h3.report-title{
-			margin: 0px;
-		}
-
-		small{
-			font-size: 9px;
-		}
-
-		.report-table{
-			font-size: 10px;
-			vertical-align: middle;
-		}
-
-		thead, th{
-			text-transform: uppercase;
-			text-align: center;
-		}
-
-		table {
-		    font-family: arial, sans-serif;
-		    border-collapse: collapse;
-		    width: 100%;
-		}
-
-		td, th {
-		    border: 1px solid #dddddd;
-		    padding: 8px;
-		}
-
-		tbody, td{
-		    text-align: left;
-		}
-
-		tr:nth-child(even) {
-		    background-color: #dddddd;
-		}
-	</style>
+	<link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/reports_template.css?v=<?php echo date('mdohis');?>" />
 </head>
 <body>
 	<h3 class="report-title">List of Withdrawals for Today</h3>
@@ -62,7 +21,7 @@
 	<table class="report-table">
 		<thead>
 			<tr>
-				<th>Full Name</th>
+				<th>Member's Full Name</th>
 				<th>Date of Withdrawal</th>
 				<th>Amount Withdrawn</th>
 			</tr>

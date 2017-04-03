@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>List of Commissioned Members for Today</title>
+	<title>List of Product Purchases for this Month</title>
 	<style type="text/css">
 		body{
 			font-family: Tahoma;
@@ -46,7 +46,7 @@
 	</style>
 </head>
 <body>
-	<h3 class="report-title">List of Commissioned Members for Today</h3>
+	<h3 class="report-title">List of Product Purchases for this Month</h3>
 	<small>Report Generated : <?php echo date('F d, o H:i:s');?></small>
 	<hr>
 	<table>
@@ -55,7 +55,7 @@
 				<h6>Total Count : <?php echo sizeof($report);?></h6>
 			</td>
 			<td  style="width: 50%;border: 0px;">
-				<h6>Total Commission Amount : <?php echo 'Php. ' . number_format((sizeof($report) * 60), 2, '.', ',');?></h6>
+				<h6>Total Purchases' Amount : <?php echo 'Php. ' . number_format(!isset($tot_amount) ? 0 : $tot_amount, 2, '.', ',');?></h6>
 			</td>
 		</tr>
 	</table>
@@ -63,8 +63,8 @@
 		<thead>
 			<tr>
 				<th>Member's Full Name</th>
-				<th>Date of Commission</th>
-				<th>Amount Commissioned</th>
+				<th>Purchase Amount</th>
+				<th>Date of Rebate</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -72,8 +72,8 @@
 			foreach ($report as $key) {
 				echo '<tr>';
 				echo '<td>'.$key['full_name'].'</td>';
-				echo '<td>'.$key['date_create'].'</td>';
-				echo '<td>'.'Php. ' . number_format($key['c_amount'], 2, '.', ',').'</td>';
+				echo '<td>'.'Php. ' . number_format($key['amount'], 2, '.', ',').'</td>';
+				echo '<td>'.$key['date_purchase'].'</td>';
 				echo '</tr>';
 			}
 		?>

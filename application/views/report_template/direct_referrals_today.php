@@ -62,7 +62,7 @@
 	<table class="report-table">
 		<thead>
 			<tr>
-				<th>Full Name</th>
+				<th>Member's Full Name</th>
 				<th>Date of Referral</th>
 				<th>Person Referred</th>
 			</tr>

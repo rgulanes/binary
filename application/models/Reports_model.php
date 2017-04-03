@@ -197,5 +197,23 @@ class Reports_model extends CI_Model{
         return $data;
     }
 
+    function get_product_purchases_per_month(){
+        $result = $this->db->query("SELECT pp.amount, pp.product_desc, pp.date_purchase, CONCAT(u.last_name, ', ', u.first_name) AS full_name
+            FROM product_purchase pp
+            LEFT JOIN users u ON u.user_id = pp.user_id
+            WHERE MONTH(date_purchase) = MONTH(NOW());");
+        $output = array();
+        if ($result->num_rows() > 0){
+            $output = $result->result_array();
+        }else{
+            $output = array();
+        }
+
+        $data = array('report' => $output);
+
+        return $data;
+
+    }
+
 }
 ?>

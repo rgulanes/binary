@@ -55,14 +55,14 @@
 				<h6>Total Count : <?php echo sizeof($report);?></h6>
 			</td>
 			<td  style="width: 50%;border: 0px;">
-				<h6>Total Withdrawal Amount : <?php echo 'Php. ' . number_format($tot_amount, 2, '.', ',');?></h6>
+				<h6>Total Withdrawal Amount : <?php echo 'Php. ' . number_format(!isset($tot_amount) ? 0 : $tot_amount, 2, '.', ',');?></h6>
 			</td>
 		</tr>
 	</table>
 	<table class="report-table">
 		<thead>
 			<tr>
-				<th>Full Name</th>
+				<th>Member's Full Name</th>
 				<th>Rebate Amount</th>
 				<th>Date of Rebate</th>
 			</tr>

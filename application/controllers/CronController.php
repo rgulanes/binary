@@ -29,7 +29,6 @@ class CronController extends CI_Controller {
                 $data = $this->_getUserCommissionByDate($_GET['date']);
                 break;
             case 'generateRebates':
-                $this->_cleanUniLevel();
                 $data = $this->_generateRebates();
                 break;
             case 'backupDatabase':
@@ -316,7 +315,7 @@ class CronController extends CI_Controller {
         $commissions = array();
 
         $this->db->trans_start();
-        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin') AND user_id = 2;");
+        $query = $this->db->query("SELECT user_id FROM users WHERE user_name NOT IN ('admin');");
 
         if ($query->num_rows() > 0){
             $data = $query->result_array();
@@ -513,68 +512,114 @@ class CronController extends CI_Controller {
         return $response;
     }
 
-    private function _cleanUniLevel(){
-        set_time_limit(0);
-
-        $this->db->trans_start();
-        $result = $this->db->query("CALL update_UniLevel();");
-        mysqli_next_result($this->db->conn_id);
-        $this->db->trans_complete();
-
-        if ($this->db->trans_status() === FALSE)
-        {
-            $result->free_result();
-        }
-        else
-        {
-            $result->free_result();
-        }
-    }
-
     private function _generateRebates(){
         $data = array();
 
         set_time_limit(0);
 
         $this->db->trans_start();
-        $query = $this->db->query("SELECT 
-            u.* , COALESCE(SUM(p.amount), 0) AS amount, COALESCE((SUM(p.amount)/ 1000 - (SELECT COUNT(*) FROM commission WHERE remarks = 'rebates' AND c_user_id = u.child)), 0) AS rebate_count,
-            CASE 
-                WHEN u.depth IN (0, 1) THEN 30
-                WHEN u.depth = 2 THEN 15
-                WHEN u.depth IN (3,4,5) THEN 10
-                ELSE 5 END AS rebate
-            FROM _unilevel_tree u
-            LEFT JOIN product_purchase p ON p.user_id = u.child
-            GROUP BY child;");
-
-        if ($query->num_rows() > 0){
-            $data = $query->result_array();
-        }else{
-            $data = array();
-        }
-
+        $query = $this->db->query("CALL update_UniLevel();");
         $this->db->trans_complete();
 
+
+        $query = $this->db->query("SELECT DISTINCT depth FROM _unilevel_tree WHERE depth != 0;");
+        $result = $query->result_array();
+
+        $unilevelTree = array();
+        foreach ($result as $k => $v) {
+            $sql = '';
+
+            if($v['depth'] == 1){
+                $sql = 'SELECT * FROM _unilevel_tree WHERE depth IN (0,1) ORDER BY entered_on, amount DESC;';
+            }else{
+                $sql = 'SELECT * FROM _unilevel_tree WHERE depth = '.$v['depth'].' ORDER BY entered_on, amount DESC;';
+            }
+
+            $query = $this->db->query($sql);
+            $data = $query->result_array();
+            $unilevelTree[$v['depth']] = $data;
+        }
+
         echo '<pre>';
-        print_r($data);
-        echo '</pre>';
 
-        foreach ($data as $k => $v) {
-            for ($i=1; $i <= $v['rebate_count']; $i++) { 
-                $this->db->trans_start();
-                $genCommission = $this->db->query("INSERT INTO commission (c_user_id, c_amount, r_user_id, remarks, date_create) VALUES(".$v['child'].", ".$v['rebate'].", ".$v['child'].", 'rebates', NOW())");
-                $this->db->trans_complete();
-
-                if ($this->db->trans_status() === FALSE)
-                {
-                    $genCommission->free_result();
+        $uTree = $unilevelTree;
+        $treeSize = sizeof($unilevelTree);
+        $rTree = array();
+        for ($i=1; $i <= $treeSize ; $i++) {
+            $cnt = 0;
+            foreach ($unilevelTree[$i] as $k => $v) {
+                if($v['amount'] == 0){
+                    unset($unilevelTree[$i][$k]);
+                    $cnt++;
                 }
-                else
-                {
-                    $genCommission->free_result();
+            }
+            $rTree[$i] = $cnt;
+        }
+
+        for ($i=1; $i <= $treeSize ; $i++) {
+            if(($i+1) <= $treeSize){
+                $temp = array_slice($unilevelTree[$i+1], 0, $rTree[$i]);
+                foreach ($temp as $k => $v) {
+                    array_push($unilevelTree[$i], $v);
+                    array_splice($unilevelTree[$i+1], 0, $rTree[$i]);
+                }
+                
+            } 
+            
+            
+        }
+
+        print_r($rTree);
+        //print_r($uTree);
+        print_r($unilevelTree);
+        
+
+        for ($i=1; $i <= $treeSize ; $i++) { 
+            if($rTree[$i] == 0){
+
+                foreach ($uTree[$i] as $k => $v) {
+                    for ($a=1; $a <= $v['rebate_count']; $a++) { 
+                        $this->db->trans_start();
+                        $genCommission = $this->db->query("INSERT INTO commission (c_user_id, c_amount, r_user_id, remarks, date_create) VALUES(".$v['child'].", ".$v['rebate'].", ".$v['child'].", 'rebates', NOW())");
+                        $this->db->trans_complete();
+
+                        if ($this->db->trans_status() === FALSE)
+                        {
+                            $genCommission->free_result();
+                        }
+                        else
+                        {
+                            $genCommission->free_result();
+                        }
+                    }
+                }
+
+            }else{
+                foreach ($unilevelTree[$i] as $k => $v) {
+                    for ($a=1; $a <= $v['rebate_count']; $a++) { 
+                        $amount = 0;
+
+                        if(in_array($i, array(6,7,8,9,10))){
+                            $amount = 5;
+                        }elseif(in_array($i, array(3,4,5))){
+                            $amount = 10;
+                        }elseif($i == 2){
+                            $amount = 15;
+                        }elseif($i == 1){
+                            $amount = 30;
+                        }else{
+                            $amount = 0;
+                        }
+
+
+                        $this->db->trans_start();
+                        $genCommission = $this->db->query("INSERT INTO commission (c_user_id, c_amount, r_user_id, remarks, date_create) VALUES(".$v['child'].", ".$amount.", ".$v['child'].", 'rebates', NOW())");
+                        $this->db->trans_complete();
+                    }
                 }
             }
         }
+
+        echo '</pre>';
     }
 }

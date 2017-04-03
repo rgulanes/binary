@@ -201,6 +201,15 @@ class Member extends CI_Controller{
 
 	}
 
+	function getUserRebates(){
+
+		$_POST = json_decode(file_get_contents('php://input'), true);
+		$data = $this->Member_model->getUserRebates($this->session->userdata('user_id'));
+
+		return print json_encode($data);
+
+	}
+
 	function getUserWithdrawals(){
 
 		$_POST = json_decode(file_get_contents('php://input'), true);
@@ -470,13 +479,27 @@ class Member extends CI_Controller{
         $query = $this->db->get_where('commission', array('remarks' => 'rebates', 'c_user_id' => $userId, 'DATE(date_create) <=' => date('o-m-d')));
         $rebate = $query->row_array();
 
+        $this->db->select('COALESCE(COUNT(*), 0) AS count');
+        $query = $this->db->get_where('_selectedhierarchy', array('m_position =' => 'left'));
+        $left = $query->row_array();
+
+        $this->db->select('COALESCE(COUNT(*), 0) AS count');
+        $query = $this->db->get_where('_selectedhierarchy', array('m_position =' => 'right'));
+        $right = $query->row_array();
+
+        $query = $this->db->query("SELECT COALESCE(SUM(amount), 0) as count FROM product_purchase WHERE user_id = '$userId';");
+        $productPurchase = $query->row_array();
+
 
         echo json_encode(array(
             "treeSize"			=> $treeSize['count'],
             "withdrawal"		=> $withdrawal['count'],
             "upline"			=> $upline['count'],
             "referral"			=> $referral['count'],
-            "rebate"			=> $rebate['count']
+            "rebate"			=> $rebate['count'],
+            "left"				=> $left['count'],
+            "right"				=> $right['count'],
+            "productPurchase" => $productPurchase['count']
         ));
 
 	}
