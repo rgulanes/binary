@@ -546,7 +546,7 @@ class CronController extends CI_Controller {
         for ($i=1; $i <= $treeSize ; $i++) {
             $cnt = 0;
             foreach ($unilevelTree[$i] as $k => $v) {
-                if($v['amount'] == 0){
+                if($v['amount'] == 0 || $v['amount'] < 1000){
                     unset($unilevelTree[$i][$k]);
                     $cnt++;
                 }
@@ -655,7 +655,7 @@ class CronController extends CI_Controller {
         for ($i=1; $i <= $treeSize ; $i++) {
             $cnt = 0;
             foreach ($unilevelTree[$i] as $k => $v) {
-                if($v['amount'] == 0){
+                if($v['amount'] == 0 || $v['amount'] < 1000){
                     unset($unilevelTree[$i][$k]);
                     $cnt++;
                 }
