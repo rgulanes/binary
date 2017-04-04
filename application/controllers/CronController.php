@@ -540,8 +540,6 @@ class CronController extends CI_Controller {
             $unilevelTree[$v['depth']] = $data;
         }
 
-        echo '<pre>';
-
         $uTree = $unilevelTree;
         $treeSize = sizeof($unilevelTree);
         $rTree = array();
@@ -568,11 +566,6 @@ class CronController extends CI_Controller {
             
             
         }
-
-        print_r($rTree);
-        //print_r($uTree);
-        print_r($unilevelTree);
-        
 
         for ($i=1; $i <= $treeSize ; $i++) { 
             if($rTree[$i] == 0){
@@ -620,6 +613,75 @@ class CronController extends CI_Controller {
             }
         }
 
-        echo '</pre>';
+        $data['uTree'] = $uTree;
+        $data['rTree'] = $rTree;
+        $data['nTree'] = $unilevelTree;
+
+        $html = $this->load->view('report_template/dynamic_compression', $data, true);
+
+        echo $html;
+        
+    }
+
+    public function GetMonthlyRebates(){
+        set_time_limit(0);
+
+        $this->db->trans_start();
+        $query = $this->db->query("CALL update_UniLevel();");
+        $this->db->trans_complete();
+
+
+        $query = $this->db->query("SELECT DISTINCT depth FROM _unilevel_tree WHERE depth != 0;");
+        $result = $query->result_array();
+
+        $unilevelTree = array();
+        foreach ($result as $k => $v) {
+            $sql = '';
+
+            if($v['depth'] == 1){
+                $sql = 'SELECT * FROM _unilevel_tree WHERE depth IN (0,1) ORDER BY entered_on, amount DESC;';
+            }else{
+                $sql = 'SELECT * FROM _unilevel_tree WHERE depth = '.$v['depth'].' ORDER BY entered_on, amount DESC;';
+            }
+
+            $query = $this->db->query($sql);
+            $data = $query->result_array();
+            $unilevelTree[$v['depth']] = $data;
+        }
+
+        $uTree = $unilevelTree;
+        $treeSize = sizeof($unilevelTree);
+        $rTree = array();
+        for ($i=1; $i <= $treeSize ; $i++) {
+            $cnt = 0;
+            foreach ($unilevelTree[$i] as $k => $v) {
+                if($v['amount'] == 0){
+                    unset($unilevelTree[$i][$k]);
+                    $cnt++;
+                }
+            }
+            $rTree[$i] = $cnt;
+        }
+
+        for ($i=1; $i <= $treeSize ; $i++) {
+            if(($i+1) <= $treeSize){
+                $temp = array_slice($unilevelTree[$i+1], 0, $rTree[$i]);
+                foreach ($temp as $k => $v) {
+                    array_push($unilevelTree[$i], $v);
+                    array_splice($unilevelTree[$i+1], 0, $rTree[$i]);
+                }
+                
+            } 
+            
+            
+        }
+
+        $data['uTree'] = $uTree;
+        $data['rTree'] = $rTree;
+        $data['nTree'] = $unilevelTree;
+
+        $html = $this->load->view('report_template/dynamic_compression', $data, true);
+
+        echo $html;        
     }
 }
