@@ -21,6 +21,6 @@ BEGIN
         SET cnt = cnt + 1;
     END WHILE;
     
-    CALL get_UnilevelHierarchy(2);
+    -- CALL get_UnilevelHierarchy(2);
 END$$
 DELIMITER ;

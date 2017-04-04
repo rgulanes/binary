@@ -184,7 +184,7 @@ angular.module('binaryApp')
 		        		$scope.upline = data.upline;
 		        		$scope.upline_position = data.position;
 
-
+		        		$scope.sponsor_by = data.sponsor_by;
 
 		        	})
 		        	
@@ -230,7 +230,7 @@ angular.module('binaryApp')
 		 			contact 	: $scope.contact ,
 		 			email 		: $scope.email ,
 		 			address 	: $scope.address ,
-		 			sponsor 	: $scope.sponsor,
+		 			sponsor 	: $scope.sponsor_by,
 					username 	: $scope.username,
 					password 	: $scope.password,
 					generated_code 	: '',
